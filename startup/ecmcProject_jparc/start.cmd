@@ -87,11 +87,11 @@ EthercatMCConfigController ${ECMC_MOTOR_PORT}, "WriteEcEntry(2,3,1)"
 EthercatMCConfigController ${ECMC_MOTOR_PORT}, "WriteEcEntry(2,4,1)"
 EthercatMCConfigController ${ECMC_MOTOR_PORT}, "WriteEcEntry(2,5,1)"
 EthercatMCConfigController ${ECMC_MOTOR_PORT}, "WriteEcEntry(2,6,1)"
-EthercatMCConfigController ${ECMC_MOTOR_PORT}, "WriteEcEntry(2,7,1)"
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "WriteEcEntry(2,7,1)"
 EthercatMCConfigController ${ECMC_MOTOR_PORT}, "WriteEcEntry(2,8,1)"
 EthercatMCConfigController ${ECMC_MOTOR_PORT}, "WriteEcEntry(2,9,1)"
 EthercatMCConfigController ${ECMC_MOTOR_PORT}, "WriteEcEntry(2,10,1)"
-EthercatMCConfigController ${ECMC_MOTOR_PORT}, "WriteEcEntry(2,11,1)"
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "WriteEcEntry(2,11,1)"
 EthercatMCConfigController ${ECMC_MOTOR_PORT}, "WriteEcEntry(2,12,1)"
 EthercatMCConfigController ${ECMC_MOTOR_PORT}, "WriteEcEntry(2,13,1)"
 EthercatMCConfigController ${ECMC_MOTOR_PORT}, "WriteEcEntry(2,14,1)"
@@ -103,32 +103,32 @@ epicsEnvSet("STREAM_PROTOCOL_PATH", "$(ECMC_STARTUP_TOP)/../protocol")
 ##############################################################################
 ############# Configuration of motor 3 (OFFSET BETWEEN AXIS 1 AND 2):
 
-epicsEnvSet("ECMC_MOTOR_NAME",    "xp")
-epicsEnvSet("ECMC_R",             "xp-")
-epicsEnvSet("ECMC_AXIS_NO",       "3")
-epicsEnvSet("ECMC_DESC",          "OFFSET BETWEEN AXIS 1 AND 2 ")
-epicsEnvSet("ECMC_SOFT_LOW_LIM",          "$(SM_DLLM=0)")
-epicsEnvSet("ECMC_SOFT_HIGH_LIM",          "$(SM_DHLM=0)")
+#epicsEnvSet("ECMC_MOTOR_NAME",    "xp")
+#epicsEnvSet("ECMC_R",             "xp-")
+#epicsEnvSet("ECMC_AXIS_NO",       "3")
+#epicsEnvSet("ECMC_DESC",          "OFFSET BETWEEN AXIS 1 AND 2 ")
+#epicsEnvSet("ECMC_SOFT_LOW_LIM",          "$(SM_DLLM=0)")
+#epicsEnvSet("ECMC_SOFT_HIGH_LIM",          "$(SM_DHLM=0)")
 
-epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_LLS",  "-1")                 # EtherCAT Slave No for low limit switch
-epicsEnvSet("ECMC_EC_ALIAS_MON_LLS",      "ONE")                # PDO alias for low limit switch
-epicsEnvSet("ECMC_EC_BIT_INDEX_MON_LLS",  "0")                  # Bit index for low limit switch
+#epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_LLS",  "-1")                 # EtherCAT Slave No for low limit switch
+#epicsEnvSet("ECMC_EC_ALIAS_MON_LLS",      "ONE")                # PDO alias for low limit switch
+#epicsEnvSet("ECMC_EC_BIT_INDEX_MON_LLS",  "0")                  # Bit index for low limit switch
 
-epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_HLS",    "-1")               # EtherCAT Slave No for high limit switch
-epicsEnvSet("ECMC_EC_ALIAS_MON_HLS",        "ONE")              # PDO alias for high limit switch
-epicsEnvSet("ECMC_EC_BIT_INDEX_MON_HLS",    "0")                # Bit index for high limit switch
+#epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_HLS",    "-1")               # EtherCAT Slave No for high limit switch
+#epicsEnvSet("ECMC_EC_ALIAS_MON_HLS",        "ONE")              # PDO alias for high limit switch
+#epicsEnvSet("ECMC_EC_BIT_INDEX_MON_HLS",    "0")                # Bit index for high limit switch
 
-epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_HOME_SWITCH", "-1")          # EtherCAT Slave No for home limit switch
-epicsEnvSet("ECMC_EC_ALIAS_MON_HOME_SWITCH",     "ONE")         # PDO alias for home limit switch
-epicsEnvSet("ECMC_EC_BIT_INDEX_MON_HOME",        "0")           # Bit index for home switch
+#epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_HOME_SWITCH", "-1")          # EtherCAT Slave No for home limit switch
+#epicsEnvSet("ECMC_EC_ALIAS_MON_HOME_SWITCH",     "ONE")         # PDO alias for home limit switch
+#epicsEnvSet("ECMC_EC_BIT_INDEX_MON_HOME",        "0")           # Bit index for home switch
 
-< ../motion/ecmc_virt_axis$(ECMC_GEN_AX_RECORDS)
+#< ../motion/ecmc_virt_axis$(ECMC_GEN_AX_RECORDS)
 
 # Sync. settings
-< axis_3_sync
+#< axis_3_sync
 
 # Apply configurations to ECMC
-< ../motion/ecmc_axis_sync
+#< ../motion/ecmc_axis_sync
 
 ##############################################################################
 ############# Configuration of Axis 1:
@@ -140,10 +140,10 @@ epicsEnvSet("ECMC_EC_BIT_INDEX_MON_HOME",        "0")           # Bit index for 
 < $(ECMC_STARTUP_TOP)/motion/ecmc_axis$(ECMC_GEN_AX_RECORDS)
 
 # Sync. settings
-< axis_1_sync
+#< axis_1_sync
 
 # Apply configurations to ECMC
-< ../motion/ecmc_axis_sync
+#< ../motion/ecmc_axis_sync
  
 ##############################################################################
 ############# Configuration of Axis 2:
@@ -155,10 +155,10 @@ epicsEnvSet("ECMC_EC_BIT_INDEX_MON_HOME",        "0")           # Bit index for 
 < $(ECMC_STARTUP_TOP)/motion/ecmc_axis$(ECMC_GEN_AX_RECORDS)
 
 # Sync. settings
-< axis_2_sync
+#< axis_2_sync
 
 # Apply configurations to ECMC
-< ../motion/ecmc_axis_sync
+#< ../motion/ecmc_axis_sync
 
 
 
@@ -166,11 +166,11 @@ epicsEnvSet("ECMC_EC_BIT_INDEX_MON_HOME",        "0")           # Bit index for 
 # ############# Configure diagnostics:
 
 EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcSetDiagnostics(1)"
-EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcEnablePrintouts(0)"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcEnablePrintouts(1)"
 EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcSetDomainFailedCyclesLimit(100)"
 EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetDiagAxisIndex(1)"
 EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetDiagAxisFreq(2)"
-EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetDiagAxisEnable(0)"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetDiagAxisEnable(1)"
 
 # ##############################################################################
 # ############# Load general controller level records:

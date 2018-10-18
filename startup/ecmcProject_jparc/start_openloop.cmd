@@ -134,7 +134,7 @@ epicsEnvSet("ECMC_EC_BIT_INDEX_MON_HOME",        "0")           # Bit index for 
 ############# Configuration of Axis 1:
 
 # Custom settings for jparc 001 actuator
-< $(E3_CMD_TOP)/Axis_1
+< $(E3_CMD_TOP)/Axis_1_openloop
 
 # Apply configurations to ECMC
 < $(ECMC_STARTUP_TOP)/motion/ecmc_axis$(ECMC_GEN_AX_RECORDS)
