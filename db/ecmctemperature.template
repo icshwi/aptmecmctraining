@@ -1,0 +1,8 @@
+
+record(calc, "$(P)temp-calc") {
+	field(DESC, "calc temperature")
+	field(SCAN, "1 second")
+	field(INPA, "$(P)ec$(MASTER_ID)-s$(SLAVE_POS)-$(HWTYPE)-AI$(CH_ID)")
+	field(CALC, "A/10")
+	field(EGU,  "degree C")
+}

@@ -1,0 +1,115 @@
+
+############# INTRODUCTION
+
+Currently several hardware versions exist 
+  Version MCU1021: Two axes system
+  Version MCU1026: Two axes system
+  Version MCU101*: One axis system
+
+Examples of configurations can be found in folder: ecmctraining/V2/startup/ecmcProject_<Version>
+
+############# HANDS ON EXCERCISES
+
+1. Clone ecmc training project into nfs folder:
+   $ git clone https://bitbucket.org/europeanspallationsource/ecmctraining
+
+2. Open ECMC documentation:
+   $ firefox ecmctraining/V2/doc/html/hw__motor_8h.html &
+
+3. Open configuration file for the system you have with emacs, gedit or whatever.
+   Look up the configuration commands in the documentation:
+     1. Go to startup folder: cd ecmctraining/V2/startup/ecmcProject_<Version>
+     2. Open Startup script: start.cmd
+          $ gedit start.cmd &
+
+4. Check hardware snippets:
+     1. Open hardware config snippet for your system version: ecmctraining/V2/startup/hardware/ecmc<Version>
+     2. Ensure that the hardware listed in snippet corresponds to your actual hardware in your crate.
+     3. Open hardware config snippet for the EL7037. See what EtherCAT data is available: ecmctraining/V2/startup/hardware/ecmcEL7037-StepperDrive
+     4. Open Motor configuration file for attached Nanotec stepper see what settings are made in the EtherCAT slave terminal: ecmctraining/V2/startup/hardware/ecmcEL7037-Motor-Nanotec-ST4118L1804-B
+
+5. Open css and link workspace to ecmctraining/V2/opi : css
+   Open ecmcSystem<Version>.opi 
+
+6. ssh to your local controller ssh dev@<ip-address>
+   Example:
+   $ ssh dev@192.168.88.139
+   # password: vaha23neca
+
+7. Ensure that ethercat master is started:
+   $  ls -l /dev/EtherCAT0 
+
+8. Start IOC for the version of hardware you have.
+   The configuration file is prepared to run one stepper in closed loop mode (Stepper drive EL7037, Encoder on EL5101, Limits on EL1018).
+   Pipe output to file.
+   $ rm -f *lock* ; iocsh  start.cmd 2>&1 | tee log.txt
+   Ensure that the outputs of EL2008 is activated (diagnostics LEDs on terminal). These outputs feed the limit switches and homing switch.
+   
+9. See what EPICS records you have by type "dbl" in iocsh window.
+   1. run: dbl
+   2. identfy the records corresponding to:
+      - pdo entries and slave diagnostics : <Prefix>ec<masterId>-s<slaveId>-<hw type>-*  (Encoder Actual position: "IOC2:ec0-s2-EL5101-Enc-PosAct")
+      - master diagnostics    : <Prefix>ec<masterId>-*                                   (How many slaves connected to master: "IOC2:ec0-slavecounter")
+      - jitter/timing         : <Prefix>MCU-thread-*                                     (Maximum latency of motion/ethercat thread: "IOC2:MCU-thread-latency-max")
+      - motion                : <Prefix>Axis<axisId>*                                    (Axis record: "IOC2:Axis1")
+   3. See information/diagnostics in OPI file (General tab).
+   4. Find PV for lower axis limit switch. Use camonitor to monitor the states. Activate the switch manually:
+     example: $ camonitor IOC2:ec0-s0-EL1018-BI1 		
+   5: Disable power of limitswitch (feed by output):
+     $ caput IOC2:ec0-s1-EL2808-BO1 0
+   6. What happens when you activate the limit switch?
+   7. Reenable power on limit switch:
+     $ caput IOC2:ec0-s1-EL2808-BO1 1
+   8. Ensure that limit switch is working again with camonitor according to 9.4.
+   9. Stop iocsh with the "exit" command
+
+10. Run without records for EtherCAT entries:
+   1. In start.cmd change ECMC_GEN_EC_RECORDS to "".
+   2. restart ioc: rm -f *lock* ; iocsh  start.cmd 2>&1 | tee log.txt
+   3. run dbl command (compare with step 9).
+   4. Stop iocsh with the "exit" command
+   5. renable generation of records: ECMC_GEN_EC_RECORDS to "-asynrecords" in start.cmd
+
+11. Control motion from css:
+   1. restart ioc: rm -f *lock* ; iocsh  start.cmd 2>&1 | tee log.txt
+   2. Choose opi for your crate (ecmcSystem<Version>.opi)
+   3. Run homing sequence (press HOMF button)
+   4. Test positioning, tweaking, jog, softlimits (disable with 0 and 0)
+
+12. Enable/disable motion axis diagnostics and see difference in iocsh: 
+   1. Enable (usefull for commisioning, info can also be reached over EPICS PV):
+      - run in iocsh: EthercatMCConfigController "$(ECMC_MOTOR_PORT)", "Cfg.SetDiagAxisEnable(1)"
+      - make a homing from CSS by pressing HOMF button. See printouts in iocsh.
+   2. Disable:
+      - run in iocsh: EthercatMCConfigController "$(ECMC_MOTOR_PORT)", "Cfg.SetDiagAxisEnable(0)"
+      - make a homing from CSS by pressing HOMF button. See printouts in iocsh.
+
+13. Make a configuration for open loop for axis 1:
+  1. Make a copy of the project folder:
+    $ cp -r ecmcProject<Version> ecmcProject_TestOpenLoop
+  2. Modify the configuration file for axis 1, "axis_1", according to below procedure:    
+    1. The ecmc encoder object needs to be linked to the position value of the stepper terminal instead of EL5101 terminal:
+       - ECMC_EC_SLAVE_NUM_ENC should be set to the drive terminal position
+       - ECMC_EC_ALIAS_ENC_POS should be set to "POSITION" (no change since same name in EL7037 and EL5101).
+       For available Data for each ethercat slave, see hardware configuration snippets in ../hardware/*
+    2. Encoder scaling (engineering units to counts) needs to be chnaged:
+       -  ECMC_ENC_SCALE_NUM  needs to be set to 60mm/rev . NOTE: in closed loop mode the setting was negative "-60mm/rev" since the positive ditrection of the incremental encoder was opposite of motor. However, the open loop counter is of cource positive in the same direction as the drive.
+       -  ECMC_ENC_SCALE_DENOM  needs to be set to 12800steps/rev  (200 fullsteps, 64microsteps/fullstep=>12800 microsteps/rev)
+  3. Run and test your new configuration: iocsh start.cmd
+
+14. Look at syncronization example in directory: ecmctraining/V2/startup/ecmcProject_MCU1021_exampleMasterSlave.
+   1. Adapt it to your hardware.
+   2. Run example.
+ 
+15.  Link an external signal to interlock to the motion axis (this can be done in many ways, example shows software solution):
+   1. Link a limit switch of axis 2 to interlock input of axis 1. Use "Cfg.LinkEcEntryToAxisMonitor(<slaveId>,INPIN_X,<axisId>,3,0)"  (see doxygen help for details)
+   2. Enable the functionality with: EthercatMCConfigController "MCU1", "Cfg.SetAxisMonEnableExtHWInterlock(<axisId>,1)" 
+   3. Start your configuration.
+   4. Move axis 1 and press the choosen limit switch (of axis 2). Motion should stop. See printouts in iocsh.  
+
+16. Look at the configurations for WireScanner Slit system (ecmcProject_MCU1026_wireScanner):
+    wirescanner: Expressions for enable of axis, collision avoidance, 3 levels of interlock/enable motion (hardware, in terminal, and software). How is configuration done to enable the amplifier by input of the EL7037 stepper drive?
+
+17. Test events: Execute/trigger a homing sequence on a falling edge of an ethercat I/O
+
+18. Look at slit system demo (ecmcProject_MCU1021_slit). Explain the expressions used.

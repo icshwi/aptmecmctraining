@@ -1,0 +1,33 @@
+epicsEnvSet("ECMC_PINI",              "1")                      # Process at Initialization
+epicsEnvSet("ECMC_LINR",              "NO CONVERSION")          # Type of Conversion
+epicsEnvSet("ECMC_ESLO",              "1")                      # Gain
+epicsEnvSet("ECMC_EOFF",              "0")                      # Offset
+epicsEnvSet("ECMC_EGU",               "Not Configured")         # Unit
+epicsEnvSet("ECMC_PREC",              "0")                      # Precision
+epicsEnvSet("ECMC_LOLO",              "0")                      # Low Low alarm limit
+epicsEnvSet("ECMC_LOW",               "0")                      # Low alarm limit
+epicsEnvSet("ECMC_HIGH",              "0")                      # High alarm limit
+epicsEnvSet("ECMC_HIHI",              "0")                      # High high alarm limit
+epicsEnvSet("ECMC_HYST",              "0")                      # Alarm Deadband
+epicsEnvSet("ECMC_LLSV",              "NO_ALARM")               # Low Low alarm severity
+epicsEnvSet("ECMC_LSV",               "NO_ALARM")               # Low alarm severity
+epicsEnvSet("ECMC_HSV",               "NO_ALARM")               # High alarm severity
+epicsEnvSet("ECMC_HHSV",              "NO_ALARM")               # High high alarm severity
+epicsEnvSet("ECMC_DRVINFO",           "Not Configured")         # Drv Info)
+epicsEnvSet("ECMC_INP",               "Not Configured")         # Input field
+epicsEnvSet("ECMC_SCAN",              "Not Configured")         # Scan field
+epicsEnvSet("ECMC_DTYP",              "Not Configured")         # Data type
+epicsEnvSet("ECMC_OMSL",              "")                       # Output Mode Select
+epicsEnvSet("ECMC_DOL",               "")                       # Desired Output Location (an Input Link)
+epicsEnvSet("ECMC_OIF",               "")                       # Out Full or Incremental
+epicsEnvSet("ECMC_DRVH",              "")                       # Drive High
+epicsEnvSet("ECMC_DRVL",              "")                       # Drive Low
+epicsEnvSet("ECMC_OROC",              "")                       # Maximum Output Rate of Change
+epicsEnvSet("ECMC_ROFF",              "")                       # Raw Value Offset
+epicsEnvSet("ECMC_EGUF",              "")                       # Engineering Units Full
+epicsEnvSet("ECMC_EGUL",              "")                       # Engineering Units Low
+epicsEnvSet("ECMC_AOFF",              "")                       # Adjustment Offset
+epicsEnvSet("ECMC_ASLO",              "")                       # Adjustment Slope
+epicsEnvSet("ECMC_IVOA",              "")                       # Invalid Alarm Output Action
+epicsEnvSet("ECMC_IVOV",              "")                       # Invalid Alarm Output Value, in eng. units
+

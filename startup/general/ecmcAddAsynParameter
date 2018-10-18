@@ -1,0 +1,2 @@
+ecmcAsynPortDriverAddParameter($(ECMC_ASYN_PORT),$(ECMC_DRVINFO),$(ECMC_DTYP),$(ECMC_ASYN_SKIP_CYCLES))
+

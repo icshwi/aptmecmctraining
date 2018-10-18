@@ -1,0 +1,84 @@
+
+#General
+epicsEnvSet("ECMC_MOTOR_NAME",            "Axis1")
+epicsEnvSet("ECMC_R",                     "Axis1-")
+epicsEnvSet("ECMC_AXIS_NO",               "1")
+epicsEnvSet("ECMC_DESC",                  "Lower Axis")
+
+#Encoder
+epicsEnvSet("ECMC_ENC_SCALE_NUM"          "360")
+epicsEnvSet("ECMC_ENC_SCALE_DENOM"        "51200")
+epicsEnvSet("ECMC_ENC_BITS"               "32")
+# Type: 0=Incremental, 1=Absolute
+epicsEnvSet("ECMC_ENC_TYPE"               "0")
+epicsEnvSet("ECMC_EC_SLAVE_NUM_ENC",      "$(ECMC_EC_SLAVE_NUM)")
+epicsEnvSet("ECMC_EC_ALIAS_ENC_POS",      "POSITION")
+
+#Drive
+epicsEnvSet("ECMC_DRV_TYPE"               "1")                         # Stepper: 0. DS402: 1 (DS402 = servos and advanced stepper drives)
+epicsEnvSet("ECMC_DRV_SCALE_NUM"          "3600")
+epicsEnvSet("ECMC_DRV_SCALE_DENOM"        "32767.0")
+epicsEnvSet("ECMC_EC_SLAVE_NUM_DRV",      "$(ECMC_EC_SLAVE_NUM)")
+epicsEnvSet("ECMC_EC_ALIAS_DRV_CNTRL_WD", "STM_CONTROL")
+epicsEnvSet("ECMC_EC_BIT_DRV_CNTRL_WD",   "-1")                        # Stepper: Bit index for drive enable bit. DS402: Set to -1 (use entire control word)
+epicsEnvSet("ECMC_EC_ALIAS_DRV_STAT_WD",  "STM_STATUS")
+epicsEnvSet("ECMC_EC_BIT_DRV_STAT_WD",    "-1")                        # Stepper: Bit index for drive enabled bit. DS402: Set to -1 (use entire status word)
+epicsEnvSet("ECMC_EC_ALIAS_DRV_VELO_SET", "VELOCITY_SETPOINT")
+epicsEnvSet("ECMC_EC_BIT_DRV_VELO_SET",   "-1")                        # Bit index for velcocity setpoint. Set to -1 (use entire Velcoity setpoint entry)
+epicsEnvSet("ECMC_EC_ALIAS_DRV_BRAKE_OUT","")                          # Entry for brake output (leave blank to disable)
+epicsEnvSet("ECMC_EC_BIT_DRV_BRAKE_OUT",  "0")                         # Bit index for brake output
+epicsEnvSet("ECMC_EC_ALIAS_DRV_REDUCE_TORQUE_OUT", "")                 # Entry for reduce torque at standstill (leave blank to disable)
+epicsEnvSet("ECMC_EC_BIT_DRV_REDUCE_TORQUE_OUT", "0")                  # Bit index for reduce torque at standstill
+
+#Trajectory
+epicsEnvSet("ECMC_VELO",                  "100.0")
+epicsEnvSet("ECMC_JOG_VEL",               "360")
+#JAR defaults to VELO/ACCL
+epicsEnvSet("ECMC_JAR",                   "0.0")
+epicsEnvSet("ECMC_ACCL",                  "0.3")
+epicsEnvSet("ECMC_MRES",                  "0.001")
+
+#Homing
+epicsEnvSet("ECMC_HOME_PROC",             "$(SM_HOMEPROC=1)")
+epicsEnvSet("ECMC_HOME_POS",              "$(SM_HOMEPOS=0.0)")
+epicsEnvSet("ECMC_HOME_VEL_TO",           "$(SM_HVELTP=5)")
+epicsEnvSet("ECMC_HOME_VEL_FRM",          "$(SM_HVELTP=4)")
+epicsEnvSet("ECMC_HOME_ACC",              "$(SM_HOMEACC=21)")
+epicsEnvSet("ECMC_HOME_DEC",              "$(SM_HOMEDEC=100)")
+
+#Controller
+epicsEnvSet("ECMC_CNTRL_KP",              "5.0")
+epicsEnvSet("ECMC_CNTRL_KI",              "0.02")
+epicsEnvSet("ECMC_CNTRL_KD",              "0.0")
+epicsEnvSet("ECMC_CNTRL_KFF",             "1.0")
+
+#Monitoring
+#  softlimits (disable with 0,0)
+epicsEnvSet("ECMC_SOFT_LOW_LIM",          "$(SM_DLLM=0)")
+epicsEnvSet("ECMC_SOFT_HIGH_LIM",         "$(SM_DHLM=0)")
+#  position lag
+epicsEnvSet("ECMC_MON_LAG_MON_TOL",       "5")
+epicsEnvSet("ECMC_MON_LAG_MON_TIME",      "100")
+epicsEnvSet("ECMC_MON_LAG_MON_ENA",       "1")
+# at target
+epicsEnvSet("ECMC_MON_AT_TARGET_TOL",     "0.1")
+epicsEnvSet("ECMC_MON_AT_TARGET_TIME",     "100")
+epicsEnvSet("ECMC_MON_AT_TARGET_ENA",     "1")
+# velocity
+epicsEnvSet("ECMC_MON_VELO_MAX",          "100.0")
+epicsEnvSet("ECMC_MON_VELO_MAX_TRAJ_TIME","100")
+epicsEnvSet("ECMC_MON_VELO_MAX_DRV_TIME", "200")
+epicsEnvSet("ECMC_MON_VELO_MAX_ENA",      "0")
+# low limit switch
+epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_LLS",  "-1")
+epicsEnvSet("ECMC_EC_ALIAS_MON_LLS",      "ONE")
+epicsEnvSet("ECMC_EC_BIT_INDEX_MON_LLS",  "0")                  # Bit index for low limit switch
+# high limit switch
+epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_HLS",  "-1")
+epicsEnvSet("ECMC_EC_ALIAS_MON_HLS",      "ONE")
+epicsEnvSet("ECMC_EC_BIT_INDEX_MON_HLS",  "0")                  # Bit index for low limit switch
+# home limit switch
+epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_HOME_SWITCH", "-1")
+epicsEnvSet("ECMC_EC_ALIAS_MON_HOME_SWITCH",     "ONE")
+epicsEnvSet("ECMC_EC_BIT_INDEX_MON_HOME",  "0")                 # Bit index for home switch
+

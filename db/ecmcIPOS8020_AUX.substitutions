@@ -1,0 +1,5 @@
+file ecmcIPOSXXXX_AUX.template
+{
+	pattern {CURRESLO}
+		{0.001221}
+}

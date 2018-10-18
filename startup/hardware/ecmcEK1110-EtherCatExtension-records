@@ -1,0 +1,5 @@
+
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEK1110-EtherCatExtension
+< $(ECMC_STARTUP_TOP)/general/slave
+
+

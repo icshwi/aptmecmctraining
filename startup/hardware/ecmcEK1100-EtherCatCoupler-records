@@ -1,0 +1,13 @@
+############################################################
+############# Information:
+# Description: EK1100, EtherCAT coupler
+# Vendor id   = 0x2  (Beckhoff)
+# Product id  = 0x044c2c52
+# 
+# Note: No process data.
+#
+############################################################
+
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEK1100-EtherCatCoupler
+< $(ECMC_STARTUP_TOP)/general/slave
+

@@ -1,0 +1,94 @@
+ 
+#General
+epicsEnvSet("ECMC_MOTOR_NAME",            "PBI-NPMA-003")
+epicsEnvSet("ECMC_R",                     "PBI-NPMA-003-")
+epicsEnvSet("ECMC_AXIS_NO",               "3")
+epicsEnvSet("ECMC_DESC",                  "LEBT NPM2 vertical camera actuator")
+
+#Encoder
+epicsEnvSet("ECMC_ENC_SCALE_NUM"          "-360")			# Numerator of encoder scaling 360 deg/turn)
+epicsEnvSet("ECMC_ENC_SCALE_DENOM"        "8000")			# Number of encoder counts to achieve the scale numerator.micro steps (2000x4)	
+epicsEnvSet("ECMC_ENC_BITS"               "16")				# Resolution of encoder in EtherCAt process image
+# Type: 0=Incremental, 1=Absolute
+epicsEnvSet("ECMC_ENC_TYPE"               "0")				# Type: 0=Incremental, 1=Absolute
+epicsEnvSet("ECMC_EC_SLAVE_NUM_ENC",      "6")				# EtherCAT slave position of encoder input
+epicsEnvSet("ECMC_EC_ALIAS_ENC_POS",      "POSITION")			# alias for encoder position value
+
+#Drive
+epicsEnvSet("ECMC_DRV_TYPE"               "0")                          # Stepper: 0. DS402: 1 (DS402 = servos and advanced stepper drives)
+epicsEnvSet("ECMC_DRV_SCALE_NUM"          "3600")			# Fastest speed in engineering units (3600 deg/s)
+epicsEnvSet("ECMC_DRV_SCALE_DENOM"        "32768.0")			# I/O range for ECMC_EC_ALIAS_DRV_VELO_SET
+epicsEnvSet("ECMC_EC_SLAVE_NUM_DRV",      "10")				# EtherCAT bus position for slave 
+epicsEnvSet("ECMC_EC_ALIAS_DRV_CNTRL_WD", "STM_CONTROL")		# Stepper: Entry for drive enable bit. DS402: Entry for control word
+epicsEnvSet("ECMC_EC_BIT_DRV_CNTRL_WD",   "0")                          # Stepper: Bit index for drive enable bit. DS402: Set to -1 (use entire control word)
+epicsEnvSet("ECMC_EC_ALIAS_DRV_STAT_WD",  "STM_STATUS")			# Stepper: Entry for drive enabled bit. DS402: Entry for status word
+epicsEnvSet("ECMC_EC_BIT_DRV_STAT_WD",    "1")                          # Stepper: Bit index for drive enabled bit. DS402: Set to -1 (use entire status word)
+epicsEnvSet("ECMC_EC_ALIAS_DRV_VELO_SET", "VELOCITY_SETPOINT")		# Entry for Velocity stepoint
+epicsEnvSet("ECMC_EC_BIT_DRV_VELO_SET",   "-1")                         # Bit index for velcocity setpoint. Set to -1 (use entire Velcoity setpoint entry)
+epicsEnvSet("ECMC_EC_ALIAS_DRV_BRAKE_OUT","")                           # Entry for brake output (leave blank to disable)
+epicsEnvSet("ECMC_EC_BIT_DRV_BRAKE_OUT",  "0")                          # Bit index for brake output
+epicsEnvSet("ECMC_EC_ALIAS_DRV_REDUCE_TORQUE_OUT", "STM_CONTROL")       # Entry for reduce torque at standstill (leave blank to disable)
+epicsEnvSet("ECMC_EC_BIT_DRV_REDUCE_TORQUE_OUT", "2")                   # Bit index for reduce torque at standstill
+
+#Trajectory
+epicsEnvSet("ECMC_VELO",                  "10")			# Velocity in engineering units for positioning 
+epicsEnvSet("ECMC_JOG_VEL",               "10")			# Velocity in engineering units for jogging same as ECMC_VELO
+#JAR defaults to VELO/ACCL
+epicsEnvSet("ECMC_JAR",                   "0.0")			# Jogging acceleration in engineering units. If cero ECMC_ACC will be used
+epicsEnvSet("ECMC_ACCL",                  "2")				# Positioning acceleration in second reach ECMC_VELO 5 s
+epicsEnvSet("ECMC_MRES",                  "0.001")			# Motor resolution in engineering unit. Should be set to 0.001
+
+#Homing
+epicsEnvSet("ECMC_HOME_PROC",             "$(SM_HOMEPROC=1)")		# Homing procedur
+epicsEnvSet("ECMC_HOME_POS",              "$(SM_HOMEPOS=0.0)")		# Position to set at homming
+epicsEnvSet("ECMC_HOME_VEL_TO",           "$(SM_HVELTP=10)")		# Velocity setpoint, for the first part of the homing sequence when searching for limit switches
+epicsEnvSet("ECMC_HOME_VEL_FRM",          "$(SM_HVELTP=10)")		# Velocity setpoint, for the first part of the homing sequence when searching for homing sensor
+epicsEnvSet("ECMC_HOME_ACC",              "$(SM_HOMEACC=21)")		# Acceleration
+epicsEnvSet("ECMC_HOME_DEC",              "$(SM_HOMEDEC=100)")		# Deceleration
+
+#Controller
+epicsEnvSet("ECMC_CNTRL_KP",              "7.0")			# Position control loop proportional gain
+epicsEnvSet("ECMC_CNTRL_KI",              "0.02")			# Position control loop integral gain
+epicsEnvSet("ECMC_CNTRL_KD",              "0.0")			# Position control loop differentia gain
+epicsEnvSet("ECMC_CNTRL_KFF",             "1.0")			# Velocity feed forward gain
+
+#Monitoring
+#  softlimits (disable with 0,0)
+epicsEnvSet("ECMC_SOFT_LOW_LIM",          "$(SM_DLLM=10)")		# Soft low limit position
+epicsEnvSet("ECMC_SOFT_HIGH_LIM",         "$(SM_DHLM=250)")		# Soft high limit position
+
+# position lag; 
+# If the difference between the actual position and the trajectory position setpoint is larger than ECMC_MON_LAG_MON_TOL for a period longer than ECM_MON_LAG_MON_TIME the motion will be stoped
+
+epicsEnvSet("ECMC_MON_LAG_MON_TOL",       "5")			# Position lag tolerance.
+epicsEnvSet("ECMC_MON_LAG_MON_TIME",      "10")				# Position lag monitoring filter time (ms)
+epicsEnvSet("ECMC_MON_LAG_MON_ENA",       "1")				# Enable position lag monitoring
+
+# at target; 
+# If the difference between the actual position and the target setpoint is within than ECMC_MON_AT_TARGET_TOL for a period longer than ECMC_AT_TARGET_MON_TIME the axis is considered to have reached target.
+
+epicsEnvSet("ECMC_MON_AT_TARGET_TOL",     "0.5")			# At target tolerance.
+epicsEnvSet("ECMC_MON_AT_TARGET_TIME",     "2")				# At target monitoring filter time
+epicsEnvSet("ECMC_MON_AT_TARGET_ENA",     "1")				# Enable at target monitoring
+
+# velocity
+# If actual or setpoint velocity is higher than ECMC_MON_VELO_MAX for a period longer than ECM_MON_VELO_MAX_TRAJ_TIME the motion will be stopped or if longer than ECMC_MON_VELO_MAX_DRV_TIME the enable command to the drive will go down (amplifier disable)
+
+epicsEnvSet("ECMC_MON_VELO_MAX",          "360")			# Maximun allowed speed of axis
+epicsEnvSet("ECMC_MON_VELO_MAX_TRAJ_TIME","10")			# Max velocity filter time. Initiates a controller ramp down of velocity to stop (ms)
+epicsEnvSet("ECMC_MON_VELO_MAX_DRV_TIME", "20")			# Max velocity filter time. Disables amplifier. Normally ECMC_MON_VELO_MAX_DRV_TIME > ECMC_MON_VELO_MAX_TRAJ_TIME (ms)
+epicsEnvSet("ECMC_MON_VELO_MAX_ENA",      "1")				# Enable maximun velocity monitoring
+
+# low limit switch
+epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_LLS",  "2")				# EtherCAT slave position of low limit switch
+epicsEnvSet("ECMC_EC_ALIAS_MON_LLS",      "INPIN_2")			# Alias for limit input
+epicsEnvSet("ECMC_EC_BIT_INDEX_MON_LLS",  "0")                 		# Bit index for low limit switch
+# high limit switch
+epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_HLS",  "2")				# EtherCAT slave position of high limit switch
+epicsEnvSet("ECMC_EC_ALIAS_MON_HLS",      "INPIN_1")			# Alias for limit input
+epicsEnvSet("ECMC_EC_BIT_INDEX_MON_HLS",  "0")                  	# Bit index for high limit switch
+# home limit switch
+epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_HOME_SWITCH", "-1")			# EtherCAT slave position for home switch
+epicsEnvSet("ECMC_EC_ALIAS_MON_HOME_SWITCH",     "ONE")		# Alias for homing input
+epicsEnvSet("ECMC_EC_BIT_INDEX_MON_HOME",        "0")           	# Bit index for home switch
+

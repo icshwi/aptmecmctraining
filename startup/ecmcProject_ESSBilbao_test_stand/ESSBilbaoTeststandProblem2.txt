@@ -1,0 +1,799 @@
+/opt/epics/bases/base-3.15.4/bin/centos7-x86_64/softIoc -D /opt/epics/bases/base-3.15.4/dbd/softIoc.dbd /tmp/iocsh.startup.27905
+date
+2017/05/24 16:47:50.690909
+#user="aserrano"
+#PWD="/home/aserrano/Crate/ecmctraining/V2/startup/ecmcProject_ESSBilbao_test_stand"
+#EPICSVERSION="3.15.4"
+#EPICS_HOST_ARCH="centos7-x86_64"
+#SHELLBOX=""
+#EPICS_CA_ADDR_LIST="127.0.0.1"
+#EPICS_MODULE_INCLUDE_PATH=".:/usr/lib64:/usr/lib:/lib64:/lib"
+dlload         /opt/epics/modules/environment/2.0.0/3.15.4/lib/centos7-x86_64/libenvironment.so
+dbLoadDatabase /opt/epics/modules/environment/2.0.0/3.15.4/dbd/environment.dbd
+environment_registerRecordDeviceDriver
+< "ecmcMCU-2axis-ESSB-Lab.cmd"
+require ecmc,4.0.3
+require: ecmc depends on asyn (4.31.0).
+require: asyn (4.31.0) loaded.
+require: ecmc depends on ethercatlib (1.5+).
+Overriding version 1.5+ with 1.5.2-ESS0 from require.lock
+require: ethercatlib (1.5.2-ESS0) loaded.
+require: ecmc (4.0.3) loaded.
+require ecmctraining,2.1.0
+require: ecmctraining depends on asyn (4.31.0).
+require: ecmctraining depends on streamdevice (2.7+).
+Overriding version 2.7+ with 2.7.7 from require.lock-5e9462
+require: streamdevice depends on asyn (4.31+).
+require: streamdevice depends on calc (3.6+).
+Overriding version 3.6+ with 3.6.1 from require.lock-5e9462
+require: calc depends on seq (2.1+).
+Overriding version 2.1+ with 2.1.10 from require.lock-5e9462
+require: seq (2.1.10) loaded.
+require: calc (3.6.1) loaded.
+require: streamdevice depends on pcre (8.36+).
+Overriding version 8.36+ with 8.36.0 from require.lock-5e9462
+require: pcre (8.36.0) loaded.
+require: streamdevice (2.7.7) loaded.
+require: ecmctraining (2.1.0) loaded.
+require axis,10.1.2
+require: axis depends on asyn (4.31.0).
+require: axis (10.1.2) loaded.
+############################################################
+############# ASYN Configuration:
+epicsEnvSet("ECMC_MOTOR_PORT",    "MCU1")
+epicsEnvSet("ECMC_ASYN_PORT",     "MC_CPU1")
+epicsEnvSet("ECMC_PREFIX",        "IOC2:")
+drvAsynECMCPortConfigure("MC_CPU1", 0, 0, 0)
+../../ecmcApp/src/drvAsynECMCPort.cpp/drvAsynECMCPortConfigure:246 MC_CPU1 priority=0 noAutoConnect=0 noProcessEos=0
+../../ecmcApp/src/drvAsynECMCPort.cpp/drvAsynECMCPortConfigure:303 XXXX version=fc20754f2 MC_CPU1
+asynOctetSetOutputEos("MC_CPU1", -1, ";\n")
+asynOctetSetInputEos("MC_CPU1", -1, ";\n")
+asynSetTraceMask("MC_CPU1", -1, 0x41)
+asynSetTraceIOMask("MC_CPU1", -1, 2)
+asynSetTraceIOMask("MC_CPU1", -1, 6)
+asynSetTraceInfoMask("MC_CPU1", -1, 1)
+#-----------------------
+EthercatMCCreateController("MCU1", "MC_CPU1", "32", "200", "1000", "")
+############################################################
+############# Misc settings:
+#Disable function call trace printouts
+EthercatMCConfigController "MCU1", "Cfg.SetEnableFuncCallDiag(0)"
+OK
+# enable on change printouts from objects (for easy logging)
+EthercatMCConfigController "MCU1", "Cfg.SetTraceMaskBit(15,1)"
+OK
+# Choose to generate EPICS-records for EtherCAT-entries 
+# (For records use ECMC_GEN_EC_RECORDS="-records" otherwise ECMC_GEN_EC_RECORDS="") 
+epicsEnvSet("ECMC_GEN_EC_RECORDS",          "-records")
+############################################################
+############# Configure hardware:
+#Choose master
+EthercatMCConfigController "MCU1", "Cfg.EcSetMaster(0)"
+OK
+#0  0:0  PREOP  +  EK1100 EtherCAT-Koppler (2A E-Bus)
+#Configure EK1100 EtherCAT Coupler
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "0")
+< ../hardware/ecmcEK1100-EtherCatCoupler-records
+############################################################
+############# Information:
+# Description: EK1100, EtherCAT coupler
+# Vendor id   = 0x2  (Beckhoff)
+# Product id  = 0x044c2c52
+# 
+# Note: No process data.
+#
+############################################################
+# Alias = 0 
+EthercatMCConfigController MCU1, "Cfg.EcAddSlave(0,0,0x2,0x044c2c52)"
+OK
+#1  0:1  PREOP  +  EL1018 8K. Dig. Eingang 24V, 10�s
+#Configure EL1018 digital input terminal
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "1")
+< ../hardware/ecmcEL1018-digitalInput-records
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(1,0x2,0x03fa3052,2,0,0x1a00,0x6000,0x1,1,INPIN_1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(1,0x2,0x03fa3052,2,0,0x1a01,0x6010,0x1,1,INPIN_2)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(1,0x2,0x03fa3052,2,0,0x1a02,0x6020,0x1,1,INPIN_3)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(1,0x2,0x03fa3052,2,0,0x1a03,0x6030,0x1,1,INPIN_4)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(1,0x2,0x03fa3052,2,0,0x1a04,0x6040,0x1,1,INPIN_5)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(1,0x2,0x03fa3052,2,0,0x1a05,0x6050,0x1,1,INPIN_6)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(1,0x2,0x03fa3052,2,0,0x1a06,0x6060,0x1,1,INPIN_7)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(1,0x2,0x03fa3052,2,0,0x1a07,0x6070,0x1,1,INPIN_8)"
+OK
+#Start at BI1 since this convention is used in drawings and in the terminal documentation
+dbLoadRecords("ecmcGenericDigitalInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=1,TYPE=EL1018,NAME=INPIN_1,REC_SUFFIX=BI1,A=0")
+dbLoadRecords("ecmcGenericDigitalInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=1,TYPE=EL1018,NAME=INPIN_2,REC_SUFFIX=BI2,A=0")
+dbLoadRecords("ecmcGenericDigitalInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=1,TYPE=EL1018,NAME=INPIN_3,REC_SUFFIX=BI3,A=0")
+dbLoadRecords("ecmcGenericDigitalInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=1,TYPE=EL1018,NAME=INPIN_4,REC_SUFFIX=BI4,A=0")
+dbLoadRecords("ecmcGenericDigitalInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=1,TYPE=EL1018,NAME=INPIN_5,REC_SUFFIX=BI5,A=0")
+dbLoadRecords("ecmcGenericDigitalInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=1,TYPE=EL1018,NAME=INPIN_6,REC_SUFFIX=BI6,A=0")
+dbLoadRecords("ecmcGenericDigitalInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=1,TYPE=EL1018,NAME=INPIN_7,REC_SUFFIX=BI7,A=0")
+dbLoadRecords("ecmcGenericDigitalInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=1,TYPE=EL1018,NAME=INPIN_8,REC_SUFFIX=BI8,A=0")
+#2  0:2  PREOP  +  EL2808 8K. Dig. Ausgang 24V, 0.5A
+#Configure EL2808 digital output terminal
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "2")
+< ../hardware/ecmcEL2808-digitalOutput-records
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0af83052,1,0,0x1600,0x7000,0x1,1,OUPIN_1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0af83052,1,0,0x1601,0x7010,0x1,1,OUPIN_2)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0af83052,1,0,0x1602,0x7020,0x1,1,OUPIN_3)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0af83052,1,0,0x1603,0x7030,0x1,1,OUPIN_4)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0af83052,1,0,0x1604,0x7040,0x1,1,OUPIN_5)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0af83052,1,0,0x1605,0x7050,0x1,1,OUPIN_6)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0af83052,1,0,0x1606,0x7060,0x1,1,OUPIN_7)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0af83052,1,0,0x1607,0x7070,0x1,1,OUPIN_8)"
+OK
+#Start at BO1 since this convention is used in drawings and in the terminal documentation
+dbLoadRecords("ecmcGenericDigitalOutput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=2,TYPE=EL2808,NAME=OUPIN_1,REC_SUFFIX=BO1,A=0")
+dbLoadRecords("ecmcGenericDigitalOutput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=2,TYPE=EL2808,NAME=OUPIN_2,REC_SUFFIX=BO2,A=0")
+dbLoadRecords("ecmcGenericDigitalOutput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=2,TYPE=EL2808,NAME=OUPIN_3,REC_SUFFIX=BO3,A=0")
+dbLoadRecords("ecmcGenericDigitalOutput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=2,TYPE=EL2808,NAME=OUPIN_4,REC_SUFFIX=BO4,A=0")
+dbLoadRecords("ecmcGenericDigitalOutput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=2,TYPE=EL2808,NAME=OUPIN_5,REC_SUFFIX=BO5,A=0")
+dbLoadRecords("ecmcGenericDigitalOutput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=2,TYPE=EL2808,NAME=OUPIN_6,REC_SUFFIX=BO6,A=0")
+dbLoadRecords("ecmcGenericDigitalOutput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=2,TYPE=EL2808,NAME=OUPIN_7,REC_SUFFIX=BO7,A=0")
+dbLoadRecords("ecmcGenericDigitalOutput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=2,TYPE=EL2808,NAME=OUPIN_8,REC_SUFFIX=BO8,A=0")
+# Save the slave number for later
+epicsEnvSet("ECMC_EC_SLAVE_NUM_DIG_OUT", "2")
+#3  0:3  PREOP  +  EL5101 1K. Inc. Encoder 5V
+#Configure EL5101 incremental encoder terminal, motor 1 (Lab. Actuator)
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "3")
+< ../hardware/ecmcEL5101-IncEncoder-records
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(3,0x2,0x13ed3052,1,2,0x1600,0x7000,0x01,8,CONTROL)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(3,0x2,0x13ed3052,1,2,0x1600,0x7000,0x02,16,VALUE)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(3,0x2,0x13ed3052,2,3,0x1a03,0x6010,0x00,16,STATUS)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(3,0x2,0x13ed3052,2,3,0x1a03,0x6010,0x10,16,POSITION)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(3,0x2,0x13ed3052,2,3,0x1a03,0x6010,0x20,16,LATCH_POSITION)"
+OK
+dbLoadRecords("ecmcGenericAnalogOutput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=3,TYPE=EL5101,NAME=CONTROL,REC_SUFFIX=Enc-Cmd,A=0")
+dbLoadRecords("ecmcGenericAnalogOutput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=3,TYPE=EL5101,NAME=VALUE,REC_SUFFIX=Enc-PosCmd,A=0")
+dbLoadRecords("ecmcGenericAnalogInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=3,TYPE=EL5101,NAME=STATUS,REC_SUFFIX=Enc-Stat,A=0")
+dbLoadRecords("ecmcGenericAnalogInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=3,TYPE=EL5101,NAME=POSITION,REC_SUFFIX=Enc-PosAct,A=0")
+dbLoadRecords("ecmcGenericAnalogInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=3,TYPE=EL5101,NAME=LATCH_POSITION,REC_SUFFIX=Enc-Latch-PosAct,A=0")
+#4  0:4  PREOP  +  EL5101 1K. Inc. Encoder 5V
+#Configure EL5101 incremental encoder terminal, motor 2 (Buncher Mobile Tuner)
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "4")
+< ../hardware/ecmcEL5101-IncEncoder-records
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(4,0x2,0x13ed3052,1,2,0x1600,0x7000,0x01,8,CONTROL)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(4,0x2,0x13ed3052,1,2,0x1600,0x7000,0x02,16,VALUE)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(4,0x2,0x13ed3052,2,3,0x1a03,0x6010,0x00,16,STATUS)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(4,0x2,0x13ed3052,2,3,0x1a03,0x6010,0x10,16,POSITION)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(4,0x2,0x13ed3052,2,3,0x1a03,0x6010,0x20,16,LATCH_POSITION)"
+OK
+dbLoadRecords("ecmcGenericAnalogOutput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=4,TYPE=EL5101,NAME=CONTROL,REC_SUFFIX=Enc-Cmd,A=0")
+dbLoadRecords("ecmcGenericAnalogOutput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=4,TYPE=EL5101,NAME=VALUE,REC_SUFFIX=Enc-PosCmd,A=0")
+dbLoadRecords("ecmcGenericAnalogInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=4,TYPE=EL5101,NAME=STATUS,REC_SUFFIX=Enc-Stat,A=0")
+dbLoadRecords("ecmcGenericAnalogInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=4,TYPE=EL5101,NAME=POSITION,REC_SUFFIX=Enc-PosAct,A=0")
+dbLoadRecords("ecmcGenericAnalogInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=4,TYPE=EL5101,NAME=LATCH_POSITION,REC_SUFFIX=Enc-Latch-PosAct,A=0")
+#5  0:5  PREOP  +  EL3002 2K.Ana. Eingang  +/-10V
+# Configure EL3002 analog input terminal
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "5")
+< ../hardware/ecmcEL3002-analogInput-records
+############################################################
+#
+# UNDER DEVELOPMENT
+# NOT TESTED YET.
+#
+#
+############################################################
+############################################################
+############# Information:
+# Description: 2 channel analog input module +-10V
+# Vendor id   = 0x2  (Beckhoff)
+# Product id  = 0x0bba3052
+# Direction   = 2 (Input)
+############################################################
+############# Config PDOS: Channel 1
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(5,0x2,0x0bba3052,2,3,0x1a00,0x6000,0x1,16,CH1_STATUS)"
+OK
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x0bba3052,2,3,0x1a00,0x6000,0x1,1,CH1_UNDERRANGE)"
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x0bba3052,2,3,0x1a00,0x6000,0x2,1,CH1_OVERRANGE)"
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x0bba3052,2,3,0x1a00,0x6000,0x3,2,CH1_LIMIT_1)"
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x0bba3052,2,3,0x1a00,0x6000,0x5,2,CH1_LIMIT_2)"
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x0bba3052,2,3,0x1a00,0x6000,0x7,1,CH1_ERROR)"
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x0bba3052,2,3,0x1a00,0x0,0x0,1,CH1_GAP1)"
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x0bba3052,2,3,0x1a00,0x0,0x0,6,CH1_GAP2)"
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x0bba3052,2,3,0x1a00,0x1800,0xf,1,CH1_TXPDOSTATE)"
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x0bba3052,2,3,0x1a00,0x1800,0x10,1,CH1_TXPDOTOGGLE)"
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(5,0x2,0x0bba3052,2,3,0x1a00,0x6000,0x11,16,CH1_VALUE)"
+OK
+dbLoadRecords("ecmcGenericAnalogInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=5,TYPE=EL3002,NAME=CH1_STATUS,REC_SUFFIX=AI1-Stat,A=0")
+dbLoadRecords("ecmcGenericAnalogInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=5,TYPE=EL3002,NAME=CH1_VALUE,REC_SUFFIX=AI1,A=0")
+############# Config PDOS: Channel 2
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(5,0x2,0x0bba3052,2,3,0x1a02,0x6000,0x1,16,CH2_STATUS)"
+OK
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x0bba3052,2,3,0x1a02,0x6000,0x1,1,CH2_UNDERRANGE)"
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x0bba3052,2,3,0x1a02,0x6000,0x2,1,CH2_OVERRANGE)"
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x0bba3052,2,3,0x1a02,0x6000,0x3,2,CH2_LIMIT_1)"
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x0bba3052,2,3,0x1a02,0x6000,0x5,2,CH2_LIMIT_2)"
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x0bba3052,2,3,0x1a02,0x6000,0x7,1,CH2_ERROR)"
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x0bba3052,2,3,0x1a02,0x0,0x0,1,CH2_GAP1)"
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x0bba3052,2,3,0x1a02,0x0,0x0,6,CH2_GAP2)"
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x0bba3052,2,3,0x1a02,0x1800,0xf,1,CH2_TXPDOSTATE)"
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x0bba3052,2,3,0x1a02,0x1800,0x10,1,CH2_TXPDOTOGGLE)"
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(5,0x2,0x0bba3052,2,3,0x1a02,0x6000,0x11,16,CH2_VALUE)"
+OK
+dbLoadRecords("ecmcGenericAnalogInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=5,TYPE=EL3002,NAME=CH2_STATUS,REC_SUFFIX=AI2-Stat,A=0")
+dbLoadRecords("ecmcGenericAnalogInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=5,TYPE=EL3002,NAME=CH2_VALUE,REC_SUFFIX=AI2,A=0")
+#6  0:6  PREOP  +  EL4032 2K. Ana. Ausgang +/-10V, 12bit
+# Configure EL4032 analog output terminal
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "6")
+< ../hardware/ecmcEL4032-analogOutput-records
+############################################################
+#
+# UNDER DEVELOPMENT
+# NOT TESTED YET.
+#
+#
+############################################################
+############################################################
+############# Information EL4032:
+# Description: 2 channel analog output module +-10V 12 bit
+# Vendor id   = 0x2  (Beckhoff)
+# Product id  = 0x0fc03052
+# Direction   = 1 (Output)
+# Sync manger index = 2
+############################################################
+#############  Reset terminal /*Cfg.EcWriteSdo(uint16_t slave_position,uint16_t sdo_index,uint8_t sdo_subindex,uint32_t value,int byteSize)*/
+EthercatMCConfigController MCU1, "Cfg.EcWriteSdo(6,0x1011,0x1,1684107116,4)"
+OK
+############################################################
+############# Config PDOS: Channel 1
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(6,0x2,0x0fc03052,1,2,0x1100,0x7000,0x1,16,CH1_VALUE)"
+OK
+dbLoadRecords("ecmcGenericAnalogOutput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=6,TYPE=EL4032,NAME=CH1_VALUE,REC_SUFFIX=AO1,A=0")
+############################################################
+############# Config PDOS: Channel 2
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(6,0x2,0x0fc03052,1,2,0x1100,0x7010,0x1,16,CH2_VALUE)"
+OK
+dbLoadRecords("ecmcGenericAnalogOutput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=6,TYPE=EL4032,NAME=CH2_VALUE,REC_SUFFIX=AO2,A=0")
+#7  0:7  PREOP  +  EL9410 E-Bus Netzteilklemme (Diagnose)
+# Configure EL9410 Ebus Power Supply
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "7")
+< ../hardware/ecmcEL9410-powerSupplyEBus-records
+############################################################
+############# Information:
+# Description: Power supply terminal with refresh of E-Bus
+# Vendor id   = 0x2  (Beckhoff)
+# Product id  = 0x24c23052
+# Direction   = 2 (Input)
+# Sync manger index = 0
+############################################################
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(7,0x2,0x24c23052,2,0,0x1a00,0x6000,0x1,1,EBUS_UNDERVOLTAGE)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(7,0x2,0x24c23052,2,0,0x1a01,0x6000,0x1,1,POWER_UNDERVOLTAGE)"
+OK
+dbLoadRecords("ecmcGenericDigitalInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=7,TYPE=EL9410,NAME=EBUS_UNDERVOLTAGE,REC_SUFFIX=EBus-Stat,A=0")
+dbLoadRecords("ecmcGenericDigitalInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=7,TYPE=EL9410,NAME=POWER_UNDERVOLTAGE,REC_SUFFIX=Power-Stat,A=0")
+#8  0:8  PREOP  +  EL7037 1K. Schrittmotor-Endstufe (24V, 1.5A)
+#Configure EL7037 stepper drive terminal, motor 1
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "8")
+< ../hardware/ecmcEL7037-StepperDrive-records
+#Configure EL7037 stepper drive terminal
+# factory reset, to be used as a shell command.
+# Listed here for documentation only
+#requireExec ethercatlib -- ethercat download -p ${ECMC_EC_SLAVE_NUM} -tuint32 0x1011 0x1 0x64616F6C=1684107116dec
+# Reset drive /*Cfg.EcWriteSdo(uint16_t slave_position,uint16_t sdo_index,uint8_t sdo_subindex,uint32_t value,int byteSize)*/
+EthercatMCConfigController MCU1, "Cfg.EcWriteSdo(8,0x1011,0x1,1684107116,4)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(8,0x2,0x1b7d3052,1,2,0x1602,0x7010,0x1,16,STM_CONTROL)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(8,0x2,0x1b7d3052,1,2,0x1604,0x7010,0x21,16,VELOCITY_SETPOINT)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(8,0x2,0x1b7d3052,2,3,0x1a00,0x6000,0x0,16,ENC_STATUS)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(8,0x2,0x1b7d3052,2,3,0x1a00,0x6000,0x11,16,POSITION)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(8,0x2,0x1b7d3052,2,3,0x1a00,0x6000,0x12,16,LATCH_POSITION)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(8,0x2,0x1b7d3052,2,3,0x1a03,0x6010,0x1,16,STM_STATUS)"
+OK
+#Max full step freq = 2000Hz (setting is 1)
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(8,0x8012,0x5,1,1)"
+OK
+#Error on loss of steps = 1
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(8,0x8012,0xA,1,1)"
+OK
+#Feedback type = Internal counter = 1 (for encoder on terminal set to 0)
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(8,0x8012,0x8,1,1)"
+OK
+#Invert motor polarity = 0
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(8,0x8012,0x9,0,1)"
+OK
+dbLoadRecords("ecmcGenericAnalogOutput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=8,TYPE=EL7037,NAME=STM_CONTROL,REC_SUFFIX=Drv-Cmd,A=0")
+dbLoadRecords("ecmcGenericAnalogOutput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=8,TYPE=EL7037,NAME=VELOCITY_SETPOINT,REC_SUFFIX=Drv-Spd,A=0")
+dbLoadRecords("ecmcGenericAnalogInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=8,TYPE=EL7037,NAME=ENC_STATUS,REC_SUFFIX=Enc-Stat,A=0")
+dbLoadRecords("ecmcGenericAnalogInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=8,TYPE=EL7037,NAME=POSITION,REC_SUFFIX=Enc-PosAct,A=0")
+dbLoadRecords("ecmcGenericAnalogInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=8,TYPE=EL7037,NAME=LATCH_POSITION,REC_SUFFIX=Enc-Latch-PosAct,A=0")
+dbLoadRecords("ecmcGenericAnalogInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=8,TYPE=EL7037,NAME=STM_STATUS,REC_SUFFIX=Drv-Stat,A=0")
+#Configure motor for EL7037
+< ../hardware/ecmcEL7037-Motor-Nanotec-ST5918L2008-B
+#9  0:9  PREOP  +  EL7037 1K. Schrittmotor-Endstufe (24V, 1.5A)
+#Configure EL7037 stepper drive terminal, motor 2
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "9")
+< ../hardware/ecmcEL7037-StepperDrive-records
+#Configure EL7037 stepper drive terminal
+# factory reset, to be used as a shell command.
+# Listed here for documentation only
+#requireExec ethercatlib -- ethercat download -p ${ECMC_EC_SLAVE_NUM} -tuint32 0x1011 0x1 0x64616F6C=1684107116dec
+# Reset drive /*Cfg.EcWriteSdo(uint16_t slave_position,uint16_t sdo_index,uint8_t sdo_subindex,uint32_t value,int byteSize)*/
+EthercatMCConfigController MCU1, "Cfg.EcWriteSdo(9,0x1011,0x1,1684107116,4)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(9,0x2,0x1b7d3052,1,2,0x1602,0x7010,0x1,16,STM_CONTROL)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(9,0x2,0x1b7d3052,1,2,0x1604,0x7010,0x21,16,VELOCITY_SETPOINT)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(9,0x2,0x1b7d3052,2,3,0x1a00,0x6000,0x0,16,ENC_STATUS)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(9,0x2,0x1b7d3052,2,3,0x1a00,0x6000,0x11,16,POSITION)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(9,0x2,0x1b7d3052,2,3,0x1a00,0x6000,0x12,16,LATCH_POSITION)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(9,0x2,0x1b7d3052,2,3,0x1a03,0x6010,0x1,16,STM_STATUS)"
+OK
+#Max full step freq = 2000Hz (setting is 1)
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(9,0x8012,0x5,1,1)"
+OK
+#Error on loss of steps = 1
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(9,0x8012,0xA,1,1)"
+OK
+#Feedback type = Internal counter = 1 (for encoder on terminal set to 0)
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(9,0x8012,0x8,1,1)"
+OK
+#Invert motor polarity = 0
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(9,0x8012,0x9,0,1)"
+OK
+dbLoadRecords("ecmcGenericAnalogOutput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=9,TYPE=EL7037,NAME=STM_CONTROL,REC_SUFFIX=Drv-Cmd,A=0")
+dbLoadRecords("ecmcGenericAnalogOutput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=9,TYPE=EL7037,NAME=VELOCITY_SETPOINT,REC_SUFFIX=Drv-Spd,A=0")
+dbLoadRecords("ecmcGenericAnalogInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=9,TYPE=EL7037,NAME=ENC_STATUS,REC_SUFFIX=Enc-Stat,A=0")
+dbLoadRecords("ecmcGenericAnalogInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=9,TYPE=EL7037,NAME=POSITION,REC_SUFFIX=Enc-PosAct,A=0")
+dbLoadRecords("ecmcGenericAnalogInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=9,TYPE=EL7037,NAME=LATCH_POSITION,REC_SUFFIX=Enc-Latch-PosAct,A=0")
+dbLoadRecords("ecmcGenericAnalogInput.db","P=IOC2:,PORT=MC_CPU1,SLAVE_POS=9,TYPE=EL7037,NAME=STM_STATUS,REC_SUFFIX=Drv-Stat,A=0")
+#Configure motor for EL7037
+< ../hardware/ecmcEL7037-Motor-Mclennan-HT18C230
+############################################################
+############# Parmetrization of EL7037 for motor Mclennan-HT18C230
+#Set max current to 1500mA (actually max current is 1.73A for serial conection)
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(9,0x8010,0x1,1500,2)"
+OK
+#Reduced current 500mA
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(9,0x8010,0x2,500,2)"
+OK
+#Nominal voltage 24V (unit 10mV)
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(9,0x8010,0x3,2400,2)"
+OK
+#Coil resistance 1.5 Ohm (unit 10mOhm)
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(9,0x8010,0x4,150,2)"
+OK
+#Motor full steps count 200
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(9,0x8010,0x6,200,2)"
+OK
+#Coil inductance 4.8mH Ohm (unit 0.01mH)
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(9,0x8010,0xA,480,2)"
+OK
+#Max full step freq = 8000Hz (setting is 2)
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(9,0x8012,0x5,2,1)"
+OK
+#Apply hardware configuration
+EthercatMCConfigController "MCU1", "Cfg.EcApplyConfig(1)"
+OK
+##############################################################################
+############# Write outputs in order to power switches (see elec. drawings):
+#Write to outputs in order to power limit switches (see electrical drawings)
+EthercatMCConfigController "MCU1", "WriteEcEntry(2,0,2)"
+OK
+EthercatMCConfigController "MCU1", "WriteEcEntry(2,1,2)"
+OK
+EthercatMCConfigController "MCU1", "WriteEcEntry(2,2,2)"
+OK
+EthercatMCConfigController "MCU1", "WriteEcEntry(2,3,2)"
+OK
+EthercatMCConfigController "MCU1", "WriteEcEntry(2,4,2)"
+OK
+EthercatMCConfigController "MCU1", "WriteEcEntry(2,5,2)"
+OK
+EthercatMCConfigController "MCU1", "WriteEcEntry(2,6,2)"
+OK
+EthercatMCConfigController "MCU1", "WriteEcEntry(2,7,2)"
+OK
+##############################################################################
+############# Configuration of motor 1:
+# Custom settings for Axis 1
+< ecmcMCU-2axis-ESSB-Lab_Axis1
+#General
+epicsEnvSet("ECMC_MOTOR_NAME",            "Axis1")
+epicsEnvSet("ECMC_R",                     "Axis1-")
+epicsEnvSet("ECMC_AXIS_NO",               "1")
+epicsEnvSet("ECMC_DESC",                  "Lower Axis")
+#Encoder
+epicsEnvSet("ECMC_ENC_SCALE_NUM"          "-4")
+epicsEnvSet("ECMC_ENC_SCALE_DENOM"        "16000")
+epicsEnvSet("ECMC_ENC_BITS"               "16")
+# Type: 0=Incremental, 1=Absolute
+epicsEnvSet("ECMC_ENC_TYPE"               "0")
+epicsEnvSet("ECMC_EC_SLAVE_NUM_ENC",      "3")
+epicsEnvSet("ECMC_EC_ALIAS_ENC_POS",      "POSITION")
+#Drive
+epicsEnvSet("ECMC_DRV_SCALE_NUM"          "40.0") 
+epicsEnvSet("ECMC_DRV_SCALE_DENOM"        "32768.0")
+epicsEnvSet("ECMC_EC_SLAVE_NUM_DRV",      "8")
+epicsEnvSet("ECMC_EC_ALIAS_DRV_CNTRL_WD", "STM_CONTROL")
+epicsEnvSet("ECMC_EC_ALIAS_DRV_STAT_WD",  "STM_STATUS")
+epicsEnvSet("ECMC_EC_ALIAS_DRV_VELO_SET", "VELOCITY_SETPOINT")
+#Trajectory
+epicsEnvSet("ECMC_VELO",                  "1.0")
+epicsEnvSet("ECMC_JOG_VEL",               "0.5")
+#JAR defaults to VELO/ACCL
+epicsEnvSet("ECMC_JAR",                   "0.0")
+epicsEnvSet("ECMC_ACCL",                  "0.1")
+epicsEnvSet("ECMC_MRES",                  "0.001")
+#Homing
+epicsEnvSet("ECMC_HOME_PROC",             "1")
+epicsEnvSet("ECMC_HOME_POS",              "0.0")
+epicsEnvSet("ECMC_HOME_VEL_TO",           "0.1")
+epicsEnvSet("ECMC_HOME_VEL_FRM",          "0.1")
+epicsEnvSet("ECMC_HOME_ACC",              "21")
+epicsEnvSet("ECMC_HOME_DEC",              "100")
+#Controller
+epicsEnvSet("ECMC_CNTRL_KP",              "15.0")
+epicsEnvSet("ECMC_CNTRL_KI",              "0.02")
+epicsEnvSet("ECMC_CNTRL_KD",              "0.0")
+epicsEnvSet("ECMC_CNTRL_KFF",             "1.0")
+#Monitoring
+#  softlimits (disable with 0,0)
+epicsEnvSet("ECMC_SOFT_LOW_LIM",          "0")
+epicsEnvSet("ECMC_SOFT_HIGH_LIM",         "130")
+#  position lag
+epicsEnvSet("ECMC_MON_LAG_MON_TOL",       "0.5")
+epicsEnvSet("ECMC_MON_LAG_MON_TIME",      "10")
+epicsEnvSet("ECMC_MON_LAG_MON_ENA",       "1")
+# at target
+epicsEnvSet("ECMC_MON_AT_TARGET_TOL",     "0.1")
+epicsEnvSet("ECMC_MON_AT_TARGET_TIME",     "100")
+epicsEnvSet("ECMC_MON_AT_TARGET_ENA",     "1")
+# velocity
+epicsEnvSet("ECMC_MON_VELO_MAX",          "4.0")
+epicsEnvSet("ECMC_MON_VELO_MAX_TRAJ_TIME","4")
+epicsEnvSet("ECMC_MON_VELO_MAX_DRV_TIME", "200")
+epicsEnvSet("ECMC_MON_VELO_MAX_ENA",      "1")
+# low limit switch
+epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_LLS",  "0")
+epicsEnvSet("ECMC_EC_ALIAS_MON_LLS",      "INPIN_1")
+# high limit switch
+epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_HLS",  "0")
+epicsEnvSet("ECMC_EC_ALIAS_MON_HLS",      "INPIN_5")
+# home limit switch  #No home switch
+#epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_HOME_SWITCH", "0")
+#epicsEnvSet("ECMC_EC_ALIAS_MON_HOME_SWITCH",     "INPIN_3")
+# Apply configurations to ECMC
+< ../motion/ecmcMCU-10xx-Axis
+## macros for LinkEcEntryToAxisMonitor
+# low limit switch aka Limit switch backward direction.
+epicsEnvSet("ECMC_EC_MON_LLS_ENTRY_INDEX",        "0")
+# high limit switch aka Limit switch forward direction.
+epicsEnvSet("ECMC_EC_MON_HLS_ENTRY_INDEX",        "1")
+# home switch aka Reference switch (homing).
+epicsEnvSet("ECMC_EC_MON_HOME_SWITCH_ENTRY_INDEX",        "2")
+# External interlock input (optional)
+epicsEnvSet("ECMC_EC_MON_EXT_ILOCK_ENTRY_INDEX",       "3")
+#General
+epicsEnvSet("ECMC_AXISCONFIG",    "")
+epicsEnvSet("ECMC_EGU",           "mm")
+epicsEnvSet("ECMC_PREC",          "3")
+EthercatMCConfigController MCU1, "Cfg.CreateDefaultAxis(1)"
+OK
+#Why ECMC_HOME_DEC here?
+EthercatMCConfigController MCU1, "Cfg.SetAxisEmergDeceleration(1,100)"
+OK
+#Controller
+EthercatMCConfigController MCU1, "Cfg.SetAxisCntrlKp(1,15.0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisCntrlKi(1,0.02)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisCntrlKd(1,0.0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisCntrlKff(1,1.0)"
+OK
+#Encoder
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisEncoder(3,POSITION,1,0,-1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisEncScaleDenom(1,16000)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisEncScaleNum(1,-4)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisEncType(1,0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisEncBits(1,16)"
+OK
+#Drive
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisDrive(8,STM_CONTROL,1,0,0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisDrive(8,VELOCITY_SETPOINT,1,1,-1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisDrive(8,STM_STATUS,1,2,1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisDrvScaleDenom(1,32768.0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisDrvScaleNum(1,40.0)"
+OK
+#Monitor
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisMonitor(0,INPIN_1,1,0,0)"
+Error: 131092
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisMonitor(0,INPIN_5,1,1,0)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisMonitor($(ECMC_EC_SLAVE_NUM_MON_HOME_SWITCH,undefined),$(ECMC_EC_ALIAS_MON_HOME_SWITCH,undefined),1,2,0)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonAtTargetTol(1,0.1)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonAtTargetTime(1,100)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonEnableAtTargetMon(1,1)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonPosLagTol(1,0.5)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonPosLagTime(1,10)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonEnableLagMon(1,1)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonMaxVel(1,4.0)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonEnableMaxVel(1,1)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonMaxVelDriveILDelay(1,200)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonMaxVelTrajILDelay(1,4)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCCreateAxis(MCU1, "1", "6", "")
+dbLoadRecords("EthercatMC.template", "PREFIX=IOC2:, MOTOR_NAME=Axis1, R=Axis1-, MOTOR_PORT=MCU1, ASYN_PORT=MC_CPU1, AXIS_NO=1, DESC=Lower Axis, PREC=3, VELO=1.0, JVEL=0.5, JAR=0.0, ACCL=0.1, MRES=0.001, RDBD=0.1, DLLM=0, DHLM=130, HOMEPROC=1")
+dbLoadRecords("EthercatMChome.template", "PREFIX=IOC2:, MOTOR_NAME=Axis1, R=Axis1-, MOTOR_PORT=MCU1, ASYN_PORT=MC_CPU1, AXIS_NO=1,HOMEPROC=1, HOMEPOS=0.0, HVELTO=0.1, HVELFRM=0.1, HOMEACC=21, HOMEDEC=100")
+dbLoadRecords("ecmcExpression.db", "PORT=MC_CPU1,A=0,Index=1,Name=IOC2:Axis1")
+##############################################################################
+############# Configuration of motor 2:
+# Custom settings for Axis 2
+< ecmcMCU-2axis-ESSB-Lab_Axis2
+#General
+epicsEnvSet("ECMC_MOTOR_NAME",            "Axis2")
+epicsEnvSet("ECMC_R",                     "Axis2-")
+epicsEnvSet("ECMC_AXIS_NO",               "2")
+epicsEnvSet("ECMC_DESC",                  "Buncher Mobile Tuner Axis")
+#Encoder
+epicsEnvSet("ECMC_ENC_SCALE_NUM"          "0.01")
+epicsEnvSet("ECMC_ENC_SCALE_DENOM"        "1")
+epicsEnvSet("ECMC_ENC_BITS"               "16")
+# Type: 0=Incremental, 1=Absolute
+epicsEnvSet("ECMC_ENC_TYPE"               "0")
+epicsEnvSet("ECMC_EC_SLAVE_NUM_ENC",      "4")
+epicsEnvSet("ECMC_EC_ALIAS_ENC_POS",      "POSITION")
+#Drive
+epicsEnvSet("ECMC_DRV_SCALE_NUM"          "2.032")
+epicsEnvSet("ECMC_DRV_SCALE_DENOM"        "32768.0")
+epicsEnvSet("ECMC_EC_SLAVE_NUM_DRV",      "9")
+epicsEnvSet("ECMC_EC_ALIAS_DRV_CNTRL_WD", "STM_CONTROL")
+epicsEnvSet("ECMC_EC_ALIAS_DRV_STAT_WD",  "STM_STATUS")
+epicsEnvSet("ECMC_EC_ALIAS_DRV_VELO_SET", "VELOCITY_SETPOINT")
+#Trajectory
+epicsEnvSet("ECMC_VELO",                  "0.1")
+epicsEnvSet("ECMC_JOG_VEL",               "0.1")
+#JAR defaults to VELO/ACCL
+epicsEnvSet("ECMC_JAR",                   "0.0")
+epicsEnvSet("ECMC_ACCL",                  "0.1")
+epicsEnvSet("ECMC_MRES",                  "0.001")
+#Homing
+epicsEnvSet("ECMC_HOME_PROC",             "3")
+epicsEnvSet("ECMC_HOME_POS",              "0.0")
+epicsEnvSet("ECMC_HOME_VEL_TO",           "0.1")
+epicsEnvSet("ECMC_HOME_VEL_FRM",          "0.1")
+epicsEnvSet("ECMC_HOME_ACC",              "21")
+epicsEnvSet("ECMC_HOME_DEC",              "100")
+#Controller
+epicsEnvSet("ECMC_CNTRL_KP",              "15.0")
+epicsEnvSet("ECMC_CNTRL_KI",              "0.02")
+epicsEnvSet("ECMC_CNTRL_KD",              "0.0")
+epicsEnvSet("ECMC_CNTRL_KFF",             "1.0")
+#Monitoring
+#  softlimits (disable with 0,0)
+epicsEnvSet("ECMC_SOFT_LOW_LIM",          "-32.5")
+epicsEnvSet("ECMC_SOFT_HIGH_LIM",         "32.5")
+#  position lag
+epicsEnvSet("ECMC_MON_LAG_MON_TOL",       "0.5")
+epicsEnvSet("ECMC_MON_LAG_MON_TIME",      "10")
+epicsEnvSet("ECMC_MON_LAG_MON_ENA",       "1")
+# at target
+epicsEnvSet("ECMC_MON_AT_TARGET_TOL",     "0.1")
+epicsEnvSet("ECMC_MON_AT_TARGET_TIME",     "100")
+epicsEnvSet("ECMC_MON_AT_TARGET_ENA",     "1")
+# velocity
+epicsEnvSet("ECMC_MON_VELO_MAX",          "4.0")
+epicsEnvSet("ECMC_MON_VELO_MAX_TRAJ_TIME","100")
+epicsEnvSet("ECMC_MON_VELO_MAX_DRV_TIME", "200")
+epicsEnvSet("ECMC_MON_VELO_MAX_ENA",      "1")
+# low limit switch
+epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_LLS",  "0")
+epicsEnvSet("ECMC_EC_ALIAS_MON_LLS",      "INPIN_2")
+# high limit switch
+epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_HLS",  "0")
+epicsEnvSet("ECMC_EC_ALIAS_MON_HLS",      "INPIN_7")
+# home limit switch
+epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_HOME_SWITCH", "0")
+epicsEnvSet("ECMC_EC_ALIAS_MON_HOME_SWITCH",     "INPIN_2")
+# Apply configurations to ECMC
+< ../motion/ecmcMCU-10xx-Axis
+## macros for LinkEcEntryToAxisMonitor
+# low limit switch aka Limit switch backward direction.
+epicsEnvSet("ECMC_EC_MON_LLS_ENTRY_INDEX",        "0")
+# high limit switch aka Limit switch forward direction.
+epicsEnvSet("ECMC_EC_MON_HLS_ENTRY_INDEX",        "1")
+# home switch aka Reference switch (homing).
+epicsEnvSet("ECMC_EC_MON_HOME_SWITCH_ENTRY_INDEX",        "2")
+# External interlock input (optional)
+epicsEnvSet("ECMC_EC_MON_EXT_ILOCK_ENTRY_INDEX",       "3")
+#General
+epicsEnvSet("ECMC_AXISCONFIG",    "")
+epicsEnvSet("ECMC_EGU",           "mm")
+epicsEnvSet("ECMC_PREC",          "3")
+EthercatMCConfigController MCU1, "Cfg.CreateDefaultAxis(2)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+#Why ECMC_HOME_DEC here?
+EthercatMCConfigController MCU1, "Cfg.SetAxisEmergDeceleration(2,100)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+#Controller
+EthercatMCConfigController MCU1, "Cfg.SetAxisCntrlKp(2,15.0)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisCntrlKi(2,0.02)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisCntrlKd(2,0.0)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisCntrlKff(2,1.0)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+#Encoder
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisEncoder(4,POSITION,2,0,-1)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisEncScaleDenom(2,1)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisEncScaleNum(2,0.01)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisEncType(2,0)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisEncBits(2,16)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+#Drive
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisDrive(9,STM_CONTROL,2,0,0)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisDrive(9,VELOCITY_SETPOINT,2,1,-1)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisDrive(9,STM_STATUS,2,2,1)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisDrvScaleDenom(2,32768.0)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisDrvScaleNum(2,2.032)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+#Monitor
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisMonitor(0,INPIN_2,2,0,0)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisMonitor(0,INPIN_7,2,1,0)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisMonitor(0,INPIN_2,2,2,0)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonAtTargetTol(2,0.1)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonAtTargetTime(2,100)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonEnableAtTargetMon(2,1)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonPosLagTol(2,0.5)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonPosLagTime(2,10)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonEnableLagMon(2,1)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonMaxVel(2,4.0)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonEnableMaxVel(2,1)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonMaxVelDriveILDelay(2,200)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonMaxVelTrajILDelay(2,100)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCCreateAxis(MCU1, "2", "6", "")
+dbLoadRecords("EthercatMC.template", "PREFIX=IOC2:, MOTOR_NAME=Axis2, R=Axis2-, MOTOR_PORT=MCU1, ASYN_PORT=MC_CPU1, AXIS_NO=2, DESC=Buncher Mobile Tuner Axis, PREC=3, VELO=0.1, JVEL=0.1, JAR=0.0, ACCL=0.1, MRES=0.001, RDBD=0.1, DLLM=-32.5, DHLM=32.5, HOMEPROC=3")
+dbLoadRecords("EthercatMChome.template", "PREFIX=IOC2:, MOTOR_NAME=Axis2, R=Axis2-, MOTOR_PORT=MCU1, ASYN_PORT=MC_CPU1, AXIS_NO=2,HOMEPROC=3, HOMEPOS=0.0, HVELTO=0.1, HVELFRM=0.1, HOMEACC=21, HOMEDEC=100")
+dbLoadRecords("ecmcExpression.db", "PORT=MC_CPU1,A=0,Index=2,Name=IOC2:Axis2")
+##############################################################################
+############# Configure diagnostics:
+# Set to one to be able to check if the EtherCAT is OK
+EthercatMCConfigController "MCU1", "Cfg.EcSetDiagnostics(1)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController "MCU1", "Cfg.EcEnablePrintouts(0)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController "MCU1", "Cfg.EcSetDomainFailedCyclesLimit(100)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController "MCU1", "Cfg.SetDiagAxisIndex(1)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController "MCU1", "Cfg.SetDiagAxisFreq(2)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+EthercatMCConfigController "MCU1", "Cfg.SetDiagAxisEnable(1)"
+port MCU1 has errors. To reset use
+ EthercatMCConfigController MCU1 .ctrl.ErrRst 
+##############################################################################
+############# Load general controller level records:
+dbLoadRecords("ecmcControllerGeneral.db","P=IOC2:,PORT=MC_CPU1,A=0")
+##############################################################################
+############# Go to runtime:
+EthercatMCConfigController MCU1 .ctrl.ErrRst
+EthercatMCConfigController "MCU1", "Cfg.SetAppMode(1)"
+Error: 84994
+#var streamDebug 1
+iocInit
+############################################################################
+## EPICS R3.15.4-2016-05 $$Date$$
+## EPICS Base built May 31 2016
+############################################################################
+../../axisApp/AxisSrc/axisRecord.cc:3745 STOP IOC2:Axis1 ls_active=1 PROBLEM=0 MF_STOP_PROB=0
+../../axisApp/AxisSrc/axisRecord.cc:3745 STOP IOC2:Axis1 ls_active=1 PROBLEM=0 MF_STOP_PROB=0
+epicsEnvSet IOCSH_PS1,"localhost> "
+localhost> [?1034h

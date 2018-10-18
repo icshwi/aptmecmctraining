@@ -1,0 +1,11 @@
+record(mbbiDirect,"$(REC_NAME)")
+{
+   field(DESC, "$(DESC=$(HWTYPE): Status Word)")
+   field(PINI, "$(PINI=1)")
+   field(DTYP, "$(DTYP=asynUInt32Digital)")
+   field(INP,  "$(INP)")
+   field(SCAN, "$(SCAN=I/O Intr)")
+   field(MASK, "$(MASK=0xFFFFFFFF)")
+   field(SHFT, "$(SHFT=0)")
+   field(FLNK, "$(FLNK=)")
+}

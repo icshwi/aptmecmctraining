@@ -1,0 +1,19 @@
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x07103052,2,0,0x1a00,0x6000,0x1,1,INPIN_1)"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x07103052,2,0,0x1a01,0x6010,0x1,1,INPIN_2)"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x07103052,2,0,0x1a02,0x6020,0x1,1,INPIN_3)"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x07103052,2,0,0x1a03,0x6030,0x1,1,INPIN_4)"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x07103052,2,0,0x1a04,0x6040,0x1,1,INPIN_5)"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x07103052,2,0,0x1a05,0x6050,0x1,1,INPIN_6)"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x07103052,2,0,0x1a06,0x6060,0x1,1,INPIN_7)"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddEntryComplete(${ECMC_EC_SLAVE_NUM},0x2,0x07103052,2,0,0x1a07,0x6070,0x1,1,INPIN_8)"
+
+#Start at BI1 since this convention is used in drawings and in the terminal documentation
+dbLoadRecords("ecmcGenericDigitalInput.db","P=$(ECMC_PREFIX),PORT=$(ECMC_ASYN_PORT),SLAVE_POS=${ECMC_EC_SLAVE_NUM},TYPE=EL1808,NAME=INPIN_1,REC_SUFFIX=BI1,A=0")
+dbLoadRecords("ecmcGenericDigitalInput.db","P=$(ECMC_PREFIX),PORT=$(ECMC_ASYN_PORT),SLAVE_POS=${ECMC_EC_SLAVE_NUM},TYPE=EL1808,NAME=INPIN_2,REC_SUFFIX=BI2,A=0")
+dbLoadRecords("ecmcGenericDigitalInput.db","P=$(ECMC_PREFIX),PORT=$(ECMC_ASYN_PORT),SLAVE_POS=${ECMC_EC_SLAVE_NUM},TYPE=EL1808,NAME=INPIN_3,REC_SUFFIX=BI3,A=0")
+dbLoadRecords("ecmcGenericDigitalInput.db","P=$(ECMC_PREFIX),PORT=$(ECMC_ASYN_PORT),SLAVE_POS=${ECMC_EC_SLAVE_NUM},TYPE=EL1808,NAME=INPIN_4,REC_SUFFIX=BI4,A=0")
+dbLoadRecords("ecmcGenericDigitalInput.db","P=$(ECMC_PREFIX),PORT=$(ECMC_ASYN_PORT),SLAVE_POS=${ECMC_EC_SLAVE_NUM},TYPE=EL1808,NAME=INPIN_5,REC_SUFFIX=BI5,A=0")
+dbLoadRecords("ecmcGenericDigitalInput.db","P=$(ECMC_PREFIX),PORT=$(ECMC_ASYN_PORT),SLAVE_POS=${ECMC_EC_SLAVE_NUM},TYPE=EL1808,NAME=INPIN_6,REC_SUFFIX=BI6,A=0")
+dbLoadRecords("ecmcGenericDigitalInput.db","P=$(ECMC_PREFIX),PORT=$(ECMC_ASYN_PORT),SLAVE_POS=${ECMC_EC_SLAVE_NUM},TYPE=EL1808,NAME=INPIN_7,REC_SUFFIX=BI7,A=0")
+dbLoadRecords("ecmcGenericDigitalInput.db","P=$(ECMC_PREFIX),PORT=$(ECMC_ASYN_PORT),SLAVE_POS=${ECMC_EC_SLAVE_NUM},TYPE=EL1808,NAME=INPIN_8,REC_SUFFIX=BI8,A=0")
+

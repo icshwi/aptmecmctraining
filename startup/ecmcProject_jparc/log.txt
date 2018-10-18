@@ -1,0 +1,2177 @@
+#
+# Start at "2018-W39-Sep28-1043-26-CEST"
+#
+# Version information:
+# European Spallation Source ERIC : iocsh.bash (v0.3.1-6690f8a.PID-1765)
+#
+# --->--> snip -->--> 
+# Please Use Version and other environment variables
+# in order to report or debug this shell
+#
+# HOSTDISPLAY=""
+# WINDOWID="23206705"
+# PWD="/home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc"
+# USER="biuser"
+# LOGNAME="biuser"
+# EPICS_HOST_ARCH="linux-x86_64"
+# EPICS_BASE="/epics/base-3.15.5"
+# E3_REQUIRE_NAME="require"
+# E3_REQUIRE_VERSION="3.0.0"
+# E3_REQUIRE_LOCATION="/epics/base-3.15.5/require/3.0.0"
+# E3_REQUIRE_BIN="/epics/base-3.15.5/require/3.0.0/bin"
+# E3_REQUIRE_DB="/epics/base-3.15.5/require/3.0.0/db"
+# E3_REQUIRE_DBD="/epics/base-3.15.5/require/3.0.0/dbd"
+# E3_REQUIRE_INC="/epics/base-3.15.5/require/3.0.0/include"
+# E3_REQUIRE_LIB="/epics/base-3.15.5/require/3.0.0/lib"
+# E3_SITEAPPS_PATH="/epics/base-3.15.5/require/3.0.0/siteApps"
+# E3_SITELIBS_PATH="/epics/base-3.15.5/require/3.0.0/siteLibs"
+# E3_SITEMODS_PATH="/epics/base-3.15.5/require/3.0.0/siteMods"
+# EPICS_DRIVER_PATH="/epics/base-3.15.5/require/3.0.0/siteMods"
+# EPICS_CA_AUTO_ADDR_LIST="YES"
+# EPICS_CA_ADDR_LIST="10.41.70.1"
+# PATH="/epics/base-3.15.5/require/3.0.0/bin:/epics/base-3.15.5/bin/linux-x86_64:/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/home/biuser/.local/bin:/usr/sbin"
+# LD_LIBRARY_PATH="/epics/base-3.15.5/lib/linux-x86_64:/epics/base-3.15.5/require/3.0.0/lib/linux-x86_64:/epics/base-3.15.5/require/3.0.0/siteLibs/linux-x86_64"
+# --->--> snip -->--> 
+#
+# Set REQUIRE_IOC for its internal PVs
+epicsEnvSet REQUIRE_IOC "E3R:BI-APTM01"
+#
+# Set E3_IOCSH_TOP for the absolute path where iocsh.bash is executed.
+epicsEnvSet E3_IOCSH_TOP "/home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc"
+#
+# 
+# Load require module, which has the version 3.0.0
+# 
+dlload /epics/base-3.15.5/require/3.0.0/lib/linux-x86_64/librequire.so
+dbLoadDatabase /epics/base-3.15.5/require/3.0.0/dbd/require.dbd
+require_registerRecordDeviceDriver
+Loading module info records for require
+# 
+# Set E3_CMD_TOP for the absolute path where start.cmd exists
+epicsEnvSet E3_CMD_TOP "/home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc"
+#
+iocshLoad 'start.cmd',''
+##############################################################################
+############# jparc Motion Control crate 
+#
+# First version: Control of the jparc
+#
+# Configuration details:
+# - Close openloop until the encoder is replaced stepper (EL7037)
+# - 2 Limit switches and one homing switch
+# - Scaled as a linear system 
+# - Homing sequemce 3: simple homing (position will be set to zero when homing is triggered)
+#
+#
+#  Date: 2018-07-25
+#
+##############################################################################
+# used with e3
+require ecmc,5.0.0
+Module ecmc version 5.0.0 found in /epics/base-3.15.5/require/3.0.0/siteMods/ecmc/5.0.0/
+Module ecmc depends on asyn 4.33.0
+Module asyn version 4.33.0 found in /epics/base-3.15.5/require/3.0.0/siteMods/asyn/4.33.0/
+Loading library /epics/base-3.15.5/require/3.0.0/siteMods/asyn/4.33.0/lib/linux-x86_64/libasyn.so
+Loaded asyn version 4.33.0
+Loading dbd file /epics/base-3.15.5/require/3.0.0/siteMods/asyn/4.33.0/dbd/asyn.dbd
+Calling function asyn_registerRecordDeviceDriver
+Loading module info records for asyn
+Module ecmc depends on exprtk 1.0.0
+Module exprtk version 1.0.0 found in /epics/base-3.15.5/require/3.0.0/siteMods/exprtk/1.0.0/
+Loading library /epics/base-3.15.5/require/3.0.0/siteMods/exprtk/1.0.0/lib/linux-x86_64/libexprtk.so
+Loaded exprtk version 1.0.0
+exprtk has no dbd file
+Loading module info records for exprtk
+Loading library /epics/base-3.15.5/require/3.0.0/siteMods/ecmc/5.0.0/lib/linux-x86_64/libecmc.so
+Loaded ecmc version 5.0.0
+Loading dbd file /epics/base-3.15.5/require/3.0.0/siteMods/ecmc/5.0.0/dbd/ecmc.dbd
+Calling function ecmc_registerRecordDeviceDriver
+Loading module info records for ecmc
+require ecmctraining,4.0.0
+Module ecmctraining version 4.0.0 found in /epics/base-3.15.5/require/3.0.0/siteMods/ecmctraining/4.0.0/
+Module ecmctraining has no library
+Loading module info records for ecmctraining
+require EthercatMC,2.0.1
+Module EthercatMC version 2.0.1 found in /epics/base-3.15.5/require/3.0.0/siteMods/EthercatMC/2.0.1/
+Module EthercatMC depends on asyn 4.33.0
+Module asyn version 4.33.0 already loaded
+Module EthercatMC depends on motor 6.9.4
+Module motor version 6.9.4 found in /epics/base-3.15.5/require/3.0.0/siteMods/motor/6.9.4/
+Module motor depends on asyn 4.33.0
+Module asyn version 4.33.0 already loaded
+Loading library /epics/base-3.15.5/require/3.0.0/siteMods/motor/6.9.4/lib/linux-x86_64/libmotor.so
+Loaded motor version 6.9.4
+Loading dbd file /epics/base-3.15.5/require/3.0.0/siteMods/motor/6.9.4/dbd/motor.dbd
+Calling function motor_registerRecordDeviceDriver
+Loading module info records for motor
+Loading library /epics/base-3.15.5/require/3.0.0/siteMods/EthercatMC/2.0.1/lib/linux-x86_64/libEthercatMC.so
+Loaded EthercatMC version 2.0.1
+Loading dbd file /epics/base-3.15.5/require/3.0.0/siteMods/EthercatMC/2.0.1/dbd/EthercatMC.dbd
+Calling function EthercatMC_registerRecordDeviceDriver
+Loading module info records for EthercatMC
+require stream, 2.7.7
+Module stream version 2.7.7 found in /epics/base-3.15.5/require/3.0.0/siteMods/stream/2.7.7/
+Module stream depends on asyn 4.33.0
+Module asyn version 4.33.0 already loaded
+Module stream depends on pcre 8.41.0
+Module pcre version 8.41.0 found in /epics/base-3.15.5/require/3.0.0/siteMods/pcre/8.41.0/
+Loading library /epics/base-3.15.5/require/3.0.0/siteMods/pcre/8.41.0/lib/linux-x86_64/libpcre.so
+Loaded pcre version 8.41.0
+pcre has no dbd file
+Loading module info records for pcre
+Loading library /epics/base-3.15.5/require/3.0.0/siteMods/stream/2.7.7/lib/linux-x86_64/libstream.so
+Loaded stream version 2.7.7
+Loading dbd file /epics/base-3.15.5/require/3.0.0/siteMods/stream/2.7.7/dbd/stream.dbd
+Calling function stream_registerRecordDeviceDriver
+Loading module info records for stream
+require sequencer 2.1.21
+Module sequencer version 2.1.21 found in /epics/base-3.15.5/require/3.0.0/siteMods/sequencer/2.1.21/
+Loading library /epics/base-3.15.5/require/3.0.0/siteMods/sequencer/2.1.21/lib/linux-x86_64/libsequencer.so
+Loaded sequencer version 2.1.21
+Loading dbd file /epics/base-3.15.5/require/3.0.0/siteMods/sequencer/2.1.21/dbd/sequencer.dbd
+Calling function sequencer_registerRecordDeviceDriver
+Loading module info records for sequencer
+require iocStats,1856ef5
+Module iocStats version 1856ef5 found in /epics/base-3.15.5/require/3.0.0/siteMods/iocStats/1856ef5/
+Loading library /epics/base-3.15.5/require/3.0.0/siteMods/iocStats/1856ef5/lib/linux-x86_64/libiocStats.so
+Loaded iocStats version 1856ef5
+Loading dbd file /epics/base-3.15.5/require/3.0.0/siteMods/iocStats/1856ef5/dbd/iocStats.dbd
+Calling function iocStats_registerRecordDeviceDriver
+Loading module info records for iocStats
+ 
+#Old configuration tested with EEE
+#require ecmc,4.3.0
+#require ecmctraining,3.0.0
+#require axis,10.1.5
+# TOP is startup
+epicsEnvSet("ECMC_STARTUP_TOP", "/home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/..")
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../general/init
+# Environment variables:
+#   "ECMC_ASYN_PORT":	      Asyn port name
+#   "ECMC_EC_MASTER_ID":      EtherCAT master index
+#   "ECMC_EC_SLAVE_NUM":      EtherCAT slave bus position index
+#   "ECMC_EC_CHANNEL_ID"      Index of input
+#   "ECMC_ASYN_SKIP_CYCLES":  Update rate (number of realtime loops to skip before update)
+#   "ECMC_PINI":              Process at Initialization
+#   "ECMC_DESC":              Description
+#   "ECMC_DTYP":              Data type
+#   "ECMC_SCAN":              Scan field
+#   "ECMC_DRVINFO":           DrvInfo
+#   "ECMC_ZNAM":              String for zero value
+#   "ECMC_ONAM":              String for one value
+#   "ECMC_ZSV":               Alarm severity for zero value
+#   "ECMC_OSV":               Alarm severity for one value
+#   "ECMC_FLNK":              Forward link field
+#   "ECMC_RECORD_NAME":       Record name
+#   "ECMC_ASYN_TIMEOUT":      Asyn timeout
+#   "ECMC_ASYN_ADDR":         Asyn Address
+epicsEnvSet("ECMC_ASYN_TIMEOUT",      "1")                      # Asyn timeout
+epicsEnvSet("ECMC_ASYN_ADDR",         "0")                      # Asyn Address
+epicsEnvSet("ECMC_MOTOR_PORT",    "NOT SET")
+epicsEnvSet("ECMC_ASYN_PORT",     "NOT SET")
+epicsEnvSet("ECMC_PREFIX",        "NOT SET")
+epicsEnvSet("ECMC_GEN_EC_RECORDS",          "NOT SET")
+epicsEnvSet("ECMC_GEN_AX_RECORDS",          "NOT SET")
+epicsEnvSet("ECMC_ASYN_SKIP_CYCLES",       "-1")
+#< $(ECMC_STARTUP_TOP)/general/ecmcBIdefault
+#< $(ECMC_STARTUP_TOP)/general/ecmcBOdefault
+#< $(ECMC_STARTUP_TOP)/general/ecmcAIdefault
+#< $(ECMC_STARTUP_TOP)/general/ecmcAOdefault
+#< $(ECMC_STARTUP_TOP)/general/ecmcMbbiDirectdefault
+##>> ASYN Configuration:
+##
+epicsEnvSet("ECMC_MOTOR_PORT",    "MCU1")
+epicsEnvSet("ECMC_ASYN_PORT",     "MC_CPU1")
+epicsEnvSet("ECMC_PREFIX",        "jparc:")
+ecmcAsynPortDriverConfigure(MC_CPU1,1000,0,0)
+asynOctetSetOutputEos(MC_CPU1, -1, ";\n")
+asynOctetSetInputEos(MC_CPU1, -1, ";\n")
+# asynSetTraceMask(${ECMC_ASYN_PORT}, -1, 0x41)
+# asynSetTraceIOMask(${ECMC_ASYN_PORT}, -1, 6)
+# asynSetTraceInfoMask(${ECMC_ASYN_PORT}, -1, 15)
+EthercatMCCreateController(MCU1, MC_CPU1, "32", "200", "1000", "")
+##>>> ############# Misc settings:
+##
+# Disable function call trace printouts
+EthercatMCConfigController MCU1, "Cfg.SetEnableFuncCallDiag(0)"
+OK
+# Disable on change printouts from objects (enable for easy logging)
+EthercatMCConfigController MCU1, "Cfg.SetTraceMaskBit(15,0)"
+OK
+# Choose to generate EPICS-records for EtherCAT-entries 
+# (For records use ECMC_GEN_EC_RECORDS="-records" otherwise ECMC_GEN_EC_RECORDS="") 
+epicsEnvSet("ECMC_GEN_EC_RECORDS",          "-records")
+# Choose to generate EPICS-records for ax-entries (PosAct, SetPos,..)
+# (For records use ECMC_GEN_AX_RECORDS="-records" otherwise ECMC_GEN_AX_RECORDS="") 
+epicsEnvSet("ECMC_GEN_AX_RECORDS",          "-records")
+# Update records in 100Hz (skip 9 cycles, based on 1000Hz sample rate)
+epicsEnvSet("ECMC_ASYN_SKIP_CYCLES",       "9")
+##>>>> ############# Configure hardware:
+##
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmc_jparc
+############################################################
+############# jparc HW configuration
+#ethercat slaves
+#0  0:0  PREOP  +  EK1100 EtherCAT-Koppler (2A E-Bus)
+#1  0:1  PREOP  +  EL1808 8K. Dig. Eingang 24V, 3ms
+#2  0:2  PREOP  +  EL2819 16K. Dig. Ausgang 24V, 0,5A, Diagnose
+#3  0:3  PREOP  +  EL3314 4K. Ana. Eingang Thermoelement (TC)
+#4  0:4  PREOP  +  EL5101 1K. Inc. Encoder 5V
+#5  0:5  PREOP  +  EL5101 1K. Inc. Encoder 5V
+#6  0:6  PREOP  +  EL9410 E-Bus Netzteilklemme (Diagnose)
+#7  0:7  PREOP  +  EL7037 1K. Schrittmotor-Endstufe (24V, 1.5A)
+#8  0:8  PREOP  +  EL7037 1K. Schrittmotor-Endstufe (24V, 1.5A)
+epicsEnvSet("ECMC_EC_MASTER_ID"          "0")
+#Choose master
+EthercatMCConfigController MCU1, "Cfg.EcSetMaster(0)"
+OK
+#Configure EK1100 coupler terminal
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "0")
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEK1100-EtherCatCoupler-records
+############################################################
+############# Information:
+# Description: EK1100, EtherCAT coupler
+# Vendor id   = 0x2  (Beckhoff)
+# Product id  = 0x044c2c52
+# 
+# Note: No process data.
+#
+############################################################
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEK1100-EtherCatCoupler
+############################################################
+############# Information:
+# Description: EK1100, EtherCAT coupler
+# 
+# Note: No process data.
+#
+############################################################
+epicsEnvSet("ECMC_EC_HWTYPE"             "EK1100")
+epicsEnvSet("ECMC_EC_VENDOR_ID"          "0x2")
+epicsEnvSet("ECMC_EC_PRODUCT_ID"         "0x044c2c52")
+# Alias = 0 
+EthercatMCConfigController MCU1, "Cfg.EcAddSlave(0,0,0x2,0x044c2c52)"
+OK
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../general/slave
+# Default records for slave
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s0.default","asynInt32",9)
+dbLoadRecords("ecmcDefaultAsynParamsEcSlave.db","P=jparc:,PORT=MC_CPU1,ADDR=0,TIMEOUT=1,MASTER_ID=0,SLAVE_POS=0,HWTYPE=EK1100")
+# Configure EL1808 digital input terminal
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "1")
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL1808-digitalInput-records
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL1808-digitalInput
+############################################################
+############# Information:
+# Description: 8ch digital input 
+#
+############################################################
+epicsEnvSet("ECMC_EC_HWTYPE"             "EL1808")
+epicsEnvSet("ECMC_EC_VENDOR_ID"          "0x2")
+epicsEnvSet("ECMC_EC_PRODUCT_ID"         "0x07103052")
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(1,0x2,0x07103052,2,0,0x1a00,0x6000,0x1,1,INPIN_1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(1,0x2,0x07103052,2,0,0x1a01,0x6010,0x1,1,INPIN_2)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(1,0x2,0x07103052,2,0,0x1a02,0x6020,0x1,1,INPIN_3)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(1,0x2,0x07103052,2,0,0x1a03,0x6030,0x1,1,INPIN_4)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(1,0x2,0x07103052,2,0,0x1a04,0x6040,0x1,1,INPIN_5)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(1,0x2,0x07103052,2,0,0x1a05,0x6050,0x1,1,INPIN_6)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(1,0x2,0x07103052,2,0,0x1a06,0x6060,0x1,1,INPIN_7)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(1,0x2,0x07103052,2,0,0x1a07,0x6070,0x1,1,INPIN_8)"
+OK
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../general/slave
+# Default records for slave
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s1.default","asynInt32",9)
+dbLoadRecords("ecmcDefaultAsynParamsEcSlave.db","P=jparc:,PORT=MC_CPU1,ADDR=0,TIMEOUT=1,MASTER_ID=0,SLAVE_POS=1,HWTYPE=EL1808")
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s1.INPIN_1","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s1.INPIN_2","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s1.INPIN_3","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s1.INPIN_4","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s1.INPIN_5","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s1.INPIN_6","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s1.INPIN_7","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s1.INPIN_8","asynInt32",9)
+dbLoadTemplate("ecmcEL1018.substitutions","P=jparc:, PORT=MC_CPU1, ADDR=0, TIMEOUT=1, MASTER_ID=0, SLAVE_POS=1, HWTYPE=EL1808")
+# Configure EL2819 digital output terminal
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "2")
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL2819-digitalOutput-records
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL2819-digitalOutput
+############################################################
+############# Information:
+# Description: 16ch digital output with diagnostics
+#
+############################################################
+epicsEnvSet("ECMC_EC_HWTYPE"             "EL2819")
+epicsEnvSet("ECMC_EC_VENDOR_ID"          "0x2")
+epicsEnvSet("ECMC_EC_PRODUCT_ID"         "0x0b033052")
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,1,2,0x1600,0x7000,0x1,1,OUPIN_1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,1,2,0x1600,0x7010,0x1,1,OUPIN_2)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,1,2,0x1600,0x7020,0x1,1,OUPIN_3)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,1,2,0x1600,0x7030,0x1,1,OUPIN_4)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,1,2,0x1600,0x7040,0x1,1,OUPIN_5)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,1,2,0x1600,0x7050,0x1,1,OUPIN_6)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,1,2,0x1600,0x7060,0x1,1,OUPIN_7)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,1,2,0x1600,0x7070,0x1,1,OUPIN_8)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,1,2,0x1600,0x7080,0x1,1,OUPIN_9)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,1,2,0x1600,0x7090,0x1,1,OUPIN_10)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,1,2,0x1600,0x70A0,0x1,1,OUPIN_11)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,1,2,0x1600,0x70B0,0x1,1,OUPIN_12)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,1,2,0x1600,0x70C0,0x1,1,OUPIN_13)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,1,2,0x1600,0x70D0,0x1,1,OUPIN_14)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,1,2,0x1600,0x70E0,0x1,1,OUPIN_15)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,1,2,0x1600,0x70F0,0x1,1,OUPIN_16)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,2,3,0x1A00,0x6001,0x1,4,STATUS_1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,2,3,0x1A00,0x6011,0x1,4,STATUS_2)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,2,3,0x1A00,0x6021,0x1,4,STATUS_3)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,2,3,0x1A00,0x6031,0x1,4,STATUS_4)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,2,3,0x1A00,0x6041,0x1,4,STATUS_5)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,2,3,0x1A00,0x6051,0x1,4,STATUS_6)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,2,3,0x1A00,0x6061,0x1,4,STATUS_7)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,2,3,0x1A00,0x6071,0x1,4,STATUS_8)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,2,3,0x1A00,0x6081,0x1,4,STATUS_9)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,2,3,0x1A00,0x6091,0x1,4,STATUS_10)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,2,3,0x1A00,0x60A1,0x1,4,STATUS_11)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,2,3,0x1A00,0x60B1,0x1,4,STATUS_12)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,2,3,0x1A00,0x60C1,0x1,4,STATUS_13)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,2,3,0x1A00,0x60D1,0x1,4,STATUS_14)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,2,3,0x1A00,0x60E1,0x1,4,STATUS_15)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(2,0x2,0x0b033052,2,3,0x1A00,0x60F1,0x1,4,STATUS_16)"
+OK
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../general/slave
+# Default records for slave
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.default","asynInt32",9)
+dbLoadRecords("ecmcDefaultAsynParamsEcSlave.db","P=jparc:,PORT=MC_CPU1,ADDR=0,TIMEOUT=1,MASTER_ID=0,SLAVE_POS=2,HWTYPE=EL2819")
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.OUPIN_1","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.OUPIN_2","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.OUPIN_3","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.OUPIN_4","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.OUPIN_5","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.OUPIN_6","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.OUPIN_7","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.OUPIN_8","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.OUPIN_9","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.OUPIN_10","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.OUPIN_11","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.OUPIN_12","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.OUPIN_13","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.OUPIN_14","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.OUPIN_15","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.OUPIN_16","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.STATUS_1","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.STATUS_2","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.STATUS_3","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.STATUS_4","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.STATUS_5","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.STATUS_6","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.STATUS_7","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.STATUS_8","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.STATUS_9","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.STATUS_10","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.STATUS_11","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.STATUS_12","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.STATUS_13","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.STATUS_14","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.STATUS_15","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s2.STATUS_16","asynUInt32Digital",9)
+dbLoadTemplate("ecmcEL2819.substitutions","P=jparc:, PORT=MC_CPU1, ADDR=0, TIMEOUT=1, MASTER_ID=0, SLAVE_POS=2, HWTYPE=EL2819")
+#Thermocouple for aptm
+# Configure EL3314 analog input hardware
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "3")
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL3314-analogInput-records
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL3314-analogInput
+############################################################
+############# Information:
+# Description: 4 channel thermocouple temperature sensor input  (selectable range and other configs for sensors as SDO (not in this config yet))
+# 
+#
+# Bits: 16
+# Connection: 2-wire 
+#
+############################################################
+epicsEnvSet("ECMC_EC_HWTYPE"             "EL3314")
+epicsEnvSet("ECMC_EC_VENDOR_ID"          "0x2")
+epicsEnvSet("ECMC_EC_PRODUCT_ID"         "0x0cf23052")
+#############  Reset terminal
+EthercatMCConfigController "MCU1", "Cfg.EcWriteSdo(3,0x1011,0x1,1684107116,4)"
+OK
+############# Config PDOS: Channel 1
+epicsEnvSet("ECMC_EC_CHANNEL_ID"         "1")
+epicsEnvSet("ECMC_EC_PDO"                "0x1a00")
+epicsEnvSet("ECMC_EC_PDO_ENTRY"          "0x6000")
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL33XX-chX-analogInput
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(3,0x2,0x0cf23052,2,3,0x1a00,0x6000,0x1,16,CH1_STATUS)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(3,0x2,0x0cf23052,2,3,0x1a00,0x6000,0x11,16,CH1_VALUE)"
+OK
+############# Config PDOS: Channel 2
+epicsEnvSet("ECMC_EC_CHANNEL_ID"         "2")
+epicsEnvSet("ECMC_EC_PDO"                "0x1a01")
+epicsEnvSet("ECMC_EC_PDO_ENTRY"          "0x6010")
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL33XX-chX-analogInput
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(3,0x2,0x0cf23052,2,3,0x1a01,0x6010,0x1,16,CH2_STATUS)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(3,0x2,0x0cf23052,2,3,0x1a01,0x6010,0x11,16,CH2_VALUE)"
+OK
+############# Config PDOS: Channel 3
+epicsEnvSet("ECMC_EC_CHANNEL_ID"         "3")
+epicsEnvSet("ECMC_EC_PDO"                "0x1a02")
+epicsEnvSet("ECMC_EC_PDO_ENTRY"          "0x6020")
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL33XX-chX-analogInput
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(3,0x2,0x0cf23052,2,3,0x1a02,0x6020,0x1,16,CH3_STATUS)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(3,0x2,0x0cf23052,2,3,0x1a02,0x6020,0x11,16,CH3_VALUE)"
+OK
+############# Config PDOS: Channel 4
+epicsEnvSet("ECMC_EC_CHANNEL_ID"         "4")
+epicsEnSubstitution file error: syntax error
+line 1: 'record(calc'
+vSet("ECMC_EC_PDO"                "0x1a03")
+epicsEnvSet("ECMC_EC_PDO_ENTRY"          "0x6030")
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL33XX-chX-analogInput
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(3,0x2,0x0cf23052,2,3,0x1a03,0x6030,0x1,16,CH4_STATUS)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(3,0x2,0x0cf23052,2,3,0x1a03,0x6030,0x11,16,CH4_VALUE)"
+OK
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../general/slave
+# Default records for slave
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s3.default","asynInt32",9)
+dbLoadRecords("ecmcDefaultAsynParamsEcSlave.db","P=jparc:,PORT=MC_CPU1,ADDR=0,TIMEOUT=1,MASTER_ID=0,SLAVE_POS=3,HWTYPE=EL3314")
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s3.CH1_STATUS","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s3.CH1_VALUE","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s3.CH2_STATUS","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s3.CH2_VALUE","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s3.CH3_STATUS","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s3.CH3_VALUE","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s3.CH4_STATUS","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s3.CH4_VALUE","asynInt32",9)
+dbLoadTemplate("ecmcEL3XX4.substitutions","P=jparc:, PORT=MC_CPU1, ADDR=0, TIMEOUT=1, MASTER_ID=0, SLAVE_POS=3, HWTYPE=EL3314")
+dbLoadTemplate("ecmctemperature.template","P=jparc:, PORT=MC_CPU1, ADDR=0, TIMEOUT=1, MASTER_ID=0, SLAVE_POS=3, HWTYPE=EL3314")
+############# Configure sensors:
+# Configure channel 1
+epicsEnvSet("ECMC_EC_SDO_INDEX",         "0x8000")
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL3314-thermocouple_type-K
+############################################################
+############# Parmetrization of EL3314 for thermocouple type K
+# Type: Type k
+# Range: in the range defined in each case for the sensor (default setting: type K; -200...+1370 °C); voltage measurement: ±30mV...±75mV
+# Connectiontype : 2 wire
+# Cable length: 25m
+# Cable area: ??
+#
+# Environment variables needed:
+# -ECMC_EC_SDO_INDEX "0x80n0" where n is channel 0-1-2-3
+# -ECMC_EC_SLAVE_NUM = slave number
+# 
+# CJCompensation (default 0=internal)
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0xC")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Internal
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8000,0xC,0,1)"
+OK
+# Enable user scale (default 0=disabled)
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x1")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8000,0x1,0,1)"
+OK
+# Presentation:
+# 0 = Signed 0.1 degree C/digit (Default)
+# 1 = Absolute, 0.1 degree C/digit  MSB as sign 
+# 2 = High precision 0.01 degree C/digit (only available for certain terminals) 
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x2")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Signed
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8000,0x2,0,1)"
+OK
+# Enable Siemens S5 bits:
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x5")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8000,0x5,0,1)"
+OK
+# Enable filter
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x6")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "1")  # Enabled
+# NOTE: According to documentation the filter is always enabled independent of setting since needed for measure process. So rely on default value.  
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8000,0x6,1,1)"
+OK
+# Enable limit 1 
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x7")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8000,0x7,0,1)"
+OK
+# Enable limit 2
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x8")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8000,0x8,0,1)"
+OK
+# Enable user calibration
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0xA")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8000,0xA,0,1)"
+OK
+# Enable vendor calibration
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0xB")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "1")  # Enabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8000,0xB,1,1)"
+OK
+# disable wire break detection
+#epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0xE")
+#epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+#epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Active
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+# User scale offset User scaling offset
+#The offset describes a vertical shift of the characteristic curve by a linear amount.
+#At a resolution of 0.1°, 1 digit(dec) corresponds to an increase in measured value by 0.1°
+#At a resolution of 0.01°, 1 digit(dec) corresponds to an increase in measured value by 0.01
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x11")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # offset 0
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8000,0x11,0,2)"
+OK
+# User scale gain (Represented in fixed point format with factor 2^⁻16=> 1 corresponds to  65536)
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x12")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "4")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "65536")  # Gain 1
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8000,0x12,65536,4)"
+OK
+# Limit 1
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x13")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8000,0x13,0,2)"
+OK
+# Limit 2
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x14")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8000,0x14,0,2)"
+OK
+# Set filter freq for all channels (Filter settings is only vaild for channel 1 (the used for the rest of the channels))
+# 0  = 50Hz (Defualt)
+# 1  = 60Hz
+# 2  = 100Hz
+# 3  = 500Hz
+# 4  = 1kHz
+# 5  = 2kHz
+# 6  = 3,75kHz
+# 7  = 7,5kHz
+# 8  = 15kHz
+# 9  = 30kHz
+# 10 = 5Hz
+# 11 = 10Hz
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x15")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")       # 50Hz
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8000,0x15,0,2)"
+OK
+# User calibration offset
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x17")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8000,0x17,0,2)"
+OK
+# User calibration gain (Represented in fixed point format with factor 2^⁻16=> 1 corresponds to  65535)
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x18")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "65535")
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8000,0x18,65535,2)"
+OK
+# temperature range 
+# 0x80n0:19
+# 0 type: K -200C to 1370C
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x19")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8000,0x19,0,2)"
+OK
+# Configure channel 2
+epicsEnvSet("ECMC_EC_SDO_INDEX",         "0x8010")
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL3314-thermocouple_type-K
+############################################################
+############# Parmetrization of EL3314 for thermocouple type K
+# Type: Type k
+# Range: in the range defined in each case for the sensor (default setting: type K; -200...+1370 °C); voltage measurement: ±30mV...±75mV
+# Connectiontype : 2 wire
+# Cable length: 25m
+# Cable area: ??
+#
+# Environment variables needed:
+# -ECMC_EC_SDO_INDEX "0x80n0" where n is channel 0-1-2-3
+# -ECMC_EC_SLAVE_NUM = slave number
+# 
+# CJCompensation (default 0=internal)
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0xC")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Internal
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8010,0xC,0,1)"
+OK
+# Enable user scale (default 0=disabled)
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x1")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8010,0x1,0,1)"
+OK
+# Presentation:
+# 0 = Signed 0.1 degree C/digit (Default)
+# 1 = Absolute, 0.1 degree C/digit  MSB as sign 
+# 2 = High precision 0.01 degree C/digit (only available for certain terminals) 
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x2")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Signed
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8010,0x2,0,1)"
+OK
+# Enable Siemens S5 bits:
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x5")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8010,0x5,0,1)"
+OK
+# Enable filter
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x6")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "1")  # Enabled
+# NOTE: According to documentation the filter is always enabled independent of setting since needed for measure process. So rely on default value.  
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8010,0x6,1,1)"
+OK
+# Enable limit 1 
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x7")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8010,0x7,0,1)"
+OK
+# Enable limit 2
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x8")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8010,0x8,0,1)"
+OK
+# Enable user calibration
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0xA")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8010,0xA,0,1)"
+OK
+# Enable vendor calibration
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0xB")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "1")  # Enabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8010,0xB,1,1)"
+OK
+# disable wire break detection
+#epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0xE")
+#epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+#epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Active
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+# User scale offset User scaling offset
+#The offset describes a vertical shift of the characteristic curve by a linear amount.
+#At a resolution of 0.1°, 1 digit(dec) corresponds to an increase in measured value by 0.1°
+#At a resolution of 0.01°, 1 digit(dec) corresponds to an increase in measured value by 0.01
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x11")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # offset 0
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8010,0x11,0,2)"
+OK
+# User scale gain (Represented in fixed point format with factor 2^⁻16=> 1 corresponds to  65536)
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x12")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "4")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "65536")  # Gain 1
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8010,0x12,65536,4)"
+OK
+# Limit 1
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x13")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8010,0x13,0,2)"
+OK
+# Limit 2
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x14")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8010,0x14,0,2)"
+OK
+# Set filter freq for all channels (Filter settings is only vaild for channel 1 (the used for the rest of the channels))
+# 0  = 50Hz (Defualt)
+# 1  = 60Hz
+# 2  = 100Hz
+# 3  = 500Hz
+# 4  = 1kHz
+# 5  = 2kHz
+# 6  = 3,75kHz
+# 7  = 7,5kHz
+# 8  = 15kHz
+# 9  = 30kHz
+# 10 = 5Hz
+# 11 = 10Hz
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x15")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")       # 50Hz
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8010,0x15,0,2)"
+OK
+# User calibration offset
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x17")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8010,0x17,0,2)"
+OK
+# User calibration gain (Represented in fixed point format with factor 2^⁻16=> 1 corresponds to  65535)
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x18")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "65535")
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8010,0x18,65535,2)"
+OK
+# temperature range 
+# 0x80n0:19
+# 0 type: K -200C to 1370C
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x19")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8010,0x19,0,2)"
+OK
+# Configure channel 2
+epicsEnvSet("ECMC_EC_SDO_INDEX",         "0x8020")
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL3314-thermocouple_type-K
+############################################################
+############# Parmetrization of EL3314 for thermocouple type K
+# Type: Type k
+# Range: in the range defined in each case for the sensor (default setting: type K; -200...+1370 °C); voltage measurement: ±30mV...±75mV
+# Connectiontype : 2 wire
+# Cable length: 25m
+# Cable area: ??
+#
+# Environment variables needed:
+# -ECMC_EC_SDO_INDEX "0x80n0" where n is channel 0-1-2-3
+# -ECMC_EC_SLAVE_NUM = slave number
+# 
+# CJCompensation (default 0=internal)
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0xC")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Internal
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8020,0xC,0,1)"
+OK
+# Enable user scale (default 0=disabled)
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x1")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8020,0x1,0,1)"
+OK
+# Presentation:
+# 0 = Signed 0.1 degree C/digit (Default)
+# 1 = Absolute, 0.1 degree C/digit  MSB as sign 
+# 2 = High precision 0.01 degree C/digit (only available for certain terminals) 
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x2")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Signed
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8020,0x2,0,1)"
+OK
+# Enable Siemens S5 bits:
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x5")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8020,0x5,0,1)"
+OK
+# Enable filter
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x6")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "1")  # Enabled
+# NOTE: According to documentation the filter is always enabled independent of setting since needed for measure process. So rely on default value.  
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8020,0x6,1,1)"
+OK
+# Enable limit 1 
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x7")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8020,0x7,0,1)"
+OK
+# Enable limit 2
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x8")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8020,0x8,0,1)"
+OK
+# Enable user calibration
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0xA")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8020,0xA,0,1)"
+OK
+# Enable vendor calibration
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0xB")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "1")  # Enabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8020,0xB,1,1)"
+OK
+# disable wire break detection
+#epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0xE")
+#epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+#epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Active
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+# User scale offset User scaling offset
+#The offset describes a vertical shift of the characteristic curve by a linear amount.
+#At a resolution of 0.1°, 1 digit(dec) corresponds to an increase in measured value by 0.1°
+#At a resolution of 0.01°, 1 digit(dec) corresponds to an increase in measured value by 0.01
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x11")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # offset 0
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8020,0x11,0,2)"
+OK
+# User scale gain (Represented in fixed point format with factor 2^⁻16=> 1 corresponds to  65536)
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x12")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "4")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "65536")  # Gain 1
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8020,0x12,65536,4)"
+OK
+# Limit 1
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x13")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8020,0x13,0,2)"
+OK
+# Limit 2
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x14")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8020,0x14,0,2)"
+OK
+# Set filter freq for all channels (Filter settings is only vaild for channel 1 (the used for the rest of the channels))
+# 0  = 50Hz (Defualt)
+# 1  = 60Hz
+# 2  = 100Hz
+# 3  = 500Hz
+# 4  = 1kHz
+# 5  = 2kHz
+# 6  = 3,75kHz
+# 7  = 7,5kHz
+# 8  = 15kHz
+# 9  = 30kHz
+# 10 = 5Hz
+# 11 = 10Hz
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x15")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")       # 50Hz
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8020,0x15,0,2)"
+OK
+# User calibration offset
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x17")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8020,0x17,0,2)"
+OK
+# User calibration gain (Represented in fixed point format with factor 2^⁻16=> 1 corresponds to  65535)
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x18")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "65535")
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8020,0x18,65535,2)"
+OK
+# temperature range 
+# 0x80n0:19
+# 0 type: K -200C to 1370C
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x19")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8020,0x19,0,2)"
+OK
+# Configure channel 2
+epicsEnvSet("ECMC_EC_SDO_INDEX",         "0x8030")
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL3314-thermocouple_type-K
+############################################################
+############# Parmetrization of EL3314 for thermocouple type K
+# Type: Type k
+# Range: in the range defined in each case for the sensor (default setting: type K; -200...+1370 °C); voltage measurement: ±30mV...±75mV
+# Connectiontype : 2 wire
+# Cable length: 25m
+# Cable area: ??
+#
+# Environment variables needed:
+# -ECMC_EC_SDO_INDEX "0x80n0" where n is channel 0-1-2-3
+# -ECMC_EC_SLAVE_NUM = slave number
+# 
+# CJCompensation (default 0=internal)
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0xC")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Internal
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8030,0xC,0,1)"
+OK
+# Enable user scale (default 0=disabled)
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x1")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8030,0x1,0,1)"
+OK
+# Presentation:
+# 0 = Signed 0.1 degree C/digit (Default)
+# 1 = Absolute, 0.1 degree C/digit  MSB as sign 
+# 2 = High precision 0.01 degree C/digit (only available for certain terminals) 
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x2")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Signed
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8030,0x2,0,1)"
+OK
+# Enable Siemens S5 bits:
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x5")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8030,0x5,0,1)"
+OK
+# Enable filter
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x6")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "1")  # Enabled
+# NOTE: According to documentation the filter is always enabled independent of setting since needed for measure process. So rely on default value.  
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8030,0x6,1,1)"
+OK
+# Enable limit 1 
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x7")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8030,0x7,0,1)"
+OK
+# Enable limit 2
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x8")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8030,0x8,0,1)"
+OK
+# Enable user calibration
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0xA")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8030,0xA,0,1)"
+OK
+# Enable vendor calibration
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0xB")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "1")  # Enabled
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8030,0xB,1,1)"
+OK
+# disable wire break detection
+#epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0xE")
+#epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+#epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Active
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+# User scale offset User scaling offset
+#The offset describes a vertical shift of the characteristic curve by a linear amount.
+#At a resolution of 0.1°, 1 digit(dec) corresponds to an increase in measured value by 0.1°
+#At a resolution of 0.01°, 1 digit(dec) corresponds to an increase in measured value by 0.01
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x11")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # offset 0
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8030,0x11,0,2)"
+OK
+# User scale gain (Represented in fixed point format with factor 2^⁻16=> 1 corresponds to  65536)
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x12")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "4")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "65536")  # Gain 1
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8030,0x12,65536,4)"
+OK
+# Limit 1
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x13")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8030,0x13,0,2)"
+OK
+# Limit 2
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x14")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8030,0x14,0,2)"
+OK
+# Set filter freq for all channels (Filter settings is only vaild for channel 1 (the used for the rest of the channels))
+# 0  = 50Hz (Defualt)
+# 1  = 60Hz
+# 2  = 100Hz
+# 3  = 500Hz
+# 4  = 1kHz
+# 5  = 2kHz
+# 6  = 3,75kHz
+# 7  = 7,5kHz
+# 8  = 15kHz
+# 9  = 30kHz
+# 10 = 5Hz
+# 11 = 10Hz
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x15")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")       # 50Hz
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8030,0x15,0,2)"
+OK
+# User calibration offset
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x17")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8030,0x17,0,2)"
+OK
+# User calibration gain (Represented in fixed point format with factor 2^⁻16=> 1 corresponds to  65535)
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x18")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "65535")
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8030,0x18,65535,2)"
+OK
+# temperature range 
+# 0x80n0:19
+# 0 type: K -200C to 1370C
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x19")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(3,0x8030,0x19,0,2)"
+OK
+# Configure EL5101 incremental encoder terminal 
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "4")
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL5101-IncEncoder-records
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL5101-IncEncoder
+############################################################
+############# Information:
+# Description: EL5101 Incremental encoder interface (differential RS422)
+#
+############################################################
+epicsEnvSet("ECMC_EC_HWTYPE"             "EL5101")
+epicsEnvSet("ECMC_EC_VENDOR_ID"          "0x2")
+epicsEnvSet("ECMC_EC_PRODUCT_ID"         "0x13ed3052")
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(4,0x2,0x13ed3052,1,2,0x1600,0x7000,0x01,8,ENC_CONTROL)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(4,0x2,0x13ed3052,1,2,0x1600,0x7000,0x02,16,VALUE)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(4,0x2,0x13ed3052,2,3,0x1a03,0x6010,0x00,16,ENC_STATUS)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(4,0x2,0x13ed3052,2,3,0x1a03,0x6010,0x10,16,POSITION)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(4,0x2,0x13ed3052,2,3,0x1a03,0x6010,0x20,16,LATCH_POSITION)"
+OK
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../general/slave
+# Default records for slave
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s4.default","asynInt32",9)
+dbLoadRecords("ecmcDefaultAsynParamsEcSlave.db","P=jparc:,PORT=MC_CPU1,ADDR=0,TIMEOUT=1,MASTER_ID=0,SLAVE_POS=4,HWTYPE=EL5101")
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s4.ENC_CONTROL","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s4.VALUE","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s4.ENC_STATUS","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s4.POSITION","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s4.LATCH_POSITION","asynInt32",9)
+dbLoadTemplate("ecmcEL5101.substitutions","P=jparc:, PORT=MC_CPU1, ADDR=0, TIMEOUT=1, MASTER_ID=0, SLAVE_POS=4, HWTYPE=EL5101")
+# Configure EL5101 incremental encoder terminal
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "5")
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL5101-IncEncoder-records
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL5101-IncEncoder
+############################################################
+############# Information:
+# Description: EL5101 Incremental encoder interface (differential RS422)
+#
+############################################################
+epicsEnvSet("ECMC_EC_HWTYPE"             "EL5101")
+epicsEnvSet("ECMC_EC_VENDOR_ID"          "0x2")
+epicsEnvSet("ECMC_EC_PRODUCT_ID"         "0x13ed3052")
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(5,0x2,0x13ed3052,1,2,0x1600,0x7000,0x01,8,ENC_CONTROL)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(5,0x2,0x13ed3052,1,2,0x1600,0x7000,0x02,16,VALUE)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(5,0x2,0x13ed3052,2,3,0x1a03,0x6010,0x00,16,ENC_STATUS)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(5,0x2,0x13ed3052,2,3,0x1a03,0x6010,0x10,16,POSITION)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(5,0x2,0x13ed3052,2,3,0x1a03,0x6010,0x20,16,LATCH_POSITION)"
+OK
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../general/slave
+# Default records for slave
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s5.default","asynInt32",9)
+dbLoadRecords("ecmcDefaultAsynParamsEcSlave.db","P=jparc:,PORT=MC_CPU1,ADDR=0,TIMEOUT=1,MASTER_ID=0,SLAVE_POS=5,HWTYPE=EL5101")
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s5.ENC_CONTROL","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s5.VALUE","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s5.ENC_STATUS","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s5.POSITION","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s5.LATCH_POSITION","asynInt32",9)
+dbLoadTemplate("ecmcEL5101.substitutions","P=jparc:, PORT=MC_CPU1, ADDR=0, TIMEOUT=1, MASTER_ID=0, SLAVE_POS=5, HWTYPE=EL5101")
+# Configure EL9410 terminal
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "6")
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL9410-powerSupplyEBus
+############################################################
+############# Information:
+# Description: Power supply terminal with refresh of E-Bus
+#
+############################################################
+epicsEnvSet("ECMC_EC_HWTYPE"             "EL9410")
+epicsEnvSet("ECMC_EC_VENDOR_ID"          "0x2")
+epicsEnvSet("ECMC_EC_PRODUCT_ID"         "0x24c23052")
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(6,0x2,0x24c23052,2,0,0x1a00,0x6000,0x1,1,EBUS_UNDERVOLTAGE)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(6,0x2,0x24c23052,2,0,0x1a01,0x6000,0x1,1,POWER_UNDERVOLTAGE)"
+OK
+# Configure EL7037 stepper drive terminal 
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "7")
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL7037-StepperDrive-records
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL7037-StepperDrive
+############################################################
+############# Information:
+# Description: EL7037 stepper drive (24V,1.5A)
+#
+############################################################
+epicsEnvSet("ECMC_EC_HWTYPE"             "EL7037")
+epicsEnvSet("ECMC_EC_VENDOR_ID"          "0x2")
+epicsEnvSet("ECMC_EC_PRODUCT_ID"         "0x1b7d3052")
+#############  Reset terminal
+EthercatMCConfigController MCU1, "Cfg.EcWriteSdo(7,0x1011,0x1,1684107116,4)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(7,0x2,0x1b7d3052,1,2,0x1600,0x7000,0x01,16,ENC_CONTROL)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(7,0x2,0x1b7d3052,1,2,0x1600,0x7000,0x11,16,VALUE)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(7,0x2,0x1b7d3052,1,2,0x1602,0x7010,0x1,16,STM_CONTROL)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(7,0x2,0x1b7d3052,1,2,0x1604,0x7010,0x21,16,VELOCITY_SETPOINT)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(7,0x2,0x1b7d3052,2,3,0x1a00,0x6000,0x0,16,ENC_STATUS)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(7,0x2,0x1b7d3052,2,3,0x1a00,0x6000,0x11,16,POSITION)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(7,0x2,0x1b7d3052,2,3,0x1a00,0x6000,0x12,16,LATCH_POSITION)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(7,0x2,0x1b7d3052,2,3,0x1a03,0x6010,0x1,16,STM_STATUS)"
+OK
+#Max full step freq = 2000Hz (setting is 1)
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(7,0x8012,0x5,1,1)"
+OK
+#Error on loss of steps = 1
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(7,0x8012,0xA,1,1)"
+OK
+#Feedback type = Internal counter = 1 (for encoder on terminal set to 0)
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(7,0x8012,0x8,1,1)"
+OK
+#Invert motor polarity = 0
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(7,0x8012,0x9,0,1)"
+OK
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../general/slave
+# Default records for slave
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s7.default","asynInt32",9)
+dbLoadRecords("ecmcDefaultAsynParamsEcSlave.db","P=jparc:,PORT=MC_CPU1,ADDR=0,TIMEOUT=1,MASTER_ID=0,SLAVE_POS=7,HWTYPE=EL7037")
+# Drive
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s7.STM_STATUS","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s7.STM_CONTROL","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s7.VELOCITY_SETPOINT","asynInt32",9)
+# Encoder
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s7.ENC_STATUS","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s7.ENC_CONTROL","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s7.VALUE","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s7.POSITION","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s7.LATCH_POSITION","asynInt32",9)
+dbLoadTemplate("ecmcEL7037.substitutions","P=jparc:, PORT=MC_CPU1, ADDR=0, TIMEOUT=1, MASTER_ID=0, SLAVE_POS=7, HWTYPE=EL7037")
+dbLoadTemplate("ecmcEL5101.substitutions","P=jparc:, PORT=MC_CPU1, ADDR=0, TIMEOUT=1, MASTER_ID=0, SLAVE_POS=7, HWTYPE=EL7037")
+#Configure motor for EL7037
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL7037-Motor-Nanotec-AS4118L1804-ENM24
+############################################################
+############# Parmetrization of EL7037 for motor Nanotec AS4118L1804-ENM24
+#Set max current to 1800mA (actually max current is 1.8A for this motor)
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(7,0x8010,0x1,1500,2)"
+OK
+#Reduced current 500mA
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(7,0x8010,0x2,500,2)"
+OK
+#Nominal voltage 24V (unit 10mV)
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(7,0x8010,0x3,2400,2)"
+OK
+#Coil resistance 1.75 Ohm (unit 10mOhm)
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(7,0x8010,0x4,175,2)"
+OK
+#Motor full steps count 200
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(7,0x8010,0x6,200,2)"
+OK
+#Coil inductance 1.8mH Ohm (unit 0.01mH)
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(7,0x8010,0xA,180,2)"
+OK
+# Configure EL7037 stepper drive terminal
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "8")
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL7037-StepperDrive-records
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL7037-StepperDrive
+############################################################
+############# Information:
+# Description: EL7037 stepper drive (24V,1.5A)
+#
+############################################################
+epicsEnvSet("ECMC_EC_HWTYPE"             "EL7037")
+epicsEnvSet("ECMC_EC_VENDOR_ID"          "0x2")
+epicsEnvSet("ECMC_EC_PRODUCT_ID"         "0x1b7d3052")
+#############  Reset terminal
+EthercatMCConfigController MCU1, "Cfg.EcWriteSdo(8,0x1011,0x1,1684107116,4)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(8,0x2,0x1b7d3052,1,2,0x1600,0x7000,0x01,16,ENC_CONTROL)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(8,0x2,0x1b7d3052,1,2,0x1600,0x7000,0x11,16,VALUE)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(8,0x2,0x1b7d3052,1,2,0x1602,0x7010,0x1,16,STM_CONTROL)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(8,0x2,0x1b7d3052,1,2,0x1604,0x7010,0x21,16,VELOCITY_SETPOINT)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(8,0x2,0x1b7d3052,2,3,0x1a00,0x6000,0x0,16,ENC_STATUS)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(8,0x2,0x1b7d3052,2,3,0x1a00,0x6000,0x11,16,POSITION)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(8,0x2,0x1b7d3052,2,3,0x1a00,0x6000,0x12,16,LATCH_POSITION)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcAddEntryComplete(8,0x2,0x1b7d3052,2,3,0x1a03,0x6010,0x1,16,STM_STATUS)"
+OK
+#Max full step freq = 2000Hz (setting is 1)
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(8,0x8012,0x5,1,1)"
+OK
+#Error on loss of steps = 1
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(8,0x8012,0xA,1,1)"
+OK
+#Feedback type = Internal counter = 1 (for encoder on terminal set to 0)
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(8,0x8012,0x8,1,1)"
+OK
+#Invert motor polarity = 0
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(8,0x8012,0x9,0,1)"
+OK
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../general/slave
+# Default records for slave
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s8.default","asynInt32",9)
+dbLoadRecords("ecmcDefaultAsynParamsEcSlave.db","P=jparc:,PORT=MC_CPU1,ADDR=0,TIMEOUT=1,MASTER_ID=0,SLAVE_POS=8,HWTYPE=EL7037")
+# Drive
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s8.STM_STATUS","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s8.STM_CONTROL","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s8.VELOCITY_SETPOINT","asynInt32",9)
+# Encoder
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s8.ENC_STATUS","asynUInt32Digital",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s8.ENC_CONTROL","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s8.VALUE","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s8.POSITION","asynInt32",9)
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.s8.LATCH_POSITION","asynInt32",9)
+dbLoadTemplate("ecmcEL7037.substitutions","P=jparc:, PORT=MC_CPU1, ADDR=0, TIMEOUT=1, MASTER_ID=0, SLAVE_POS=8, HWTYPE=EL7037")
+dbLoadTemplate("ecmcEL5101.substitutions","P=jparc:, PORT=MC_CPU1, ADDR=0, TIMEOUT=1, MASTER_ID=0, SLAVE_POS=8, HWTYPE=EL7037")
+#Configure motor for EL7037
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../hardware/ecmcEL7037-Motor-Nanotec-AS4118L1804-ENM24
+############################################################
+############# Parmetrization of EL7037 for motor Nanotec AS4118L1804-ENM24
+#Set max current to 1800mA (actually max current is 1.8A for this motor)
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(8,0x8010,0x1,1500,2)"
+OK
+#Reduced current 500mA
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(8,0x8010,0x2,500,2)"
+OK
+#Nominal voltage 24V (unit 10mV)
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(8,0x8010,0x3,2400,2)"
+OK
+#Coil resistance 1.75 Ohm (unit 10mOhm)
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(8,0x8010,0x4,175,2)"
+OK
+#Motor full steps count 200
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(8,0x8010,0x6,200,2)"
+OK
+#Coil inductance 1.8mH Ohm (unit 0.01mH)
+EthercatMCConfigController MCU1, "Cfg.EcAddSdo(8,0x8010,0xA,180,2)"
+OK
+# Apply hardware configuration
+EthercatMCConfigController MCU1, "Cfg.EcApplyConfig(1)"
+OK
+##############################################################################
+############# Write outputs in order to power switches (see elec. drawings):
+EthercatMCConfigController MCU1, "WriteEcEntry(2,0,1)"
+OK
+EthercatMCConfigController MCU1, "WriteEcEntry(2,1,1)"
+OK
+EthercatMCConfigController MCU1, "WriteEcEntry(2,2,1)"
+OK
+EthercatMCConfigController MCU1, "WriteEcEntry(2,3,1)"
+OK
+EthercatMCConfigController MCU1, "WriteEcEntry(2,4,1)"
+OK
+EthercatMCConfigController MCU1, "WriteEcEntry(2,5,1)"
+OK
+EthercatMCConfigController MCU1, "WriteEcEntry(2,6,1)"
+OK
+EthercatMCConfigController MCU1, "WriteEcEntry(2,7,1)"
+OK
+EthercatMCConfigController MCU1, "WriteEcEntry(2,8,1)"
+OK
+EthercatMCConfigController MCU1, "WriteEcEntry(2,9,1)"
+OK
+EthercatMCConfigController MCU1, "WriteEcEntry(2,10,1)"
+OK
+EthercatMCConfigController MCU1, "WriteEcEntry(2,11,1)"
+OK
+EthercatMCConfigController MCU1, "WriteEcEntry(2,12,1)"
+OK
+EthercatMCConfigController MCU1, "WriteEcEntry(2,13,1)"
+OK
+EthercatMCConfigController MCU1, "WriteEcEntry(2,14,1)"
+OK
+EthercatMCConfigController MCU1, "WriteEcEntry(2,15,1)"
+OK
+#use it when e3 is the the enviroment
+epicsEnvSet("STREAM_PROTOCOL_PATH", "/home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../../protocol")
+##############################################################################
+############# Configuration of motor 3 (OFFSET BETWEEN AXIS 1 AND 2):
+#epicsEnvSet("ECMC_MOTOR_NAME",    "xp")
+#epicsEnvSet("ECMC_R",             "xp-")
+#epicsEnvSet("ECMC_AXIS_NO",       "3")
+#epicsEnvSet("ECMC_DESC",          "OFFSET BETWEEN AXIS 1 AND 2 ")
+#epicsEnvSet("ECMC_SOFT_LOW_LIM",          "$(SM_DLLM=0)")
+#epicsEnvSet("ECMC_SOFT_HIGH_LIM",          "$(SM_DHLM=0)")
+#epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_LLS",  "-1")                 # EtherCAT Slave No for low limit switch
+#epicsEnvSet("ECMC_EC_ALIAS_MON_LLS",      "ONE")                # PDO alias for low limit switch
+#epicsEnvSet("ECMC_EC_BIT_INDEX_MON_LLS",  "0")                  # Bit index for low limit switch
+#epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_HLS",    "-1")               # EtherCAT Slave No for high limit switch
+#epicsEnvSet("ECMC_EC_ALIAS_MON_HLS",        "ONE")              # PDO alias for high limit switch
+#epicsEnvSet("ECMC_EC_BIT_INDEX_MON_HLS",    "0")                # Bit index for high limit switch
+#epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_HOME_SWITCH", "-1")          # EtherCAT Slave No for home limit switch
+#epicsEnvSet("ECMC_EC_ALIAS_MON_HOME_SWITCH",     "ONE")         # PDO alias for home limit switch
+#epicsEnvSet("ECMC_EC_BIT_INDEX_MON_HOME",        "0")           # Bit index for home switch
+#< ../motion/ecmc_virt_axis$(ECMC_GEN_AX_RECORDS)
+# Sync. settings
+#< axis_3_sync
+# Apply configurations to ECMC
+#< ../motion/ecmc_axis_sync
+##############################################################################
+############# Configuration of Axis 1:
+# Custom settings for jparc 001 actuator
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/Axis_1
+ 
+# jparc
+#General
+epicsEnvSet("ECMC_MOTOR_NAME",            "001")
+epicsEnvSet("ECMC_R",                     "001-")
+epicsEnvSet("ECMC_AXIS_NO",               "1")
+epicsEnvSet("ECMC_DESC",                  "GRID")
+#Encoder
+epicsEnvSet("ECMC_ENC_SCALE_NUM"          "5")
+epicsEnvSet("ECMC_ENC_SCALE_DENOM"        "2000")
+epicsEnvSet("ECMC_ENC_BITS"               "16")
+epicsEnvSet("ECMC_ENC_TYPE"               "0")                         # Type: 0=Incremental, 1=Absolute
+epicsEnvSet("ECMC_EC_SLAVE_NUM_ENC",      "4")
+epicsEnvSet("ECMC_EC_ALIAS_ENC_POS",      "POSITION")
+#Drive
+epicsEnvSet("ECMC_DRV_TYPE"               "0")                         # Stepper: 0. DS402: 1 (DS402 = servos and advanced stepper drives)
+epicsEnvSet("ECMC_DRV_SCALE_NUM"          "-50")                        # Fastest speed in engineering units
+epicsEnvSet("ECMC_DRV_SCALE_DENOM"        "32768.0")                   # I/O range for ECMC_EC_ALIAS_DRV_VELO_SET
+epicsEnvSet("ECMC_EC_SLAVE_NUM_DRV",      "7")                        # EtherCAT bus position for slave 
+epicsEnvSet("ECMC_EC_ALIAS_DRV_CNTRL_WD", "STM_CONTROL")               # Stepper: Entry for drive enable bit. DS402: Entry for control word
+epicsEnvSet("ECMC_EC_BIT_DRV_CNTRL_WD",   "0")                         # Stepper: Bit index for drive enable bit. DS402: Set to -1 (use entire control word)
+epicsEnvSet("ECMC_EC_ALIAS_DRV_STAT_WD",  "STM_STATUS")                # Stepper: Entry for drive enabled bit. DS402: Entry for status word
+epicsEnvSet("ECMC_EC_BIT_DRV_STAT_WD",    "1")                         # Stepper: Bit index for drive enabled bit. DS402: Set to -1 (use entire status word)
+epicsEnvSet("ECMC_EC_ALIAS_DRV_VELO_SET", "VELOCITY_SETPOINT")         # Entry for Velocity stepoint
+epicsEnvSet("ECMC_EC_BIT_DRV_VELO_SET",   "-1")                        # Bit index for velcocity setpoint. Set to -1 (use entire Velcoity setpoint entry)
+epicsEnvSet("ECMC_EC_ALIAS_DRV_BRAKE_OUT","")                          # Entry for brake output (leave blank to disable)
+epicsEnvSet("ECMC_EC_BIT_DRV_BRAKE_OUT",  "0")                         # Bit index for brake output
+epicsEnvSet("ECMC_EC_ALIAS_DRV_REDUCE_TORQUE_OUT", "STM_CONTROL")      # Entry for reduce torque at standstill (leave blank to disable)
+epicsEnvSet("ECMC_EC_BIT_DRV_REDUCE_TORQUE_OUT", "2")                  # Bit index for reduce torque at standstill
+#Trajectory
+epicsEnvSet("ECMC_VELO",                  "1")
+epicsEnvSet("ECMC_JOG_VEL",               "1")
+#JAR defaults to VELO/ACCL
+epicsEnvSet("ECMC_JAR",                   "0.0")
+epicsEnvSet("ECMC_ACCL",                  "0.2")
+epicsEnvSet("ECMC_MRES",                  "0.001")
+#Homing
+epicsEnvSet("ECMC_HOME_PROC",             "1")
+epicsEnvSet("ECMC_HOME_POS",              "0.0")
+epicsEnvSet("ECMC_HOME_VEL_TO",           "1")
+epicsEnvSet("ECMC_HOME_VEL_FRM",          "1")
+epicsEnvSet("ECMC_HOME_ACC",              "5")
+epicsEnvSet("ECMC_HOME_DEC",              "10")
+#Controller
+epicsEnvSet("ECMC_CNTRL_KP",              "1.0")
+epicsEnvSet("ECMC_CNTRL_KI",              "0.02")
+epicsEnvSet("ECMC_CNTRL_KD",              "0.0")
+epicsEnvSet("ECMC_CNTRL_KFF",             "1.0")
+#Monitoring
+#  softlimits (disable with 0,0)
+epicsEnvSet("ECMC_SOFT_LOW_LIM",          "0")
+epicsEnvSet("ECMC_SOFT_HIGH_LIM",         "0")
+#  position lag
+epicsEnvSet("ECMC_MON_LAG_MON_TOL",       "1")
+epicsEnvSet("ECMC_MON_LAG_MON_TIME",      "2")
+epicsEnvSet("ECMC_MON_LAG_MON_ENA",       "1")
+# at target
+epicsEnvSet("ECMC_MON_AT_TARGET_TOL",     "0.5")
+epicsEnvSet("ECMC_MON_AT_TARGET_TIME",     "2")
+epicsEnvSet("ECMC_MON_AT_TARGET_ENA",     "1")
+# velocity
+epicsEnvSet("ECMC_MON_VELO_MAX",          "50")
+epicsEnvSet("ECMC_MON_VELO_MAX_TRAJ_TIME","100")
+epicsEnvSet("ECMC_MON_VELO_MAX_DRV_TIME", "200")
+epicsEnvSet("ECMC_MON_VELO_MAX_ENA",      "1")
+# low limit switch
+epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_LLS",  "1")
+epicsEnvSet("ECMC_EC_ALIAS_MON_LLS",      "INPIN_2")
+epicsEnvSet("ECMC_EC_BIT_INDEX_MON_LLS",  "0")                  # Bit index for low limit switch
+# high limit switch
+epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_HLS",  "1")
+epicsEnvSet("ECMC_EC_ALIAS_MON_HLS",      "INPIN_1")
+epicsEnvSet("ECMC_EC_BIT_INDEX_MON_HLS",  "0")                  # Bit index for high limit switch
+# home limit switch
+epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_HOME_SWITCH", "-1")
+epicsEnvSet("ECMC_EC_ALIAS_MON_HOME_SWITCH",     "ONE")
+epicsEnvSet("ECMC_EC_BIT_INDEX_MON_HOME",        "0")           # Bit index for home switch
+# Apply configurations to ECMC
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../motion/ecmc_axis-records
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../motion/ecmc_axis
+## macros for LinkEcEntryToAxisMonitor
+# low limit switch aka Limit switch backward direction.
+epicsEnvSet("ECMC_EC_MON_LLS_ENTRY_INDEX",        "0")
+# high limit switch aka Limit switch forward direction.
+epicsEnvSet("ECMC_EC_MON_HLS_ENTRY_INDEX",        "1")
+# home switch aka Reference switch (homing).
+epicsEnvSet("ECMC_EC_MON_HOME_SWITCH_ENTRY_INDEX",        "2")
+# External interlock input (optional)
+epicsEnvSet("ECMC_EC_MON_EXT_ILOCK_ENTRY_INDEX",       "3")
+#General
+epicsEnvSet("ECMC_AXISCONFIG",    "")
+epicsEnvSet("ECMC_EGU",           "mm")
+epicsEnvSet("ECMC_PREC",          "3")
+EthercatMCConfigController MCU1, "Cfg.CreateDefaultAxis(1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisDrvType(1,0)"
+OK
+#Why ECMC_HOME_DEC here?
+EthercatMCConfigController MCU1, "Cfg.SetAxisEmergDeceleration(1,10)"
+OK
+#Controller
+EthercatMCConfigController MCU1, "Cfg.SetAxisCntrlKp(1,1.0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisCntrlKi(1,0.02)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisCntrlKd(1,0.0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisCntrlKff(1,1.0)"
+OK
+#Encoder
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisEncoder(4,POSITION,1,0,-1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisEncScaleDenom(1,2000)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisEncScaleNum(1,5)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisEncType(1,0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisEncBits(1,16)"
+OK
+#Drive
+Ethercat2018/09/28 10:43:26.611 EthercatMCAxis:: connected(1)
+MCConfigController MCU1, "Cfg.LinkEcEntryToAxisDrive(7,STM_CONTROL,1,0,0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisDrive(7,VELOCITY_SETPOINT,1,1,-1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisDrive(7,STM_STATUS,1,2,1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisDrive(7,,1,3,0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisDrive(7,STM_CONTROL,1,4,2)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisDrvScaleDenom(1,32768.0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisDrvScaleNum(1,-50)"
+OK
+#Monitor
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisMonitor(1,INPIN_2,1,0,0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisMonitor(1,INPIN_1,1,1,0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisMonitor(-1,ONE,1,2,0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonAtTargetTol(1,0.5)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonAtTargetTime(1,2)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonEnableAtTargetMon(1,1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonPosLagTol(1,1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonPosLagTime(1,2)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonEnableLagMon(1,1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonMaxVel(1,50)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonEnableMaxVel(1,1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonMaxVelDriveILDelay(1,200)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonMaxVelTrajILDelay(1,100)"
+OK
+EthercatMCCreateAxis(MCU1, "1", "6", "stepSize=0.001")
+dbLoadRecords("EthercatMC.template", "PREFIX=jparc:, MOTOR_NAME=001, R=001-, MOTOR_PORT=MCU1, ASYN_PORT=MC_CPU1, AXIS_NO=1, DESC=GRID, PREC=3, VELO=1, JVEL=1, JAR=0.0, ACCL=0.2, MRES=0.001, RDBD=0.5, DLLM=0, DHLM=0, HOMEPROC=1")
+dbLoadRecords("EthercatMChome.template", "PREFIX=jparc:, MOTOR_NAME=001, R=001-, MOTOR_PORT=MCU1, ASYN_PORT=MC_CPU1, AXIS_NO=1,HOMEPROC=1, HOMEPOS=0.0, HVELTO=1, HVELFRM=1, HOMEACC=5, HOMEDEC=10")
+dbLoadRecords("ecmcExpression.db", "PORT=MC_CPU1,A=0,Index=1,Name=jparc:001")
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ax1.default","asynFloat64",9)
+dbLoadRecords("ecmcDefaultAsynParamsAxis.db","P=jparc:,AXIS_NAME=001,AXIS_NO=1,PORT=MC_CPU1,ADDR=0,TIMEOUT=1")
+# Load diagnostic array record (includes most relevant axis data)
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../motion/ecmc_axis_diag
+# Load axis diagnostic string record containing most important diagnostic for one axis
+ecmcAsynPortDriverAddParameter(MC_CPU1,ax1.diagnostic,"asynInt8ArrayIn",9)
+dbLoadRecords("ecmcAsynAxisDiagArray.db","PREFIX=jparc:,PORT=MC_CPU1,ADDR=0,TIMEOUT=1,SIZE=256,MOTOR_NAME=001,AXIS_NO=1")
+# Sync. settings
+#< axis_1_sync
+# Apply configurations to ECMC
+#< ../motion/ecmc_axis_sync
+ 
+##############################################################################
+############# Configuration of Axis 2:
+# Custom settings for jparc 002 actuator                      
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/Axis_2
+ 
+# jparc
+#General
+epicsEnvSet("ECMC_MOTOR_NAME",            "002")
+epicsEnvSet("ECMC_R",                     "002-")
+epicsEnvSet("ECMC_AXIS_NO",               "2")
+epicsEnvSet("ECMC_DESC",                  "APTM")
+#Encoder
+epicsEnvSet("ECMC_ENC_SCALE_NUM"          "5")
+epicsEnvSet("ECMC_ENC_SCALE_DENOM"        "2000")
+epicsEnvSet("ECMC_ENC_BITS"               "16")
+epicsEnvSet("ECMC_ENC_TYPE"               "0")                         # Type: 0=Incremental, 1=Absolute
+epicsEnvSet("ECMC_EC_SLAVE_NUM_ENC",      "5")
+epicsEnvSet("ECMC_EC_ALIAS_ENC_POS",      "POSITION")
+#Drive
+epicsEnvSet("ECMC_DRV_TYPE"               "0")                         # Stepper: 0. DS402: 1 (DS402 = servos and advanced stepper drives)
+epicsEnvSet("ECMC_DRV_SCALE_NUM"          "-50")                        # Fastest speed in engineering units
+epicsEnvSet("ECMC_DRV_SCALE_DENOM"        "32768.0")                   # I/O range for ECMC_EC_ALIAS_DRV_VELO_SET
+epicsEnvSet("ECMC_EC_SLAVE_NUM_DRV",      "8")                        # EtherCAT bus position for slave 
+epicsEnvSet("ECMC_EC_ALIAS_DRV_CNTRL_WD", "STM_CONTROL")               # Stepper: Entry for drive enable bit. DS402: Entry for control word
+epicsEnvSet("ECMC_EC_BIT_DRV_CNTRL_WD",   "0")                         # Stepper: Bit index for drive enable bit. DS402: Set to -1 (use entire control word)
+epicsEnvSet("ECMC_EC_ALIAS_DRV_STAT_WD",  "STM_STATUS")                # Stepper: Entry for drive enabled bit. DS402: Entry for status word
+epicsEnvSet("ECMC_EC_BIT_DRV_STAT_WD",    "1")                         # Stepper: Bit index for drive enabled bit. DS402: Set to -1 (use entire status word)
+epicsEnvSet("ECMC_EC_ALIAS_DRV_VELO_SET", "VELOCITY_SETPOINT")         # Entry for Velocity stepoint
+epicsEnvSet("ECMC_EC_BIT_DRV_VELO_SET",   "-1")                        # Bit index for velcocity setpoint. Set to -1 (use entire Velcoity setpoint entry)
+epicsEnvSet("ECMC_EC_ALIAS_DRV_BRAKE_OUT","")                          # Entry for brake output (leave blank to disable)
+epicsEnvSet("ECMC_EC_BIT_DRV_BRAKE_OUT",  "0")                         # Bit index for brake output
+epicsEnvSet("ECMC_EC_ALIAS_DRV_REDUCE_TORQUE_OUT", "STM_CONTROL")      # Entry for reduce torque at standstill (leave blank to disable)
+epicsEnvSet("ECMC_EC_BIT_DRV_REDUCE_TORQUE_OUT", "2")                  # Bit index for reduce torque at standstill
+#Trajectory
+epicsEnvSet("ECMC_VELO",                  "1")
+epicsEnvSet("ECMC_JOG_VEL",               "1")
+#JAR defaults to VELO/ACCL
+epicsEnvSet("ECMC_JAR",                   "0.0")
+epicsEnvSet("ECMC_ACCL",                  "0.2")
+epicsEnvSet("ECMC_MRES",                  "0.001")
+#Homing
+epicsEnvSet("ECMC_HOME_PROC",             "1")
+epicsEnvSet("ECMC_HOME_POS",              "0.0")
+epicsEnvSet("ECMC_HOME_VEL_TO",           "2")
+epicsEnvSet("ECMC_HOME_VEL_FRM",          "2")
+epicsEnvSet("ECMC_HOME_ACC",              "5")
+epicsEnvSet("ECMC_HOME_DEC",              "10")
+#Controller
+epicsEnvSet("ECMC_CNTRL_KP",              "1.0")
+epicsEnvSet("ECMC_CNTRL_KI",              "0.02")
+epicsEnvSet("ECMC_CNTRL_KD",              "0.0")
+epicsEnvSet("ECMC_CNTRL_KFF",             "1.0")
+#Monitoring
+#  softlimits (disable with 0,0)
+epicsEnvSet("ECMC_SOFT_LOW_LIM",          "0")
+epicsEnvSet("ECMC_SOFT_HIGH_LIM",         "0")
+#  position lag
+epicsEnvSet("ECMC_MON_LAG_MON_TOL",       "1")
+epicsEnvSet("ECMC_MON_LAG_MON_TIME",      "2")
+epicsEnvSet("ECMC_MON_LAG_MON_ENA",       "1")
+# at target
+epicsEnvSet("ECMC_MON_AT_TARGET_TOL",     "0.1")
+epicsEnvSet("ECMC_MON_AT_TARGET_TIME",     "2")
+epicsEnvSet("ECMC_MON_AT_TARGET_ENA",     "1")
+# velocity
+epicsEnvSet("ECMC_MON_VELO_MAX",          "50")
+epicsEnvSet("ECMC_MON_VELO_MAX_TRAJ_TIME","100")
+epicsEnvSet("ECMC_MON_VELO_MAX_DRV_TIME", "200")
+epicsEnvSet("ECMC_MON_VELO_MAX_ENA",      "1")
+# low limit switch
+epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_LLS",  "1")
+epicsEnvSet("ECMC_EC_ALIAS_MON_LLS",      "INPIN_6")
+epicsEnvSet("ECMC_EC_BIT_INDEX_MON_LLS",  "0")                  # Bit index for low limit switch
+# high limit switch
+epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_HLS",  "1")
+epicsEnvSet("ECMC_EC_ALIAS_MON_HLS",      "INPIN_5")
+epicsEnvSet("ECMC_EC_BIT_INDEX_MON_HLS",  "0")                  # Bit index for high limit switch
+# home limit switch
+epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_HOME_SWITCH", "-1")
+epicsEnvSet("ECMC_EC_ALIAS_MON_HOME_SWITCH",     "ONE")
+epicsEnvSet("ECMC_EC_BIT_INDEX_MON_HOME",        "0")           # Bit index for home switch
+# Apply configurations to ECMC
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../motion/ecmc_axis-records
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../motion/ecmc_axis
+## macros for LinkEcEntryToAxisMonitor
+# low limit switch aka Limit switch backward direction.
+epicsEnvSet("ECMC_EC_MON_LLS_ENTRY_INDEX",        "0")
+# high limit switch aka Limit switch forward direction.
+epicsEnvSet("ECMC_EC_MON_HLS_ENTRY_INDEX",        "1")
+# home switch aka Reference switch (homing).
+epicsEnvSet("ECMC_EC_MON_HOME_SWITCH_ENTRY_INDEX",        "2")
+# External interlock input (optional)
+epicsEnvSet("ECMC_EC_MON_EXT_ILOCK_ENTRY_INDEX",       2018/09/28 10:43:26.616 EthercatMCAxis:: connected(2)
+"3")
+#General
+epicsEnvSet("ECMC_AXISCONFIG",    "")
+epicsEnvSet("ECMC_EGU",           "mm")
+epicsEnvSet("ECMC_PREC",          "3")
+EthercatMCConfigController MCU1, "Cfg.CreateDefaultAxis(2)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisDrvType(2,0)"
+OK
+#Why ECMC_HOME_DEC here?
+EthercatMCConfigController MCU1, "Cfg.SetAxisEmergDeceleration(2,10)"
+OK
+#Controller
+EthercatMCConfigController MCU1, "Cfg.SetAxisCntrlKp(2,1.0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisCntrlKi(2,0.02)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisCntrlKd(2,0.0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisCntrlKff(2,1.0)"
+OK
+#Encoder
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisEncoder(5,POSITION,2,0,-1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisEncScaleDenom(2,2000)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisEncScaleNum(2,5)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisEncType(2,0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisEncBits(2,16)"
+OK
+#Drive
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisDrive(8,STM_CONTROL,2,0,0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisDrive(8,VELOCITY_SETPOINT,2,1,-1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisDrive(8,STM_STATUS,2,2,1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisDrive(8,,2,3,0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisDrive(8,STM_CONTROL,2,4,2)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisDrvScaleDenom(2,32768.0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisDrvScaleNum(2,-50)"
+OK
+#Monitor
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisMonitor(1,INPIN_6,2,0,0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisMonitor(1,INPIN_5,2,1,0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.LinkEcEntryToAxisMonitor(-1,ONE,2,2,0)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonAtTargetTol(2,0.1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonAtTargetTime(2,2)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonEnableAtTargetMon(2,1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonPosLagTol(2,1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonPosLagTime(2,2)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonEnableLagMon(2,1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonMaxVel(2,50)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonEnableMaxVel(2,1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonMaxVelDriveILDelay(2,200)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetAxisMonMaxVelTrajILDelay(2,100)"
+OK
+EthercatMCCreateAxis(MCU1, "2", "6", "stepSize=0.001")
+dbLoadRecords("EthercatMC.template", "PREFIX=jparc:, MOTOR_NAME=002, R=002-, MOTOR_PORT=MCU1, ASYN_PORT=MC_CPU1, AXIS_NO=2, DESC=APTM, PREC=3, VELO=1, JVEL=1, JAR=0.0, ACCL=0.2, MRES=0.001, RDBD=0.1, DLLM=0, DHLM=0, HOMEPROC=1")
+dbLoadRecords("EthercatMChome.template", "PREFIX=jparc:, MOTOR_NAME=002, R=002-, MOTOR_PORT=MCU1, ASYN_PORT=MC_CPU1, AXIS_NO=2,HOMEPROC=1, HOMEPOS=0.0, HVELTO=2, HVELFRM=2, HOMEACC=5, HOMEDEC=10")
+dbLoadRecords("ecmcExpression.db", "PORT=MC_CPU1,A=0,Index=2,Name=jparc:002")
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ax2.default","asynFloat64",9)
+dbLoadRecords("ecmcDefaultAsynParamsAxis.db","P=jparc:,AXIS_NAME=002,AXIS_NO=2,PORT=MC_CPU1,ADDR=0,TIMEOUT=1")
+# Load diagnostic array record (includes most relevant axis data)
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../motion/ecmc_axis_diag
+# Load axis diagnostic string record containing most important diagnostic for one axis
+ecmcAsynPortDriverAddParameter(MC_CPU1,ax2.diagnostic,"asynInt8ArrayIn",9)
+dbLoadRecords("ecmcAsynAxisDiagArray.db","PREFIX=jparc:,PORT=MC_CPU1,ADDR=0,TIMEOUT=1,SIZE=256,MOTOR_NAME=002,AXIS_NO=2")
+# Sync. settings
+#< axis_2_sync
+# Apply configurations to ECMC
+#< ../motion/ecmc_axis_sync
+# ##############################################################################
+# ############# Configure diagnostics:
+EthercatMCConfigController MCU1, "Cfg.EcSetDiagnostics(1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcEnablePrintouts(1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.EcSetDomainFailedC2018/09/28 10:43:26.619 rtThreadCreate: EPERM (1)
+2018/09/28 10:43:26.619 ERROR: Can't create high priority thread, fallback to low priority
+2018/09/28 10:43:26.669 ../ecmcApp/src/ecmcMonitor.cpp/checkLimits:559: axis[1].monitor.error=ERROR_MON_BOTH_LIMIT_INTERLOCK;
+2018/09/28 10:43:26.669 ../ecmcApp/src/ecmcAxisReal.cpp/execute:186: axis[1].error=ERROR_AXIS_HARDWARE_STATUS_NOT_OK;
+2018/09/28 10:43:26.669 ../ecmcApp/src/ecmcMonitor.cpp/checkLimits:559: axis[2].monitor.error=ERROR_MON_BOTH_LIMIT_INTERLOCK;
+2018/09/28 10:43:26.669 ../ecmcApp/src/ecmcAxisReal.cpp/execute:186: axis[2].error=ERROR_AXIS_HARDWARE_STATUS_NOT_OK;
+2018/09/28 10:43:26.669 ../ecmcApp/src/ecmcEcSlave.cpp/checkConfigState:183: ERROR: Slave 0: Not operational (0x24011).
+2018/09/28 10:43:26.669 ../ecmcApp/src/ecmcEcSlave.cpp/checkConfigState:185: ERROR_EC_SLAVE_NOT_OPERATIONAL (0x24011).
+2018/09/28 10:43:26.669 ../ecmcApp/src/ecmcEc.cpp/checkSlavesConfState:294: ERROR_EC_SLAVE_NOT_OPERATIONAL (0x24011).
+2018/09/28 10:43:27.170 ../ecmcApp/src/ecmcEcSlave.cpp/checkConfigState:183: ERROR: Slave 3: Not operational (0x24011).
+2018/09/28 10:43:27.170 ../ecmcApp/src/ecmcEcSlave.cpp/checkConfigState:185: ERROR_EC_SLAVE_NOT_OPERATIONAL (0x24011).
+2018/09/28 10:43:27.671 ../ecmcApp/src/ecmcEcSlave.cpp/checkConfigState:183: ERROR: Slave 8: Not operational (0x24011).
+2018/09/28 10:43:27.671 ../ecmcApp/src/ecmcEcSlave.cpp/checkConfigState:185: ERROR_EC_SLAVE_NOT_OPERATIONAL (0x24011).
+2018/09/28 10:43:28.173 ../ecmcApp/src/ecmcError.cpp/errorReset:85: NO_ERROR (0x0).
+2018/09/28 10:43:28.173 ../ecmcApp/src/ecmcError.cpp/errorReset:85: axis[1].monitor.error=NO_ERROR;
+2018/09/28 10:43:28.173 ../ecmcApp/src/ecmcError.cpp/errorReset:85: axis[1].error=NO_ERROR;
+2018/09/28 10:43:28.173 ../ecmcApp/src/ecmcError.cpp/errorReset:85: axis[2].monitor.error=NO_ERROR;
+2018/09/28 10:43:28.173 ../ecmcApp/src/ecmcError.cpp/errorReset:85: axis[2].error=NO_ERROR;
+2018/09/28 10:43:28.773 asynMotorController:writeReadController nread=0 status=asynError (3)
+2018/09/28 10:43:28.773 EthercatMCAxis:: (1) getFeatures() failed
+Starting iocInit
+2018/09/28 10:43:29.620 EthercatMCAxis:: connected(1)
+2018/09/28 10:43:29.621 EthercatMCAxis:: connected(2)
+2018/09/28 10:43:29.639 devMotorAsyn::update_soft_limits jparc:001 RawHLM_RO=0.000000 RawLLM_RO=0.000000 valid=0 DHLM_RO=0.000000 DLLM_RO=0.000000
+2018/09/28 10:43:29.640 devMotorAsyn::update_soft_limits jparc:002 RawHLM_RO=0.000000 RawLLM_RO=0.000000 valid=0 DHLM_RO=0.000000 DLLM_RO=0.000000
+2018/09/28 10:43:30.142 jparc:001-HomProc-RB devAsynInt32::processCallbackInput process read error asynPortDriver:readInt32: status=10, function=97, name=HomProc, value=0
+2018/09/28 10:43:30.142 jparc:002-HomProc-RB devAsynInt32::processCallbackInput process read error asynPortDriver:readInt32: status=10, function=97, name=HomProc, value=0
+cas warning: Configured TCP port was unavailable.
+cas warning: Using dynamically assigned TCP port 33653,
+cas warning: but now two or more servers share the same UDP port.
+cas warning: Depending on your IP kernel this server may not be
+cas warning: reachable with UDP unicast (a host's IP in EPICS_CA_ADDR_LIST)
+iocRun: All initialization complete
+yclesLimit(100)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetDiagAxisIndex(1)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetDiagAxisFreq(2)"
+OK
+EthercatMCConfigController MCU1, "Cfg.SetDiagAxisEnable(1)"
+OK
+# ##############################################################################
+# ############# Load general controller level records:
+< /home/biuser/ics_gitsrc/ecmctraining/startup/ecmcProject_jparc/../general/general
+# Add ethercat master diagnostics
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ec0.default","asynInt32",9)
+dbLoadRecords("ecmcDefaultAsynParamsEc.db","P=jparc:,PORT=MC_CPU1,ADDR=0,TIMEOUT=1,MASTER_ID=0")
+#Add ecmc general records
+ecmcAsynPortDriverAddParameter(MC_CPU1,"ecmc.default","asynInt32",9)
+dbLoadRecords("ecmcAsynControllerGeneral.db","P=jparc:,PORT=MC_CPU1,ADDR=0,TIMEOUT=1")
+# ##############################################################################
+# ############# Go to runtime:
+EthercatMCConfigController MCU1, "Cfg.SetAppMode(1)"
+OK
+# Set the IOC Prompt String One 
+epicsEnvSet IOCSH_PS1 "6690f8a.bi-aptm01.1781 > "
+#
+# 
+iocInit
+############################################################################
+## EPICS R3.15.5-EEE-3.15.5-patch
+## EPICS Base built May 21 2018
+############################################################################
+../motorApp/MotorSrc/motorRecord.cc:784 jparc:001 recalcLVIO lvio=0 drbv=5.965000 rdbd=0.500000 dhlm=0.000000 dllm=0.000000
+../motorApp/MotorSrc/motorRecord.cc:784 jparc:001 recalcLVIO lvio=0 drbv=5.965000 rdbd=0.500000 dhlm=0.000000 dllm=0.000000
+../motorApp/MotorSrc/motorRecord.cc:784 jparc:001 recalcLVIO lvio=0 drbv=5.965000 rdbd=0.500000 dhlm=0.000000 dllm=0.000000
+../motorApp/MotorSrc/motorRecord.cc:784 jparc:002 recalcLVIO lvio=0 drbv=-10.335000 rdbd=0.100000 dhlm=0.000000 dllm=0.000000
+../motorApp/MotorSrc/motorRecord.cc:784 jparc:002 recalcLVIO lvio=0 drbv=-10.335000 rdbd=0.100000 dhlm=0.000000 dllm=0.000000
+../motorApp/MotorSrc/motorRecord.cc:784 jparc:002 recalcLVIO lvio=0 drbv=-10.335000 rdbd=0.100000 dhlm=0.000000 dllm=0.000000
+6690f8a.bi-aptm01.1781 > dbl
+jparc:001-Err
+jparc:001-ErrId
+jparc:001-ScalRDBD-En-RB
+jparc:001-ScalPOSLAG-En-RB
+jparc:001-ECHLM-En-RB
+jparc:001-ECLLM-En-RB
+jparc:002-Err
+jparc:002-ErrId
+jparc:002-ScalRDBD-En-RB
+jparc:002-ScalPOSLAG-En-RB
+jparc:002-ECHLM-En-RB
+jparc:002-ECLLM-En-RB
+jparc:ec0-s1-EL1808-BI1
+jparc:ec0-s1-EL1808-BI2
+jparc:ec0-s1-EL1808-BI3
+jparc:ec0-s1-EL1808-BI4
+jparc:ec0-s1-EL1808-BI5
+jparc:ec0-s1-EL1808-BI6
+jparc:ec0-s1-EL1808-BI7
+jparc:ec0-s1-EL1808-BI8
+jparc:ec0-s2-EL2819-BO1-RB
+jparc:ec0-s2-EL2819-BO1-OvrTmp-Alrm
+jparc:ec0-s2-EL2819-BO1-OpnLoad-Alrm
+jparc:ec0-s2-EL2819-BO1-OvrCurr-Alrm
+jparc:ec0-s2-EL2819-BO1-ShrtCirc-Alrm
+jparc:ec0-s2-EL2819-BO2-RB
+jparc:ec0-s2-EL2819-BO2-OvrTmp-Alrm
+jparc:ec0-s2-EL2819-BO2-OpnLoad-Alrm
+jparc:ec0-s2-EL2819-BO2-OvrCurr-Alrm
+jparc:ec0-s2-EL2819-BO2-ShrtCirc-Alrm
+jparc:ec0-s2-EL2819-BO3-RB
+jparc:ec0-s2-EL2819-BO3-OvrTmp-Alrm
+jparc:ec0-s2-EL2819-BO3-OpnLoad-Alrm
+jparc:ec0-s2-EL2819-BO3-OvrCurr-Alrm
+jparc:ec0-s2-EL2819-BO3-ShrtCirc-Alrm
+jparc:ec0-s2-EL2819-BO4-RB
+jparc:ec0-s2-EL2819-BO4-OvrTmp-Alrm
+jparc:ec0-s2-EL2819-BO4-OpnLoad-Alrm
+jparc:ec0-s2-EL2819-BO4-OvrCurr-Alrm
+jparc:ec0-s2-EL2819-BO4-ShrtCirc-Alrm
+jparc:ec0-s2-EL2819-BO5-RB
+jparc:ec0-s2-EL2819-BO5-OvrTmp-Alrm
+jparc:ec0-s2-EL2819-BO5-OpnLoad-Alrm
+jparc:ec0-s2-EL2819-BO5-OvrCurr-Alrm
+jparc:ec0-s2-EL2819-BO5-ShrtCirc-Alrm
+jparc:ec0-s2-EL2819-BO6-RB
+jparc:ec0-s2-EL2819-BO6-OvrTmp-Alrm
+jparc:ec0-s2-EL2819-BO6-OpnLoad-Alrm
+jparc:ec0-s2-EL2819-BO6-OvrCurr-Alrm
+jparc:ec0-s2-EL2819-BO6-ShrtCirc-Alrm
+jparc:ec0-s2-EL2819-BO7-RB
+jparc:ec0-s2-EL2819-BO7-OvrTmp-Alrm
+jparc:ec0-s2-EL2819-BO7-OpnLoad-Alrm
+jparc:ec0-s2-EL2819-BO7-OvrCurr-Alrm
+jparc:ec0-s2-EL2819-BO7-ShrtCirc-Alrm
+jparc:ec0-s2-EL2819-BO8-RB
+jparc:ec0-s2-EL2819-BO8-OvrTmp-Alrm
+jparc:ec0-s2-EL2819-BO8-OpnLoad-Alrm
+jparc:ec0-s2-EL2819-BO8-OvrCurr-Alrm
+jparc:ec0-s2-EL2819-BO8-ShrtCirc-Alrm
+jparc:ec0-s2-EL2819-BO9-RB
+jparc:ec0-s2-EL2819-BO9-OvrTmp-Alrm
+jparc:ec0-s2-EL2819-BO9-OpnLoad-Alrm
+jparc:ec0-s2-EL2819-BO9-OvrCurr-Alrm
+jparc:ec0-s2-EL2819-BO9-ShrtCirc-Alrm
+jparc:ec0-s2-EL2819-BO10-RB
+jparc:ec0-s2-EL2819-BO10-OvrTmp-Alrm
+jparc:ec0-s2-EL2819-BO10-OpnLoad-Alrm
+jparc:ec0-s2-EL2819-BO10-OvrCurr-Alrm
+jparc:ec0-s2-EL2819-BO10-ShrtCirc-Alrm
+jparc:ec0-s2-EL2819-BO11-RB
+jparc:ec0-s2-EL2819-BO11-OvrTmp-Alrm
+jparc:ec0-s2-EL2819-BO11-OpnLoad-Alrm
+jparc:ec0-s2-EL2819-BO11-OvrCurr-Alrm
+jparc:ec0-s2-EL2819-BO11-ShrtCirc-Alrm
+jparc:ec0-s2-EL2819-BO12-RB
+jparc:ec0-s2-EL2819-BO12-OvrTmp-Alrm
+jparc:ec0-s2-EL2819-BO12-OpnLoad-Alrm
+jparc:ec0-s2-EL2819-BO12-OvrCurr-Alrm
+jparc:ec0-s2-EL2819-BO12-ShrtCirc-Alrm
+jparc:ec0-s2-EL2819-BO13-RB
+jparc:ec0-s2-EL2819-BO13-OvrTmp-Alrm
+jparc:ec0-s2-EL2819-BO13-OpnLoad-Alrm
+jparc:ec0-s2-EL2819-BO13-OvrCurr-Alrm
+jparc:ec0-s2-EL2819-BO13-ShrtCirc-Alrm
+jparc:ec0-s2-EL2819-BO14-RB
+jparc:ec0-s2-EL2819-BO14-OvrTmp-Alrm
+jparc:ec0-s2-EL2819-BO14-OpnLoad-Alrm
+jparc:ec0-s2-EL2819-BO14-OvrCurr-Alrm
+jparc:ec0-s2-EL2819-BO14-ShrtCirc-Alrm
+jparc:ec0-s2-EL2819-BO15-RB
+jparc:ec0-s2-EL2819-BO15-OvrTmp-Alrm
+jparc:ec0-s2-EL2819-BO15-OpnLoad-Alrm
+jparc:ec0-s2-EL2819-BO15-OvrCurr-Alrm
+jparc:ec0-s2-EL2819-BO15-ShrtCirc-Alrm
+jparc:ec0-s2-EL2819-BO16-RB
+jparc:ec0-s2-EL2819-BO16-OvrTmp-Alrm
+jparc:ec0-s2-EL2819-BO16-OpnLoad-Alrm
+jparc:ec0-s2-EL2819-BO16-OvrCurr-Alrm
+jparc:ec0-s2-EL2819-BO16-ShrtCirc-Alrm
+jparc:ec0-s3-EL3314-AI1-UnderLim-Alrm
+jparc:ec0-s3-EL3314-AI1-OverLim-Alrm
+jparc:ec0-s3-EL3314-AI1-Err-Alrm
+jparc:ec0-s3-EL3314-AI2-UnderLim-Alrm
+jparc:ec0-s3-EL3314-AI2-OverLim-Alrm
+jparc:ec0-s3-EL3314-AI2-Err-Alrm
+jparc:ec0-s3-EL3314-AI3-UnderLim-Alrm
+jparc:ec0-s3-EL3314-AI3-OverLim-Alrm
+jparc:ec0-s3-EL3314-AI3-Err-Alrm
+jparc:ec0-s3-EL3314-AI4-UnderLim-Alrm
+jparc:ec0-s3-EL3314-AI4-OverLim-Alrm
+jparc:ec0-s3-EL3314-AI4-Err-Alrm
+jparc:ec0-s4-EL5101-Enc-OpnCrct-Alrm
+jparc:ec0-s4-EL5101-Enc-Wrn-Alrm
+jparc:ec0-s4-EL5101-Enc-SyncErr-Alrm
+jparc:ec0-s5-EL5101-Enc-OpnCrct-Alrm
+jparc:ec0-s5-EL5101-Enc-Wrn-Alrm
+jparc:ec0-s5-EL5101-Enc-SyncErr-Alrm
+jparc:ec0-s7-EL7037-Drv-Wrn-Alrm
+jparc:ec0-s7-EL7037-Drv-Err-Alrm
+jparc:ec0-s7-EL7037-Drv-Stl-Alrm
+jparc:ec0-s7-EL7037-Drv-SyncErr-Alrm
+jparc:ec0-s7-EL7037-Enc-OpnCrct-Alrm
+jparc:ec0-s7-EL7037-Enc-Wrn-Alrm
+jparc:ec0-s7-EL7037-Enc-SyncErr-Alrm
+jparc:ec0-s8-EL7037-Drv-Wrn-Alrm
+jparc:ec0-s8-EL7037-Drv-Err-Alrm
+jparc:ec0-s8-EL7037-Drv-Stl-Alrm
+jparc:ec0-s8-EL7037-Drv-SyncErr-Alrm
+jparc:ec0-s8-EL7037-Enc-OpnCrct-Alrm
+jparc:ec0-s8-EL7037-Enc-Wrn-Alrm
+jparc:ec0-s8-EL7037-Enc-SyncErr-Alrm
+jparc:001-ScalMDIR-RB
+jparc:001-ScalEDIR-RB
+jparc:001-EncSourceType-RB
+jparc:001-TrajSourceType-RB
+jparc:001-Transform-CmdEn-RB
+jparc:001-CmdFromOtherAxis-CmdEn-RB
+jparc:002-ScalMDIR-RB
+jparc:002-ScalEDIR-RB
+jparc:002-EncSourceType-RB
+jparc:002-TrajSourceType-RB
+jparc:002-Transform-CmdEn-RB
+jparc:002-CmdFromOtherAxis-CmdEn-RB
+E3R:BI-APTM01:MODULES
+E3R:BI-APTM01:VERSIONS
+E3R:BI-APTM01:MOD_VER
+jparc:001-MsgTxt
+jparc:001-TrajExpr
+jparc:001-TrajExpr-RB
+jparc:001-EncExpr
+jparc:001-EncExpr-RB
+jparc:001-CmdExpr-RB
+jparc:001-CmdExpr
+jparc:001-Array-Stat
+jparc:002-MsgTxt
+jparc:002-TrajExpr
+jparc:002-TrajExpr-RB
+jparc:002-EncExpr
+jparc:002-EncExpr-RB
+jparc:002-CmdExpr-RB
+jparc:002-CmdExpr
+jparc:002-Array-Stat
+jparc:MCU-ErrMsg
+jparc:ec0-s4-EL5101-Enc-Cmd
+jparc:ec0-s4-EL5101-Enc-PosCmd
+jparc:ec0-s5-EL5101-Enc-Cmd
+jparc:ec0-s5-EL5101-Enc-PosCmd
+jparc:ec0-s7-EL7037-Drv-Cmd
+jparc:ec0-s7-EL7037-Drv-Spd
+jparc:ec0-s7-EL7037-Enc-Cmd
+jparc:ec0-s7-EL7037-Enc-PosCmd
+jparc:ec0-s8-EL7037-Drv-Cmd
+jparc:ec0-s8-EL7037-Drv-Spd
+jparc:ec0-s8-EL7037-Enc-Cmd
+jparc:ec0-s8-EL7037-Enc-PosCmd
+jparc:001-OFF_
+jparc:001-MRES_
+jparc:001-HomPos
+jparc:001-VelToHom
+jparc:001-VelFrmHom
+jparc:001-AccHom
+jparc:001-DecHom
+jparc:002-OFF_
+jparc:002-MRES_
+jparc:002-HomPos
+jparc:002-VelToHom
+jparc:002-VelFrmHom
+jparc:002-AccHom
+jparc:002-DecHom
+jparc:001-HomProc-RB
+jparc:002-HomProc-RB
+jparc:ec0-s0-EK1100-operational
+jparc:ec0-s0-EK1100-online
+jparc:ec0-s0-EK1100-alstate
+jparc:ec0-s0-EK1100-entrycounter
+jparc:ec0-s1-EL1808-operational
+jparc:ec0-s1-EL1808-online
+jparc:ec0-s1-EL1808-alstate
+jparc:ec0-s1-EL1808-entrycounter
+jparc:ec0-s2-EL2819-operational
+jparc:ec0-s2-EL2819-online
+jparc:ec0-s2-EL2819-alstate
+jparc:ec0-s2-EL2819-entrycounter
+jparc:ec0-s3-EL3314-operational
+jparc:ec0-s3-EL3314-online
+jparc:ec0-s3-EL3314-alstate
+jparc:ec0-s3-EL3314-entrycounter
+jparc:ec0-s3-EL3314-AI1
+jparc:ec0-s3-EL3314-AI2
+jparc:ec0-s3-EL3314-AI3
+jparc:ec0-s3-EL3314-AI4
+jparc:ec0-s4-EL5101-operational
+jparc:ec0-s4-EL5101-online
+jparc:ec0-s4-EL5101-alstate
+jparc:ec0-s4-EL5101-entrycounter
+jparc:ec0-s4-EL5101-Enc-PosAct
+jparc:ec0-s4-EL5101-Enc-Latch-PosAct
+jparc:ec0-s4-EL5101-Enc-Cmd-RB
+jparc:ec0-s4-EL5101-Enc-PosCmd-RB
+jparc:ec0-s5-EL5101-operational
+jparc:ec0-s5-EL5101-online
+jparc:ec0-s5-EL5101-alstate
+jparc:ec0-s5-EL5101-entrycounter
+jparc:ec0-s5-EL5101-Enc-PosAct
+jparc:ec0-s5-EL5101-Enc-Latch-PosAct
+jparc:ec0-s5-EL5101-Enc-Cmd-RB
+jparc:ec0-s5-EL5101-Enc-PosCmd-RB
+jparc:ec0-s7-EL7037-operational
+jparc:ec0-s7-EL7037-online
+jparc:ec0-s7-EL7037-alstate
+jparc:ec0-s7-EL7037-entrycounter
+jparc:ec0-s7-EL7037-Drv-Cmd-RB
+jparc:ec0-s7-EL7037-Drv-Spd-RB
+jparc:ec0-s7-EL7037-Enc-PosAct
+jparc:ec0-s7-EL7037-Enc-Latch-PosAct
+jparc:ec0-s7-EL7037-Enc-Cmd-RB
+jparc:ec0-s7-EL7037-Enc-PosCmd-RB
+jparc:ec0-s8-EL7037-operational
+jparc:ec0-s8-EL7037-online
+jparc:ec0-s8-EL7037-alstate
+jparc:ec0-s8-EL7037-entrycounter
+jparc:ec0-s8-EL7037-Drv-Cmd-RB
+jparc:ec0-s8-EL7037-Drv-Spd-RB
+jparc:ec0-s8-EL7037-Enc-PosAct
+jparc:ec0-s8-EL7037-Enc-Latch-PosAct
+jparc:ec0-s8-EL7037-Enc-Cmd-RB
+jparc:ec0-s8-EL7037-Enc-PosCmd-RB
+jparc:001-VelAct
+jparc:001-Vel-RB
+jparc:001-Acc-RB
+jparc:001-Dec-RB
+jparc:001-EncAct
+jparc:001-ScalSREV-RB
+jparc:001-ScalUREV-RB
+jparc:001-RefVelo-RB
+jparc:001-ScalRDBD-RB
+jparc:001-ScalRDBD-Tim-RB
+jparc:001-ScalPOSLAG-RB
+jparc:001-ScalPOSLAG-Tim-RB
+jparc:001-ECHLM-RB
+jparc:001-ECLLM-RB
+jparc:001-HomPos-RB
+jparc:001-AxisType-Act
+jparc:001-PosAct
+jparc:001-PosSet
+jparc:002-VelAct
+jparc:002-Vel-RB
+jparc:002-Acc-RB
+jparc:002-Dec-RB
+jparc:002-EncAct
+jparc:002-ScalSREV-RB
+jparc:002-ScalUREV-RB
+jparc:002-RefVelo-RB
+jparc:002-ScalRDBD-RB
+jparc:002-ScalRDBD-Tim-RB
+jparc:002-ScalPOSLAG-RB
+jparc:002-ScalPOSLAG-Tim-RB
+jparc:002-ECHLM-RB
+jparc:002-ECLLM-RB
+jparc:002-HomPos-RB
+jparc:002-AxisType-Act
+jparc:002-PosAct
+jparc:002-PosSet
+jparc:ec0-alstates
+jparc:ec0-link
+jparc:ec0-slavecounter
+jparc:ec0-slavesstatus
+jparc:ec0-memmapcounter
+jparc:ec0-domainstatus
+jparc:ec0-domainfailcounter
+jparc:ec0-domainfailcountertotal
+jparc:ec0-entrycounter
+jparc:MCU-app-mode
+jparc:MCU-ErrId
+jparc:MCU-thread-latency-min
+jparc:MCU-thread-latency-max
+jparc:MCU-thread-period-min
+jparc:MCU-thread-period-max
+jparc:MCU-thread-execute-min
+jparc:MCU-thread-execute-max
+jparc:MCU-thread-send-min
+jparc:MCU-thread-send-max
+jparc:001-DIR_
+jparc:001-ErrRst
+jparc:001-Stup
+jparc:001-HomProc
+jparc:002-DIR_
+jparc:002-ErrRst
+jparc:002-Stup
+jparc:002-HomProc
+jparc:ec0-s2-EL2819-BO1
+jparc:ec0-s2-EL2819-BO2
+jparc:ec0-s2-EL2819-BO3
+jparc:ec0-s2-EL2819-BO4
+jparc:ec0-s2-EL2819-BO5
+jparc:ec0-s2-EL2819-BO6
+jparc:ec0-s2-EL2819-BO7
+jparc:ec0-s2-EL2819-BO8
+jparc:ec0-s2-EL2819-BO9
+jparc:ec0-s2-EL2819-BO10
+jparc:ec0-s2-EL2819-BO11
+jparc:ec0-s2-EL2819-BO12
+jparc:ec0-s2-EL2819-BO13
+jparc:ec0-s2-EL2819-BO14
+jparc:ec0-s2-EL2819-BO15
+jparc:ec0-s2-EL2819-BO16
+jparc:001-EncSourceType-Cmd
+jparc:001-TrajSourceType-Cmd
+jparc:001-Transform-CmdEn
+jparc:001-CmdFromOtherAxis-CmdEn
+jparc:002-EncSourceType-Cmd
+jparc:002-TrajSourceType-Cmd
+jparc:002-Transform-CmdEn
+jparc:002-CmdFromOtherAxis-CmdEn
+jparc:MCU-ErrRst
+E3R:BI-APTM01:require_VER
+E3R:BI-APTM01:asyn_VER
+E3R:BI-APTM01:exprtk_VER
+E3R:BI-APTM01:ecmc_VER
+E3R:BI-APTM01:ecmctraining_VER
+E3R:BI-APTM01:motor_VER
+E3R:BI-APTM01:EthercatMC_VER
+E3R:BI-APTM01:pcre_VER
+E3R:BI-APTM01:stream_VER
+E3R:BI-APTM01:sequencer_VER
+E3R:BI-APTM01:iocStats_VER
+jparc:ec0-s2-EL2819-BO1-Stat
+jparc:ec0-s2-EL2819-BO2-Stat
+jparc:ec0-s2-EL2819-BO3-Stat
+jparc:ec0-s2-EL2819-BO4-Stat
+jparc:ec0-s2-EL2819-BO5-Stat
+jparc:ec0-s2-EL2819-BO6-Stat
+jparc:ec0-s2-EL2819-BO7-Stat
+jparc:ec0-s2-EL2819-BO8-Stat
+jparc:ec0-s2-EL2819-BO9-Stat
+jparc:ec0-s2-EL2819-BO10-Stat
+jparc:ec0-s2-EL2819-BO11-Stat
+jparc:ec0-s2-EL2819-BO12-Stat
+jparc:ec0-s2-EL2819-BO13-Stat
+jparc:ec0-s2-EL2819-BO14-Stat
+jparc:ec0-s2-EL2819-BO15-Stat
+jparc:ec0-s2-EL2819-BO16-Stat
+jparc:ec0-s3-EL3314-AI1-Stat
+jparc:ec0-s3-EL3314-AI2-Stat
+jparc:ec0-s3-EL3314-AI3-Stat
+jparc:ec0-s3-EL3314-AI4-Stat
+jparc:ec0-s4-EL5101-Enc-Stat
+jparc:ec0-s5-EL5101-Enc-Stat
+jparc:ec0-s7-EL7037-Drv-Stat
+jparc:ec0-s7-EL7037-Enc-Stat
+jparc:ec0-s8-EL7037-Drv-Stat
+jparc:ec0-s8-EL7037-Enc-Stat
+jparc:MCU1:asyn
+jparc:MCU-Cmd
+jparc:001
+jparc:002
+6690f8a.bi-aptm01.1781 > 

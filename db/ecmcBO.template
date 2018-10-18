@@ -1,0 +1,20 @@
+record(bo,"$(REC_NAME)"){
+   field(PINI, "$(PINI=1)")
+   field(DESC, "$(DESC=$(HWTYPE): Binary Output)")
+   field(DTYP, "$(DTYP=asynInt32)")
+   field(OUT,  "$(OUT)")
+   field(ZNAM, "$(ZNAM=Zero)")
+   field(ONAM, "$(ONAM=One)")
+   field(ZSV,  "$(ZSV=NO_ALARM)")
+   field(OSV,  "$(OSV=NO_ALARM)")
+   field(FLNK, "$(FLNK=)")
+}
+
+record(bi,"$(REC_NAME)-RB")
+{
+   field(PINI, "$(PINI=1)")
+   field(DESC, "$(DESC=$(HWTYPE): Binary Output RB) RB")
+   field(DTYP, "$(DTYP=asynInt32)")
+   field(SCAN, "$(SCAN=I/O Intr)")
+   field(INP,  "$(OUT)")
+}

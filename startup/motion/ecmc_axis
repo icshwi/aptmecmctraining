@@ -1,0 +1,66 @@
+
+
+## macros for LinkEcEntryToAxisMonitor
+# low limit switch aka Limit switch backward direction.
+epicsEnvSet("ECMC_EC_MON_LLS_ENTRY_INDEX",        "0")
+# high limit switch aka Limit switch forward direction.
+epicsEnvSet("ECMC_EC_MON_HLS_ENTRY_INDEX",        "1")
+# home switch aka Reference switch (homing).
+epicsEnvSet("ECMC_EC_MON_HOME_SWITCH_ENTRY_INDEX",        "2")
+# External interlock input (optional)
+epicsEnvSet("ECMC_EC_MON_EXT_ILOCK_ENTRY_INDEX",       "3")
+
+#General
+epicsEnvSet("ECMC_AXISCONFIG",    "")
+epicsEnvSet("ECMC_EGU",           "mm")
+epicsEnvSet("ECMC_PREC",          "3")
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.CreateDefaultAxis(${ECMC_AXIS_NO})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisDrvType(${ECMC_AXIS_NO},${ECMC_DRV_TYPE})"
+
+#Why ECMC_HOME_DEC here?
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisEmergDeceleration(${ECMC_AXIS_NO},${ECMC_HOME_DEC})"
+
+#Controller
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisCntrlKp(${ECMC_AXIS_NO},${ECMC_CNTRL_KP})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisCntrlKi(${ECMC_AXIS_NO},${ECMC_CNTRL_KI})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisCntrlKd(${ECMC_AXIS_NO},${ECMC_CNTRL_KD})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisCntrlKff(${ECMC_AXIS_NO},${ECMC_CNTRL_KFF})"
+
+#Encoder
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.LinkEcEntryToAxisEncoder(${ECMC_EC_SLAVE_NUM_ENC},${ECMC_EC_ALIAS_ENC_POS},${ECMC_AXIS_NO},0,-1)"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisEncScaleDenom(${ECMC_AXIS_NO},${ECMC_ENC_SCALE_DENOM})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisEncScaleNum(${ECMC_AXIS_NO},${ECMC_ENC_SCALE_NUM})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisEncType(${ECMC_AXIS_NO},${ECMC_ENC_TYPE})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisEncBits(${ECMC_AXIS_NO},${ECMC_ENC_BITS})"
+
+#Drive
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.LinkEcEntryToAxisDrive(${ECMC_EC_SLAVE_NUM_DRV},${ECMC_EC_ALIAS_DRV_CNTRL_WD},${ECMC_AXIS_NO},0,${ECMC_EC_BIT_DRV_CNTRL_WD})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.LinkEcEntryToAxisDrive(${ECMC_EC_SLAVE_NUM_DRV},${ECMC_EC_ALIAS_DRV_VELO_SET},${ECMC_AXIS_NO},1,${ECMC_EC_BIT_DRV_VELO_SET})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.LinkEcEntryToAxisDrive(${ECMC_EC_SLAVE_NUM_DRV},${ECMC_EC_ALIAS_DRV_STAT_WD},${ECMC_AXIS_NO},2,${ECMC_EC_BIT_DRV_STAT_WD})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.LinkEcEntryToAxisDrive(${ECMC_EC_SLAVE_NUM_DRV},${ECMC_EC_ALIAS_DRV_BRAKE_OUT},${ECMC_AXIS_NO},3,${ECMC_EC_BIT_DRV_BRAKE_OUT})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.LinkEcEntryToAxisDrive(${ECMC_EC_SLAVE_NUM_DRV},${ECMC_EC_ALIAS_DRV_REDUCE_TORQUE_OUT},${ECMC_AXIS_NO},4,${ECMC_EC_BIT_DRV_REDUCE_TORQUE_OUT})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisDrvScaleDenom(${ECMC_AXIS_NO},${ECMC_DRV_SCALE_DENOM})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisDrvScaleNum(${ECMC_AXIS_NO},${ECMC_DRV_SCALE_NUM})"
+
+#Monitor
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.LinkEcEntryToAxisMonitor(${ECMC_EC_SLAVE_NUM_MON_LLS},${ECMC_EC_ALIAS_MON_LLS},${ECMC_AXIS_NO},${ECMC_EC_MON_LLS_ENTRY_INDEX},${ECMC_EC_BIT_INDEX_MON_LLS})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.LinkEcEntryToAxisMonitor(${ECMC_EC_SLAVE_NUM_MON_HLS},${ECMC_EC_ALIAS_MON_HLS},${ECMC_AXIS_NO},${ECMC_EC_MON_HLS_ENTRY_INDEX},${ECMC_EC_BIT_INDEX_MON_HLS})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.LinkEcEntryToAxisMonitor(${ECMC_EC_SLAVE_NUM_MON_HOME_SWITCH},${ECMC_EC_ALIAS_MON_HOME_SWITCH},${ECMC_AXIS_NO},${ECMC_EC_MON_HOME_SWITCH_ENTRY_INDEX},${ECMC_EC_BIT_INDEX_MON_HOME})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisMonAtTargetTol(${ECMC_AXIS_NO},${ECMC_MON_AT_TARGET_TOL})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisMonAtTargetTime(${ECMC_AXIS_NO},${ECMC_MON_AT_TARGET_TIME})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisMonEnableAtTargetMon(${ECMC_AXIS_NO},${ECMC_MON_AT_TARGET_ENA})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisMonPosLagTol(${ECMC_AXIS_NO},${ECMC_MON_LAG_MON_TOL})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisMonPosLagTime(${ECMC_AXIS_NO},${ECMC_MON_LAG_MON_TIME})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisMonEnableLagMon(${ECMC_AXIS_NO},${ECMC_MON_LAG_MON_ENA})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisMonMaxVel(${ECMC_AXIS_NO},${ECMC_MON_VELO_MAX})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisMonEnableMaxVel(${ECMC_AXIS_NO},${ECMC_MON_VELO_MAX_ENA})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisMonMaxVelDriveILDelay(${ECMC_AXIS_NO},${ECMC_MON_VELO_MAX_DRV_TIME})"
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.SetAxisMonMaxVelTrajILDelay(${ECMC_AXIS_NO},${ECMC_MON_VELO_MAX_TRAJ_TIME})"
+
+EthercatMCCreateAxis(${ECMC_MOTOR_PORT}, "${ECMC_AXIS_NO}", "6", "stepSize=$(ECMC_MRES)")
+
+dbLoadRecords("EthercatMC.template", "PREFIX=$(ECMC_PREFIX), MOTOR_NAME=$(ECMC_MOTOR_NAME), R=$(ECMC_R), MOTOR_PORT=$(ECMC_MOTOR_PORT), ASYN_PORT=$(ECMC_ASYN_PORT), AXIS_NO=$(ECMC_AXIS_NO), DESC=$(ECMC_DESC), PREC=$(ECMC_PREC), VELO=$(ECMC_VELO), JVEL=$(ECMC_JOG_VEL), JAR=$(ECMC_JAR), ACCL=$(ECMC_ACCL), MRES=$(ECMC_MRES), RDBD=$(ECMC_MON_AT_TARGET_TOL), DLLM=$(ECMC_SOFT_LOW_LIM), DHLM=$(ECMC_SOFT_HIGH_LIM), HOMEPROC=$(ECMC_HOME_PROC)")
+
+dbLoadRecords("EthercatMChome.template", "PREFIX=$(ECMC_PREFIX), MOTOR_NAME=$(ECMC_MOTOR_NAME), R=$(ECMC_R), MOTOR_PORT=$(ECMC_MOTOR_PORT), ASYN_PORT=$(ECMC_ASYN_PORT), AXIS_NO=$(ECMC_AXIS_NO),HOMEPROC=$(ECMC_HOME_PROC), HOMEPOS=$(ECMC_HOME_POS), HVELTO=$(ECMC_HOME_VEL_TO), HVELFRM=$(ECMC_HOME_VEL_FRM), HOMEACC=$(ECMC_HOME_ACC), HOMEDEC=$(ECMC_HOME_DEC)")
+
+dbLoadRecords("ecmcExpression.db", "PORT=$(ECMC_ASYN_PORT),A=0,Index=${ECMC_AXIS_NO},Name=$(ECMC_PREFIX)$(ECMC_MOTOR_NAME)")

@@ -1,0 +1,22 @@
+
+record(bo,"$(P)Recorder$(Index)-En"){
+	field(DTYP,"stream")
+	field(OUT,"@ecmcDataRecorder.proto setEnable($(Index)) $(PORT)")
+	field(ZNAM,"FALSE")
+	field(ONAM,"TRUE")
+}
+
+record(bo,"$(P)Recorder$(Index)-Trg"){
+	field(DTYP,"stream")
+	field(OUT,"@ecmcDataRecorder.proto setTrigger($(Index)) $(PORT)")
+	field(ZNAM,"FALSE")
+	field(ONAM,"TRUE")
+}
+
+record(bo,"$(P)Recorder$(Index)-Print-En"){
+	field(DTYP,"stream")
+	field(OUT,"@ecmcDataRecorder.proto setEnablePrintouts($(Index)) $(PORT)")
+	field(ZNAM,"FALSE")
+	field(ONAM,"TRUE")
+}
+

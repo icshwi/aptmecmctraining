@@ -1,0 +1,5 @@
+
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEK1122-EtherCatJunction
+< $(ECMC_STARTUP_TOP)/general/slave
+
+

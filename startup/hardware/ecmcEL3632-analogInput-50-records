@@ -1,0 +1,18 @@
+
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL3632-analogInput-50
+< $(ECMC_STARTUP_TOP)/general/slave
+
+# Add Memory map object to access an memory area of the EtherCAT process image (100bytes starting from and including "ec$(ECMC_EC_MASTER_ID).s${ECMC_EC_SLAVE_NUM}.sm3.p1.e0" resulting in an array containing CH1_VALUE_1 to CH1_VALUE_50)
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddMemMap(${ECMC_EC_SLAVE_NUM},sm3.p1.e0,100,2,ec$(ECMC_EC_MASTER_ID).mm.CH1_ARRAY)"
+ecmcAsynPortDriverAddParameter($(ECMC_ASYN_PORT),ec$(ECMC_EC_MASTER_ID).mm.CH1_ARRAY,"asynInt16ArrayIn",$(ECMC_ASYN_SKIP_CYCLES))
+# Status
+ecmcAsynPortDriverAddParameter($(ECMC_ASYN_PORT),"ec$(ECMC_EC_MASTER_ID).s${ECMC_EC_SLAVE_NUM}.CH1_STATUS","asynUInt32Digital",$(ECMC_ASYN_SKIP_CYCLES))
+
+# Add Memory map object to access an memory area of the EtherCAT process image (100bytes starting from and including "ec$(ECMC_EC_MASTER_ID).s${ECMC_EC_SLAVE_NUM}.sm3.p1.e0" resulting in an array containing CH2_VALUE_1 to CH2_VALUE_50)
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddMemMap(${ECMC_EC_SLAVE_NUM},sm3.p52.e0,100,2,ec$(ECMC_EC_MASTER_ID).mm.CH2_ARRAY)"
+ecmcAsynPortDriverAddParameter($(ECMC_ASYN_PORT),ec$(ECMC_EC_MASTER_ID).mm.CH2_ARRAY,"asynInt16ArrayIn",$(ECMC_ASYN_SKIP_CYCLES))
+# Status
+ecmcAsynPortDriverAddParameter($(ECMC_ASYN_PORT),"ec$(ECMC_EC_MASTER_ID).s${ECMC_EC_SLAVE_NUM}.CH2_STATUS","asynUInt32Digital",$(ECMC_ASYN_SKIP_CYCLES))
+
+dbLoadTemplate("ecmcEL3632.substitutions","P=$(ECMC_PREFIX), PORT=$(ECMC_ASYN_PORT), ADDR=$(ECMC_ASYN_ADDR), TIMEOUT=$(ECMC_ASYN_TIMEOUT), MASTER_ID=$(ECMC_EC_MASTER_ID), SLAVE_POS=$(ECMC_EC_SLAVE_NUM), HWTYPE=$(ECMC_EC_HWTYPE)")
+

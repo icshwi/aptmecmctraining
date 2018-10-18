@@ -1,0 +1,11 @@
+epicsEnvSet("ECMC_PINI",              "0")                      # Process at Initialization
+epicsEnvSet("ECMC_DESC",              "Not configured")         # Description
+epicsEnvSet("ECMC_DTYP",              "")                       # Data type
+epicsEnvSet("ECMC_SCAN",              "")                       # Scan field
+epicsEnvSet("ECMC_INP",               "")                       # Input field
+epicsEnvSet("ECMC_DRVINFO",           "")                       # Drv Info
+epicsEnvSet("ECMC_FLNK",              "")                       # Forward link field
+epicsEnvSet("ECMC_RECORD_NAME",       "Not configured")         # Record name
+epicsEnvSet("ECMC_MASK",              "0")                      # Data mask
+epicsEnvSet("ECMC_SHFT",              "0")                      # Data shift bits
+

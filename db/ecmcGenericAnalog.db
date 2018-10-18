@@ -1,0 +1,12 @@
+
+record(ao,"$(P)SetEC$(SLAVE_POS)$(TYPE)_$(NAME)"){
+	field(DTYP,"stream")
+	field(OUT,"@ecmcEthercat.proto setPdoEntry($(SLAVE_POS),$(NAME)) $(PORT)")
+	field(FLNK,"$(P)GetEC$(SLAVE_POS)$(TYPE)_$(NAME).PROC")
+}
+
+record(ai,"$(P)GetEC$(SLAVE_POS)$(TYPE)_$(NAME)"){
+	field(DTYP,"stream")
+	field(INP,"@ecmcEthercat.proto getPdoEntry($(SLAVE_POS),$(NAME)) $(PORT)")
+	field(SCAN,"1 second")
+}

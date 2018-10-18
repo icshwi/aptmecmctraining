@@ -1,0 +1,31 @@
+Checklinst for commission a drive in ECMC:
+
+1. Collect info/requirements of application:
+ - Nominal velocity
+ - Max velocity
+ - Acceleration
+ - Deceleration
+ - Grear ratios
+ - Minimum needed torque
+ - Maximum allowed torque (not break mechanics)
+ - Suitable soft limits
+
+2. Collect equipment parameters:
+ - Motor:
+   - Type
+   - Max current
+   - Tourque vs Velocity diagram
+ - Drive:
+   - Type
+   - Max current
+ - Encoder:
+   - Type
+   - Resolution
+
+3. Referencing
+- Is referencing needed? identify preferred ref. seq.
+
+4. Based on collected information above, suitable ethercat terminals needs to be choosen and integrated into a electrical cabinet/crate.
+
+5. Read dedicated commisoniong instructions for drives.
+

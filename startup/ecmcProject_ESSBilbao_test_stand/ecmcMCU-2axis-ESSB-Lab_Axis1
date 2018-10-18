@@ -1,0 +1,75 @@
+#General
+epicsEnvSet("ECMC_MOTOR_NAME",            "Axis1")
+epicsEnvSet("ECMC_R",                     "Axis1-")
+epicsEnvSet("ECMC_AXIS_NO",               "1")
+epicsEnvSet("ECMC_DESC",                  "Laboratory actuator")
+
+#Encoder
+epicsEnvSet("ECMC_ENC_SCALE_NUM"          "-4")
+epicsEnvSet("ECMC_ENC_SCALE_DENOM"        "16000")
+epicsEnvSet("ECMC_ENC_BITS"               "16")
+# Type: 0=Incremental, 1=Absolute
+epicsEnvSet("ECMC_ENC_TYPE"               "0")
+epicsEnvSet("ECMC_EC_SLAVE_NUM_ENC",      "3")
+epicsEnvSet("ECMC_EC_ALIAS_ENC_POS",      "POSITION")
+
+#Drive
+epicsEnvSet("ECMC_DRV_SCALE_NUM"          "40.0") 
+epicsEnvSet("ECMC_DRV_SCALE_DENOM"        "32768.0")
+epicsEnvSet("ECMC_EC_SLAVE_NUM_DRV",      "8")
+epicsEnvSet("ECMC_EC_ALIAS_DRV_CNTRL_WD", "STM_CONTROL")
+epicsEnvSet("ECMC_EC_ALIAS_DRV_STAT_WD",  "STM_STATUS")
+epicsEnvSet("ECMC_EC_ALIAS_DRV_VELO_SET", "VELOCITY_SETPOINT")
+
+#Trajectory
+epicsEnvSet("ECMC_VELO",                  "1.0")
+epicsEnvSet("ECMC_JOG_VEL",               "0.5")
+#JAR defaults to VELO/ACCL
+epicsEnvSet("ECMC_JAR",                   "0.0")
+epicsEnvSet("ECMC_ACCL",                  "0.1")
+epicsEnvSet("ECMC_MRES",                  "0.001")
+
+#Homing
+epicsEnvSet("ECMC_HOME_PROC",             "1")
+epicsEnvSet("ECMC_HOME_POS",              "0.0")
+epicsEnvSet("ECMC_HOME_VEL_TO",           "0.1")
+epicsEnvSet("ECMC_HOME_VEL_FRM",          "0.1")
+epicsEnvSet("ECMC_HOME_ACC",              "21")
+epicsEnvSet("ECMC_HOME_DEC",              "100")
+
+#Controller
+epicsEnvSet("ECMC_CNTRL_KP",              "15.0")
+epicsEnvSet("ECMC_CNTRL_KI",              "0.02")
+epicsEnvSet("ECMC_CNTRL_KD",              "0.0")
+epicsEnvSet("ECMC_CNTRL_KFF",             "1.0")
+
+#Monitoring
+#  softlimits (disable with 0,0)
+epicsEnvSet("ECMC_SOFT_LOW_LIM",          "0")
+epicsEnvSet("ECMC_SOFT_HIGH_LIM",         "130")
+#  position lag
+epicsEnvSet("ECMC_MON_LAG_MON_TOL",       "0.5")
+epicsEnvSet("ECMC_MON_LAG_MON_TIME",      "10")
+epicsEnvSet("ECMC_MON_LAG_MON_ENA",       "1")
+# at target
+epicsEnvSet("ECMC_MON_AT_TARGET_TOL",     "0.1")
+epicsEnvSet("ECMC_MON_AT_TARGET_TIME",     "100")
+epicsEnvSet("ECMC_MON_AT_TARGET_ENA",     "1")
+# velocity
+epicsEnvSet("ECMC_MON_VELO_MAX",          "4.0")
+epicsEnvSet("ECMC_MON_VELO_MAX_TRAJ_TIME","4")
+epicsEnvSet("ECMC_MON_VELO_MAX_DRV_TIME", "200")
+epicsEnvSet("ECMC_MON_VELO_MAX_ENA",      "1")
+# low limit switch #Bwd
+epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_LLS",  "1")
+epicsEnvSet("ECMC_EC_ALIAS_MON_LLS",      "INPIN_1")
+epicsEnvSet("ECMC_EC_BIT_INDEX_MON_LLS",  "0")                  # Bit index for low limit switch
+# high limit switch #Fwd
+epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_HLS",  "1")
+epicsEnvSet("ECMC_EC_ALIAS_MON_HLS",      "INPIN_2")
+epicsEnvSet("ECMC_EC_BIT_INDEX_MON_HLS",  "0")                  # Bit index for high limit switch
+# home limit switch  #No home switch
+epicsEnvSet("ECMC_EC_SLAVE_NUM_MON_HOME_SWITCH", "1")
+epicsEnvSet("ECMC_EC_ALIAS_MON_HOME_SWITCH",     "INPIN_1")
+epicsEnvSet("ECMC_EC_BIT_INDEX_MON_HOME",        "0")           # Bit index for home switch
+

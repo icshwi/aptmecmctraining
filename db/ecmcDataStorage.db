@@ -1,0 +1,22 @@
+
+record(bo,"$(P)Storage$(Index)-Clear-Cmd"){
+	field(DTYP,"stream")
+	field(OUT,"@ecmcDataStorage.proto clearDataStorage($(Index)) $(PORT)")
+	field(ZNAM,"FALSE")
+	field(ONAM,"TRUE")
+	field(FLNK,"$(P)Storage$(Index)-Data-Act")
+}
+
+record(waveform,"$(P)Storage$(Index)-Data-Act"){
+	field(DTYP,"stream")
+	field(INP,"@ecmcDataStorage.proto getDataStorageData($(Index)) $(PORT)")
+	field(NELM,$(Size))
+        field(FTVL,"DOUBLE")
+}
+
+record(ai,"$(P)Storage$(Index)-DataIndex-Act"){
+	field(DTYP,"stream")
+	field(INP,"@ecmcDataStorage.proto getDataIndex($(Index)) $(PORT)")
+	field(SCAN,"2 second")
+	field(FLNK,"$(P)Storage$(Index)-Data-Act")
+}

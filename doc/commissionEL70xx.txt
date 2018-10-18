@@ -1,0 +1,13 @@
+EL7031
+EL7041
+EL7037
+EL7047
+
+
+
+SDO settings in drive:
+
+1. Check if a configuration file for your motor already exists for the drive you intend to use in ecmctraining/V2/startup/hardware
+   If file exists then check that the parameters are correct in the file. Please do not change the file. If any changes are needed then please copy the row of the parameter that needs to be changed and add it to you application specific 
+  
+ecmcEL70xx-Motor-Nanotec-ST4118L1804-B

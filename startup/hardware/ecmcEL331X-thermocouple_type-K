@@ -1,0 +1,148 @@
+############################################################
+############# Parmetrization of EL331X for thermocouple type K
+# Type: Type k
+# Range: in the range defined in each case for the sensor (default setting: type K; -200...+1370 °C); voltage measurement: ±30mV...±75mV
+# Connectiontype : 2 wire
+# Cable length: 25m
+# Cable area: ??
+#
+# Environment variables needed:
+# -ECMC_EC_SDO_INDEX "0x80n0" where n is channel 0-1-2-3
+# -ECMC_EC_SLAVE_NUM = slave number
+# 
+
+# CJCompensation (default 0=internal)
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0xC")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Internal
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+
+
+# Enable user scale (default 0=disabled)
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x1")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+
+# Presentation:
+# 0 = Signed 0.1 degree C/digit (Default)
+# 1 = Absolute, 0.1 degree C/digit  MSB as sign 
+# 2 = High precision 0.01 degree C/digit (only available for certain terminals) 
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x2")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Signed
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+
+# Enable Siemens S5 bits:
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x5")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+
+# Enable filter
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x6")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "1")  # Enabled
+# NOTE: According to documentation the filter is always enabled independent of setting since needed for measure process. So rely on default value.  
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+
+# Enable limit 1 
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x7")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+
+# Enable limit 2
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x8")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+
+
+# Enable user calibration
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0xA")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Disabled
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+
+# Enable vendor calibration
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0xB")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "1")  # Enabled
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+
+# disable wire break detection
+#epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0xE")
+#epicsEnvSet("ECMC_EC_SDO_SIZE",          "1")
+#epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # Active
+#EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+
+# User scale offset User scaling offset
+#The offset describes a vertical shift of the characteristic curve by a linear amount.
+#At a resolution of 0.1°, 1 digit(dec) corresponds to an increase in measured value by 0.1°
+#At a resolution of 0.01°, 1 digit(dec) corresponds to an increase in measured value by 0.01
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x11")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  # offset 0
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+
+# User scale gain (Represented in fixed point format with factor 2^⁻16=> 1 corresponds to  65536)
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x12")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "4")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "65536")  # Gain 1
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+
+# Limit 1
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x13")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+
+# Limit 2
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x14")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+
+# Set filter freq for all channels (Filter settings is only vaild for channel 1 (the used for the rest of the channels))
+# 0  = 50Hz (Defualt)
+# 1  = 60Hz
+# 2  = 100Hz
+# 3  = 500Hz
+# 4  = 1kHz
+# 5  = 2kHz
+# 6  = 3,75kHz
+# 7  = 7,5kHz
+# 8  = 15kHz
+# 9  = 30kHz
+# 10 = 5Hz
+# 11 = 10Hz
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x15")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")       # 50Hz
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+
+# User calibration offset
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x17")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+
+# User calibration gain (Represented in fixed point format with factor 2^⁻16=> 1 corresponds to  65535)
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x18")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "65535")
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+
+
+# temperature range 
+# 0x80n0:19
+# 0 type: K -200C to 1370C
+epicsEnvSet("ECMC_EC_SDO_INDEX_OFFSET",  "0x19")
+epicsEnvSet("ECMC_EC_SDO_SIZE",          "2")
+epicsEnvSet("ECMC_EC_SDO_VALUE",         "0")  
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcAddSdo(${ECMC_EC_SLAVE_NUM},${ECMC_EC_SDO_INDEX},$(ECMC_EC_SDO_INDEX_OFFSET),$(ECMC_EC_SDO_VALUE),$(ECMC_EC_SDO_SIZE))"
+
+
+
+

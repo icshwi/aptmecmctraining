@@ -1,0 +1,133 @@
+############################################################
+############# LEBT:
+
+
+# 0  0:0   PREOP  +  EK1100 EtherCAT Coupler (2A E-Bus)
+# 1  0:1   PREOP  +  EL1808 8K. Dig. Eingang 24V, 3ms
+# 2  0:2   PREOP  +  EL1808 8K. Dig. Eingang 24V, 3ms
+# 3  0:3   PREOP  +  EL1808 8K. Dig. Eingang 24V, 3ms
+# 4  0:4   PREOP  +  EL2819 16K. Dig. Ausgang 24V, 0,5A, Diagnose
+# 5  0:5   PREOP  +  EL2819 16K. Dig. Ausgang 24V, 0,5A, Diagnose
+# 6  0:6   PREOP  +  EL5101 1K. Inc. Encoder 5V
+# 7  0:7   PREOP  +  EL5101 1K. Inc. Encoder 5V
+# 8  0:8   PREOP  +  EL5101 1K. Inc. Encoder 5V
+# 9  0:9   PREOP  +  EL5101 1K. Inc. Encoder 5V
+#10  0:10  PREOP  +  EL5101 1K. Inc. Encoder 5V
+#11  0:11  PREOP  +  EL3312 2K. Ana. Eingang Thermoelement (TC)
+#12  0:12  PREOP  +  EK1110 EtherCAT-Verl�ngerung
+#13  0:13  PREOP  +  EK1100 EtherCAT-Koppler (2A E-Bus)
+#14  0:14  PREOP  +  EL7037 1K. Schrittmotor-Endstufe (24V, 1.5A)
+#15  0:15  PREOP  +  EL7037 1K. Schrittmotor-Endstufe (24V, 1.5A)
+#16  0:16  PREOP  +  EL7037 1K. Schrittmotor-Endstufe (24V, 1.5A)
+#17  0:17  PREOP  +  EL7037 1K. Schrittmotor-Endstufe (24V, 1.5A)
+#18  0:18  PREOP  +  EL7037 1K. Schrittmotor-Endstufe (24V, 1.5A)
+
+
+epicsEnvSet("ECMC_EC_MASTER_ID"          "0")
+
+#Choose master
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcSetMaster($(ECMC_EC_MASTER_ID))"
+
+#Configure EK1100 coupler terminal
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "0")
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEK1100-EtherCatCoupler$(ECMC_GEN_EC_RECORDS)
+
+# Configure EL1808 digital input terminal
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "1")
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL1808-digitalInput$(ECMC_GEN_EC_RECORDS)
+
+# Configure EL1808 digital input terminal
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "2")
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL1808-digitalInput$(ECMC_GEN_EC_RECORDS)
+
+# Configure EL1808 digital input terminal
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "3")
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL1808-digitalInput$(ECMC_GEN_EC_RECORDS)
+
+# Configure EL2819 digital output terminal
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "4")
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL2819-digitalOutput$(ECMC_GEN_EC_RECORDS)
+
+# Configure EL2819 digital output terminal
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "5")
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL2819-digitalOutput$(ECMC_GEN_EC_RECORDS)
+
+# Configure EL5101 incremental encoder terminal, doppler 1
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "6")
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL5101-IncEncoder$(ECMC_GEN_EC_RECORDS)
+
+# Configure EL5101 incremental encoder terminal, NPM 1
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "7")
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL5101-IncEncoder$(ECMC_GEN_EC_RECORDS)
+
+# Configure EL5101 incremental encoder terminal, NPM 2
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "8")
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL5101-IncEncoder$(ECMC_GEN_EC_RECORDS)
+
+# Configure EL5101 incremental encoder terminal, NPM 3
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "9")
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL5101-IncEncoder$(ECMC_GEN_EC_RECORDS)
+
+# Configure EL5101 incremental encoder terminal, NPM 4
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "10")
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL5101-IncEncoder$(ECMC_GEN_EC_RECORDS)
+
+#Thermocouple for doppler
+# Configure EL3312 analog input hardware
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "11")
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL3312-analogInput$(ECMC_GEN_EC_RECORDS)
+
+############# Configure sensors:
+# Configure channel 1
+epicsEnvSet("ECMC_EC_SDO_INDEX",         "0x8000")
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL3312_thermocouple_type-K
+
+# Configure channel 2
+epicsEnvSet("ECMC_EC_SDO_INDEX",         "0x8010")
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL3312_thermocouple_type-K
+
+#Configure EK1110 EtherCAt extension
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "12")
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEK1110-EtherCatExtension$(ECMC_GEN_EC_RECORDS)
+
+#Configure EK1100 coupler terminal
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "13")
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEK1100-EtherCatCoupler$(ECMC_GEN_EC_RECORDS)
+
+# Configure EL7037 stepper drive terminal, doppler 1
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "14")
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL7037-StepperDrive$(ECMC_GEN_EC_RECORDS)
+
+#Configure motor for EL7037
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL7037-Motor-Nanotec-AS4118L1804-ENM24
+
+# Configure EL7037 stepper drive terminal, NPM 1
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "15")
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL7037-StepperDrive$(ECMC_GEN_EC_RECORDS)
+
+#Configure motor for EL7037
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL7037-Motor-Nanotec-2818M1006-B
+
+# Configure EL7037 stepper drive terminal, NPM 2
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "16")
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL7037-StepperDrive$(ECMC_GEN_EC_RECORDS)
+
+#Configure motor for EL7037
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL7037-Motor-Nanotec-2818M1006-B
+
+# Configure EL7037 stepper drive terminal, NPM 3
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "17")
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL7037-StepperDrive$(ECMC_GEN_EC_RECORDS)
+
+#Configure motor for EL7037
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL7037-Motor-Nanotec-2818M1006-B
+
+# Configure EL7037 stepper drive terminal, NPM 4
+epicsEnvSet("ECMC_EC_SLAVE_NUM",              "18")
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL7037-StepperDrive$(ECMC_GEN_EC_RECORDS)
+
+#Configure motor for EL7037
+< $(ECMC_STARTUP_TOP)/hardware/ecmcEL7037-Motor-Nanotec-2818M1006-B
+
+# Apply hardware configuration
+EthercatMCConfigController ${ECMC_MOTOR_PORT}, "Cfg.EcApplyConfig(1)"

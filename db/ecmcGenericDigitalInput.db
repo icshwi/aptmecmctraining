@@ -1,0 +1,5 @@
+record(bi,"$(P)EC$(SLAVE_POS)-$(TYPE)-$(REC_SUFFIX)"){
+	field(DTYP,"stream")
+	field(INP,"@ecmcEthercat.proto getPdoEntry($(SLAVE_POS),$(NAME)) $(PORT)")
+	field(SCAN,"1 second")
+}

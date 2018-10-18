@@ -1,0 +1,30 @@
+
+< $(ECMC_STARTUP_TOP)/general/slave
+
+############# Map records:
+ecmcAsynPortDriverAddParameter($(ECMC_ASYN_PORT),"ec$(ECMC_EC_MASTER_ID).s${ECMC_EC_SLAVE_NUM}.STM_CONTROL","asynInt32",$(ECMC_ASYN_SKIP_CYCLES))
+ecmcAsynPortDriverAddParameter($(ECMC_ASYN_PORT),"ec$(ECMC_EC_MASTER_ID).s${ECMC_EC_SLAVE_NUM}.VELOCITY_SETPOINT","asynInt32",$(ECMC_ASYN_SKIP_CYCLES))
+# Output cmd and readback from ecmc
+ecmcAsynPortDriverAddParameter($(ECMC_ASYN_PORT),"ec$(ECMC_EC_MASTER_ID).s${ECMC_EC_SLAVE_NUM}.OUTPUTS","asynInt32",$(ECMC_ASYN_SKIP_CYCLES))
+ecmcAsynPortDriverAddParameter($(ECMC_ASYN_PORT),"ec$(ECMC_EC_MASTER_ID).s${ECMC_EC_SLAVE_NUM}.OUTPUTS_MASK","asynInt32",$(ECMC_ASYN_SKIP_CYCLES))
+#If in openloop this will be the step counter (config depends on which setup file is loaded in IPOS8020)
+ecmcAsynPortDriverAddParameter($(ECMC_ASYN_PORT),"ec$(ECMC_EC_MASTER_ID).s${ECMC_EC_SLAVE_NUM}.POSITION","asynInt32",$(ECMC_ASYN_SKIP_CYCLES))
+ecmcAsynPortDriverAddParameter($(ECMC_ASYN_PORT),"ec$(ECMC_EC_MASTER_ID).s${ECMC_EC_SLAVE_NUM}.STM_STATUS","asynUInt32Digital",$(ECMC_ASYN_SKIP_CYCLES))
+ecmcAsynPortDriverAddParameter($(ECMC_ASYN_PORT),"ec$(ECMC_EC_MASTER_ID).s${ECMC_EC_SLAVE_NUM}.CURRENT","asynInt32",$(ECMC_ASYN_SKIP_CYCLES))
+ecmcAsynPortDriverAddParameter($(ECMC_ASYN_PORT),"ec$(ECMC_EC_MASTER_ID).s${ECMC_EC_SLAVE_NUM}.INPUTS","asynInt32",$(ECMC_ASYN_SKIP_CYCLES))
+# Readback from drive
+ecmcAsynPortDriverAddParameter($(ECMC_ASYN_PORT),"ec$(ECMC_EC_MASTER_ID).s${ECMC_EC_SLAVE_NUM}.OUTPUTS_RB","asynInt32",$(ECMC_ASYN_SKIP_CYCLES))
+# Analog Ref
+ecmcAsynPortDriverAddParameter($(ECMC_ASYN_PORT),"ec$(ECMC_EC_MASTER_ID).s${ECMC_EC_SLAVE_NUM}.ANALOG_REF","asynInt32",$(ECMC_ASYN_SKIP_CYCLES))
+# Analog Feedback
+ecmcAsynPortDriverAddParameter($(ECMC_ASYN_PORT),"ec$(ECMC_EC_MASTER_ID).s${ECMC_EC_SLAVE_NUM}.ANALOG_FB","asynInt32",$(ECMC_ASYN_SKIP_CYCLES))
+# DC-Link Voltage
+ecmcAsynPortDriverAddParameter($(ECMC_ASYN_PORT),"ec$(ECMC_EC_MASTER_ID).s${ECMC_EC_SLAVE_NUM}.DC_VOLTAGE","asynInt32",$(ECMC_ASYN_SKIP_CYCLES))
+# Drive Temperature
+ecmcAsynPortDriverAddParameter($(ECMC_ASYN_PORT),"ec$(ECMC_EC_MASTER_ID).s${ECMC_EC_SLAVE_NUM}.TEMPERATURE","asynInt32",$(ECMC_ASYN_SKIP_CYCLES))
+#Feedback connected to FB2 connector SSI (config depends on which setup file is loaded in IPOS8020)
+ecmcAsynPortDriverAddParameter($(ECMC_ASYN_PORT),"ec$(ECMC_EC_MASTER_ID).s${ECMC_EC_SLAVE_NUM}.POSITION_FB2","asynInt32",$(ECMC_ASYN_SKIP_CYCLES))
+
+dbLoadTemplate("ecmcIPOSXXXX_DRV.substitutions","P=$(ECMC_PREFIX), PORT=$(ECMC_ASYN_PORT), ADDR=$(ECMC_ASYN_ADDR), TIMEOUT=$(ECMC_ASYN_TIMEOUT), MASTER_ID=$(ECMC_EC_MASTER_ID), SLAVE_POS=$(ECMC_EC_SLAVE_NUM), HWTYPE=$(ECMC_EC_HWTYPE)")
+dbLoadTemplate("ecmcIPOSXXXX_ENC.substitutions","P=$(ECMC_PREFIX), PORT=$(ECMC_ASYN_PORT), ADDR=$(ECMC_ASYN_ADDR), TIMEOUT=$(ECMC_ASYN_TIMEOUT), MASTER_ID=$(ECMC_EC_MASTER_ID), SLAVE_POS=$(ECMC_EC_SLAVE_NUM), HWTYPE=$(ECMC_EC_HWTYPE)")
+dbLoadTemplate("ecmc$(ECMC_EC_HWTYPE)_AUX.substitutions","P=$(ECMC_PREFIX), PORT=$(ECMC_ASYN_PORT), ADDR=$(ECMC_ASYN_ADDR), TIMEOUT=$(ECMC_ASYN_TIMEOUT), MASTER_ID=$(ECMC_EC_MASTER_ID), SLAVE_POS=$(ECMC_EC_SLAVE_NUM), HWTYPE=$(ECMC_EC_HWTYPE)")
